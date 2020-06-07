@@ -1,4 +1,4 @@
-module loucore
+module github.com/joaopedrosgs/loucore
 
 go 1.14
 
