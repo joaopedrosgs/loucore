@@ -2,9 +2,9 @@ package loucore
 
 import (
 	"context"
+	"github.com/joaopedrosgs/loucore/ent/city"
+	"github.com/joaopedrosgs/loucore/ent/user"
 	"log"
-	"lou-core/ent/city"
-	"lou-core/ent/user"
 )
 
 func CitieInRange(x int, y int, r int) interface{} {

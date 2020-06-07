@@ -2,9 +2,9 @@ package loucore
 
 import (
 	"context"
+	"github.com/joaopedrosgs/loucore/ent"
+	"github.com/joaopedrosgs/loucore/ent/user"
 	"golang.org/x/crypto/bcrypt"
-	"lou-core/ent"
-	"lou-core/ent/user"
 )
 
 func Authentication(email string, password string) bool {

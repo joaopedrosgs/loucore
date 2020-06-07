@@ -1,8 +1,8 @@
 package loucore
 
 import (
+	"github.com/joaopedrosgs/loucore/ent"
 	"log"
-	"lou-core/ent"
 )
 
 var client *ent.Client
