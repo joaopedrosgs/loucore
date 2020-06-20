@@ -52,6 +52,6 @@ func (City) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.From("owner", User.Type).Unique().Ref("cities"),
 		edge.To("constructions", Construction.Type),
-		edge.To("queue", Queue.Type),
+		edge.To("queue", QueueItem.Type),
 	}
 }

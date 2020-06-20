@@ -22,7 +22,7 @@ func Authentication(email string, password string) bool {
 
 }
 func CreateAccount(name string, email string, password string) (*ent.User, error) {
-	passwordHash, err := bcrypt.GenerateFromPassword([]byte(password), 20)
+	passwordHash, err := bcrypt.GenerateFromPassword([]byte(password), 4)
 	if err != nil {
 		return nil, err
 	}

@@ -8,21 +8,23 @@ import (
 )
 
 // Queue holds the schema definition for the Queue entity.
-type Queue struct {
+type QueueItem struct {
 	ent.Schema
 }
 
-// Fields of the Queue.
-func (Queue) Fields() []ent.Field {
+// Fields of the QueueItem.
+func (QueueItem) Fields() []ent.Field {
 	return []ent.Field{
+		field.Time("start_at"),
+		field.Int("duration"),
 		field.Time("completion"),
 		field.Int("action"),
 		field.Int("order"),
 	}
 }
 
-// Edges of the Queue.
-func (Queue) Edges() []ent.Edge {
+// Edges of the QueueItem.
+func (QueueItem) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.From("owner", User.Type).Ref("queue").Unique(),
 		edge.From("city", City.Type).Ref("queue").Unique(),
@@ -30,7 +32,7 @@ func (Queue) Edges() []ent.Edge {
 	}
 }
 
-func (Queue) Indexes() []ent.Index {
+func (QueueItem) Indexes() []ent.Index {
 	return []ent.Index{
 		index.Fields("order").
 			Edges("city").

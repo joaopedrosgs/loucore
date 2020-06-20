@@ -18,9 +18,10 @@ func (Construction) Fields() []ent.Field {
 		field.Int("x"),
 		field.Int("y"),
 		field.Int("raw_production").Default(0),
+		field.Int("production").Default(0),
 		field.Int("type").Default(0),
 		field.Int("level").Default(0),
-		field.Float("modifier").Default(1),
+		field.Int("modifier").Default(1),
 		field.Bool("need_refresh").Default(true),
 	}
 }
@@ -30,7 +31,9 @@ func (Construction) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.From("city", City.Type).Ref("constructions").Unique().Required(),
 		edge.From("owner", User.Type).Ref("constructions").Unique(),
-		edge.To("queue", Queue.Type),
+		edge.To("queue", QueueItem.Type),
+		edge.To("affects", Construction.Type),
+		edge.From("affected_by", Construction.Type).Ref("affects"),
 	}
 }
 func (Construction) Indexes() []ent.Index {

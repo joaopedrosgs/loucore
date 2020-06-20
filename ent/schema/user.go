@@ -32,7 +32,7 @@ func (User) Fields() []ent.Field {
 func (User) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.To("cities", City.Type),
-		edge.To("queue", Queue.Type),
+		edge.To("queue", QueueItem.Type),
 		edge.To("constructions", Construction.Type),
 	}
 }
