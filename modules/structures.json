@@ -4,48 +4,42 @@
     "name": "Wood",
     "buildable": false,
     "media": "wood",
+    "type": "production_bonus",
     "info": "Natural wood.",
-    "bonus": {
-      "wood_production": [
-        300
-      ]
-    }
+    "bonus": [30],
+    "bonus_type": "wood_prod_bonus"
+
+
   },
   {
     "id": 1,
     "name": "Lake",
     "buildable": false,
     "media": "lake",
+    "type": "production_bonus",
     "info": "Natural lake.",
-    "bonus": {
-      "food_production": [
-        300
-      ]
-    }
+    "bonus": [30],
+    "bonus_type": "food_prod_bonus"
   },
   {
     "id": 2,
     "name": "Stone",
     "buildable": false,
     "media": "stone",
+    "type": "production_bonus",
     "info": "Natural stone.",
-    "bonus": {
-      "stone_production": [
-        300
-      ]
-    }
+    "bonus": [30],
+    "bonus_type": "stone_prod_bonus"
   },
   {
     "id": 3,
     "name": "Iron",
     "buildable": false,
     "media": "iron",
+    "type": "production_bonus",
     "info": "Natural Iron.",
-    "bonus": {
-      "iron_production": [
-        300
-      ]
-    }
+    "bonus": [30],
+    "bonus_type": "iron_prod_bonus"
   },
   {
     "id": 4,
@@ -53,8 +47,7 @@
     "buildable": false,
     "media": "townhall",
     "info": "Provides basic storage and wood production. Also determines the maximum number of buildings in a city. Only one can be built in each city. Cannot be totally demolished or destroyed.",
-    "bonus": {
-      "wood_h": [
+      "bonus": [
         300,
         300,
         300,
@@ -65,20 +58,9 @@
         300,
         300,
         300
-      ],
-      "storage": [
-        5000,
-        7000,
-        10000,
-        15000,
-        24000,
-        35000,
-        50000,
-        80000,
-        125000,
-        175000
       ]
-    },
+  ,
+    "bonus_type": "wood_prod",
     "resource_cost": [
       [
         200,
@@ -136,8 +118,8 @@
     "buildable": true,
     "media": "woodcutter",
     "info": "Produces wood. Any bordering woods, Cottages and a maximum of one Sawmill will increase productivity.",
-    "bonus": {
-      "wood_h": [
+
+      "bonus": [
         5,
         10,
         15,
@@ -148,8 +130,9 @@
         120,
         200,
         300
-      ]
-    },
+      ],
+    "bonus_type": "wood_prod"
+    ,
     "resource_cost": [
       [
         50,
@@ -195,47 +178,100 @@
   },
   {
     "id": 6,
+    "name": "Quarry",
+    "buildable": true,
+    "media": "quarry",
+    "info": "Produces Stone. Productivity can be increased by bordering Rocks, Cottages and a maximum of one Stonemason.",
+    "bonus": [
+      20,
+      40,
+      60,
+      85,
+      110,
+      140,
+      175,
+      210,
+      250,
+      300
+    ],
+    "bonus_type": "stone_prod"
+  },
+  {
+    "id": 7,
+    "name": "Farm",
+    "buildable": true,
+    "media": "farm",
+    "info": "Produces food. Any bordering grassland, lakes, Cottages and Mills will increase productivity.",
+    "bonus" :[
+      5,
+      10,
+      15,
+      20,
+      30,
+      45,
+      75,
+      120,
+      200,
+      300
+    ]
+  ,
+    "bonus_type": "food_prod",
+    "score": [
+      1,
+      2,
+      5,
+      10,
+      16,
+      24,
+      34,
+      46,
+      60,
+      80
+    ]
+  },
+  {
+    "id": 8,
+    "name": "Iron mine",
+    "buildable": true,
+    "media": "ironmine",
+    "info": "Produces iron. Any bordering ore deposits, Cottages and a maximum of one Foundry will increase productivity.",
+    "bonus" :[
+      5,
+      10,
+      15,
+      20,
+      30,
+      45,
+      75,
+      120,
+      200,
+      300
+    ]
+  ,
+    "bonus_type": "iron_prod"
+  },
+
+  {
+    "id": 9,
     "name": "Cottage",
     "buildable": true,
     "media": "cottage",
     "info": "Increases the construction speed of all build orders in a city. Also increases productivity of bordering resource buildings.",
-    "bonus": {
-      "construction_speed": [
-        4,
-        10,
-        16,
-        25,
-        35,
-        46,
-        58,
-        71,
-        85,
-        100
-      ]
-    },
-    "adjascent": [
-      {
-        "builds": [
-          "woodCutter",
-          "quarry",
-          "farm",
-          "ironmine"
-        ],
-        "bonus": [
-          3,
-          6,
-          9,
-          12,
-          15,
-          18,
-          21,
-          24,
-          27,
-          30,
-          30
-        ]
-      }
-    ],
+    "bonus":  [
+        3,
+        6,
+        9,
+        12,
+        15,
+        18,
+        21,
+        24,
+        27,
+        30,
+        30
+      ],
+      "bonus_type" : "all_prod_bonus",
+
     "resource_cost": [
       [
         50,
@@ -292,13 +328,12 @@
     ]
   },
   {
-    "id": 7,
+    "id": 10,
     "name": "Warehouse",
     "buildable": true,
     "media": "warehouse",
     "info": "Increases the storage capacity for all resources. Enhanced by any bordering Sawmill, Stonemason, Mill or Foundry.",
-    "bonus": {
-      "storage": [
+    "bonus":  [
         2500,
         5000,
         9000,
@@ -309,8 +344,9 @@
         100000,
         145000,
         200000
-      ]
-    },
+      ],
+    "bonus_type": "storage"
+    ,
     "resource_cost": [
       [
         60,
@@ -364,1254 +400,6 @@
       46,
       60,
       80
-    ]
-  },
-  {
-    "id": 8,
-    "name": "Quarry",
-    "buildable": true,
-    "media": "quarry",
-    "info": "Produces Stone. Productivity can be increased by bordering Rocks, Cottages and a maximum of one Stonemason.",
-    "bonus": {
-      "stone_h": [
-        20,
-        40,
-        60,
-        85,
-        110,
-        140,
-        175,
-        210,
-        250,
-        300
-      ]
-    }
-  },
-  {
-    "id": 9,
-    "name": "Hideout",
-    "buildable": true,
-    "media": "hideout",
-    "info": "Allows safe storage of resources, preventing them from being reported by Scouts or plundered. Its capacity can be increased if built beside woods.",
-    "bonus": {
-      "hiddenstorage": [
-        500,
-        1000,
-        2000,
-        3000,
-        4500,
-        6000,
-        8000,
-        10000,
-        12000,
-        15000
-      ]
-    },
-    "resource_cost": [
-      [
-        0,
-        50
-      ],
-      [
-        0,
-        200
-      ],
-      [
-        0,
-        600
-      ],
-      [
-        0,
-        1000
-      ],
-      [
-        0,
-        1500
-      ],
-      [
-        0,
-        2200
-      ],
-      [
-        0,
-        3500
-      ],
-      [
-        0,
-        4500
-      ],
-      [
-        0,
-        6000
-      ],
-      [
-        0,
-        8000
-      ]
-    ],
-    "score": [
-      1,
-      2,
-      3,
-      5,
-      8,
-      12,
-      17,
-      23,
-      30,
-      40
-    ]
-  },
-  {
-    "id": 10,
-    "name": "Farm",
-    "buildable": true,
-    "media": "farm",
-    "info": "Produces food. Any bordering grassland, lakes, Cottages and Mills will increase productivity.",
-    "bonus": {
-      "food_h": [
-        5,
-        10,
-        15,
-        20,
-        30,
-        45,
-        75,
-        120,
-        200,
-        300
-      ]
-    },
-    "score": [
-      1,
-      2,
-      5,
-      10,
-      16,
-      24,
-      34,
-      46,
-      60,
-      80
-    ]
-  },
-  {
-    "id": 11,
-    "name": "Iron mine",
-    "buildable": true,
-    "media": "ironmine",
-    "info": "Produces iron. Any bordering ore deposits, Cottages and a maximum of one Foundry will increase productivity.",
-    "bonus": {
-      "iron_h": [
-        5,
-        10,
-        15,
-        20,
-        30,
-        45,
-        75,
-        120,
-        200,
-        300
-      ]
-    }
-  },
-  {
-    "id": 12,
-    "name": "Townhouse",
-    "buildable": true,
-    "media": "townhouse",
-    "info": "Enables taxation. Income from tax can be increased by connecting Marketplaces and Harbors.",
-    "bonus": {
-      "gold_h": [
-        25,
-        50,
-        75,
-        100,
-        130,
-        170,
-        210,
-        260,
-        320,
-        400
-      ]
-    },
-    "resource_cost": [
-      [
-        0,
-        100
-      ],
-      [
-        0,
-        300
-      ],
-      [
-        0,
-        600
-      ],
-      [
-        0,
-        2000
-      ],
-      [
-        1000,
-        4000
-      ],
-      [
-        2000,
-        7000
-      ],
-      [
-        3500,
-        11500
-      ],
-      [
-        7000,
-        17000
-      ],
-      [
-        14000,
-        20000
-      ],
-      [
-        29000,
-        29000
-      ]
-    ],
-    "score": [
-      1,
-      3,
-      6,
-      12,
-      20,
-      30,
-      42,
-      57,
-      75,
-      100
-    ]
-  },
-  {
-    "id": 13,
-    "name": "Marketplace",
-    "buildable": true,
-    "media": "marketplace",
-    "info": "Allows transport of resources between cities and enables trade with other players by land. Also increases the tax income of connected buildings.",
-    "bonus": {
-      "carts": [
-        1,
-        4,
-        10,
-        20,
-        30,
-        50,
-        70,
-        105,
-        145,
-        200
-      ],
-      "tax": [
-        2,
-        4,
-        6,
-        8,
-        10,
-        12,
-        14,
-        16,
-        18,
-        20,
-        20
-      ]
-    },
-    "resource_cost": [
-      [
-        40,
-        20
-      ],
-      [
-        80,
-        40
-      ],
-      [
-        160,
-        80
-      ],
-      [
-        400,
-        200
-      ],
-      [
-        1200,
-        600
-      ],
-      [
-        2800,
-        1400
-      ],
-      [
-        5600,
-        2800
-      ],
-      [
-        9600,
-        4800
-      ],
-      [
-        15200,
-        7600
-      ],
-      [
-        23200,
-        11600
-      ]
-    ],
-    "score": [
-      1,
-      2,
-      5,
-      10,
-      16,
-      24,
-      34,
-      46,
-      60,
-      80
-    ]
-  },
-  {
-    "id": 14,
-    "name": "Harbor",
-    "buildable": true,
-    "media": "harbor",
-    "info": "Allows for the transport of resources between cities and enables you to trade with other players by sea. Also increases the tax income of connected Townhouses.",
-    "bonus": {
-      "ships": [
-        1,
-        2,
-        4,
-        6,
-        9,
-        12,
-        15,
-        19,
-        24,
-        30
-      ],
-      "tax": [
-        5,
-        10,
-        15,
-        20,
-        25,
-        30,
-        35,
-        40,
-        45,
-        50
-      ]
-    },
-    "resource_cost": [
-      [
-        80,
-        40
-      ],
-      [
-        160,
-        80
-      ],
-      [
-        320,
-        160
-      ],
-      [
-        800,
-        400
-      ],
-      [
-        2400,
-        1200
-      ],
-      [
-        5600,
-        2800
-      ],
-      [
-        11200,
-        5600
-      ],
-      [
-        19200,
-        9600
-      ],
-      [
-        30400,
-        15200
-      ],
-      [
-        46400,
-        23200
-      ]
-    ],
-    "score": [
-      1,
-      3,
-      6,
-      12,
-      20,
-      30,
-      42,
-      57,
-      75,
-      100
-    ]
-  },
-  {
-    "id": 15,
-    "name": "Sawmill",
-    "buildable": true,
-    "media": "sawmill",
-    "info": "Increases the efficiency of bordering Woodcutter's Huts and wood storage capacity of any bordering Storage.",
-    "bonus": {
-      "wood_production": [
-        30,
-        35,
-        40,
-        45,
-        50,
-        55,
-        60,
-        65,
-        70,
-        75
-      ],
-      "wood_storage": [
-        20,
-        40,
-        60,
-        80,
-        100,
-        120,
-        140,
-        160,
-        180,
-        200
-      ]
-    }
-  },
-  {
-    "id": 16,
-    "name": "Stonemason",
-    "buildable": true,
-    "media": "stonemason",
-    "info": "Increases the efficiency of bordering Quarries and stone storage capacity of any bordering Storage.",
-    "bonus": {
-      "stone_production": [
-        30,
-        35,
-        40,
-        45,
-        50,
-        55,
-        60,
-        65,
-        70,
-        75
-      ],
-      "stone_storage": [
-        20,
-        40,
-        60,
-        80,
-        100,
-        120,
-        140,
-        160,
-        180,
-        200
-      ]
-    }
-  },
-  {
-    "id": 17,
-    "name": "Foundry",
-    "buildable": true,
-    "media": "foundry",
-    "info": "Increases the efficiency of bordering Ore Mines and iron storage capacity of bordering Storage.",
-    "bonus": {
-      "iron_production": [
-        30,
-        35,
-        40,
-        45,
-        50,
-        55,
-        60,
-        65,
-        70,
-        75
-      ],
-      "iron_storage": [
-        20,
-        40,
-        60,
-        80,
-        100,
-        120,
-        140,
-        160,
-        180,
-        200
-      ]
-    }
-  },
-  {
-    "id": 18,
-    "name": "City Guard House",
-    "buildable": true,
-    "media": "cityguardhouse",
-    "info": "Allows recruitment of City Guards and, if upgraded, increases their recruitment speed. Placing a Barracks beside a City Guard House will NOT increase recruitment speed.",
-    "bonus": {
-      "guard_recruitment_speed": [
-        5,
-        10,
-        16,
-        24,
-        35,
-        50,
-        68,
-        90,
-        115,
-        150
-      ]
-    },
-    "resource_cost": [
-      [
-        15,
-        30
-      ],
-      [
-        30,
-        60
-      ],
-      [
-        55,
-        110
-      ],
-      [
-        140,
-        280
-      ],
-      [
-        400,
-        800
-      ],
-      [
-        1000,
-        2000
-      ],
-      [
-        1900,
-        3800
-      ],
-      [
-        3200,
-        6400
-      ],
-      [
-        5100,
-        10200
-      ],
-      [
-        8000,
-        16000
-      ],
-      [
-        19840,
-        39680
-      ]
-    ],
-    "score": [
-      1,
-      2,
-      4,
-      7,
-      12,
-      18,
-      25,
-      34,
-      45,
-      60
-    ]
-  },
-  {
-    "id": 19,
-    "name": "Barracks",
-    "buildable": true,
-    "media": "barracks",
-    "info": "Increases the maximum army size of a city. Also increases the recruitment speed of all bordering Training Grounds, Stables, Moonglow Towers, Trinsic Temples, Workshops and Shipyards.",
-    "bonus": {
-      "army_size": [
-        10,
-        30,
-        60,
-        100,
-        160,
-        240,
-        350,
-        500,
-        700,
-        1000
-      ]
-    },
-    "adjascent": [
-      {
-        "builds": [
-          "trainingGround",
-          "stable",
-          "moonglow",
-          "temple",
-          "workshop",
-          "shipyard"
-        ],
-        "bonus": [
-          5,
-          10,
-          16,
-          24,
-          35,
-          50,
-          68,
-          90,
-          115,
-          150
-        ]
-      }
-    ],
-    "resource_cost": [
-      [
-        15,
-        30
-      ],
-      [
-        30,
-        60
-      ],
-      [
-        55,
-        110
-      ],
-      [
-        140,
-        280
-      ],
-      [
-        400,
-        800
-      ],
-      [
-        1000,
-        2000
-      ],
-      [
-        1900,
-        3800
-      ],
-      [
-        3200,
-        6400
-      ],
-      [
-        5100,
-        10200
-      ],
-      [
-        8000,
-        16000
-      ],
-      [
-        19840,
-        39680
-      ]
-    ],
-    "score": [
-      1,
-      2,
-      4,
-      7,
-      12,
-      18,
-      25,
-      34,
-      45,
-      60
-    ]
-  },
-  {
-    "id": 20,
-    "name": "Training Ground",
-    "buildable": true,
-    "media": "traininggrounds",
-    "info": "Allows recruitment of infantry units and, if upgraded, increases their recruitment speed. Placing a Barracks beside a Training Ground will also increase recruitment speed.",
-    "bonus": {
-      "infantry_recruitment_speed": [
-        5,
-        10,
-        16,
-        24,
-        35,
-        50,
-        68,
-        90,
-        115,
-        150
-      ]
-    },
-    "resource_cost": [
-      [
-        20,
-        40
-      ],
-      [
-        40,
-        80
-      ],
-      [
-        80,
-        160
-      ],
-      [
-        200,
-        400
-      ],
-      [
-        600,
-        1200
-      ],
-      [
-        1400,
-        2800
-      ],
-      [
-        2800,
-        5600
-      ],
-      [
-        4800,
-        9600
-      ],
-      [
-        7500,
-        15000
-      ],
-      [
-        11500,
-        23000
-      ],
-      [
-        28940,
-        57880
-      ]
-    ],
-    "score": [
-      1,
-      2,
-      5,
-      10,
-      16,
-      24,
-      34,
-      46,
-      60,
-      80
-    ]
-  },
-  {
-    "id": 21,
-    "name": "Trinsic Temple",
-    "buildable": true,
-    "media": "trinsictemple",
-    "info": "Allows recruitment of blessed units and Barons and, if upgraded, increases their recruitment speed. Placing a Barracks beside a Trinsic Temple will also increase recruitment speed.",
-    "bonus": {
-      "blessed_recruitment_speed": [
-        5,
-        10,
-        16,
-        24,
-        35,
-        50,
-        68,
-        90,
-        115,
-        150
-      ]
-    },
-    "resource_cost": [
-      [
-        35,
-        70
-      ],
-      [
-        70,
-        140
-      ],
-      [
-        135,
-        270
-      ],
-      [
-        335,
-        670
-      ],
-      [
-        1000,
-        2000
-      ],
-      [
-        2350,
-        4700
-      ],
-      [
-        4650,
-        9300
-      ],
-      [
-        8000,
-        16000
-      ],
-      [
-        12700,
-        25400
-      ],
-      [
-        19500,
-        39000
-      ]
-    ],
-    "score": [
-      1,
-      3,
-      6,
-      12,
-      20,
-      30,
-      42,
-      57,
-      75,
-      100
-    ]
-  },
-  {
-    "id": 22,
-    "name": "Stable",
-    "buildable": true,
-    "media": "stable",
-    "info": "Allows recruitment of cavalry units and, if upgraded, increases their recruitment speed. Placing a Barracks beside a Stable will also increase recruitment speed.",
-    "bonus": {
-      "cavalry_recruit_speed": [
-        5,
-        10,
-        16,
-        24,
-        35,
-        50,
-        68,
-        90,
-        115,
-        150
-      ]
-    },
-    "resource_cost": [
-      [
-        25,
-        50
-      ],
-      [
-        55,
-        110
-      ],
-      [
-        110,
-        220
-      ],
-      [
-        275,
-        550
-      ],
-      [
-        800,
-        1600
-      ],
-      [
-        1900,
-        3800
-      ],
-      [
-        3750,
-        7500
-      ],
-      [
-        6500,
-        13000
-      ],
-      [
-        10200,
-        20400
-      ],
-      [
-        15500,
-        31000
-      ]
-    ],
-    "score": [
-      1,
-      3,
-      6,
-      12,
-      20,
-      30,
-      42,
-      57,
-      75,
-      100
-    ]
-  },
-  {
-    "id": 23,
-    "name": "Castle",
-    "buildable": true,
-    "media": "castle",
-    "info": "Construction of the Castle allows a lord to plunder cities (castled or not) and assault or siege castled cities. Each level of the Castle increases your maximum army size and expands your command queue by one. Only one Castle can be built in each city. Cannot be totally demolished or destroyed. Once built a Castle cannot be removed. Every 4th Title starting with Marquess is available free with an extra castle. Note: Building a Castle allows the castled city to be assaulted, sieged and/or captured.",
-    "resource_cost": [
-      [
-        0,
-        20000
-      ],
-      [
-        0,
-        25000
-      ],
-      [
-        0,
-        30000
-      ],
-      [
-        0,
-        40000
-      ],
-      [
-        0,
-        55000
-      ],
-      [
-        0,
-        75000
-      ],
-      [
-        0,
-        100000
-      ],
-      [
-        0,
-        130000
-      ],
-      [
-        0,
-        160000
-      ],
-      [
-        0,
-        200000
-      ],
-      [
-        0,
-        835000
-      ]
-    ],
-    "bonus": {
-      "max_army_size": [
-        20,
-        40,
-        60,
-        80,
-        100,
-        130,
-        160,
-        200,
-        250,
-        300,
-        300
-      ]
-    },
-    "score": [
-      4,
-      12,
-      24,
-      48,
-      80,
-      120,
-      168,
-      228,
-      300,
-      400
-    ]
-  },
-  {
-    "id": 24,
-    "name": "Moonglow Tower",
-    "buildable": true,
-    "media": "moonglowtower",
-    "info": "Allows recruitment of caster units (Mages, Warlocks) and, if upgraded, increases their recruitment speed. Also enables purification of resources for research, vital when recruiting Barons. Placing a Barracks beside a Moonglow Tower will also increase recruitment speed.",
-    "bonus": {
-      "mage_recruitment_speed": [
-        5,
-        10,
-        16,
-        24,
-        35,
-        50,
-        68,
-        90,
-        115,
-        150
-      ]
-    },
-    "resource_cost": [
-      [
-        25,
-        50
-      ],
-      [
-        55,
-        110
-      ],
-      [
-        110,
-        220
-      ],
-      [
-        275,
-        550
-      ],
-      [
-        800,
-        1600
-      ],
-      [
-        1900,
-        3800
-      ],
-      [
-        3750,
-        7500
-      ],
-      [
-        6500,
-        13000
-      ],
-      [
-        10200,
-        20400
-      ],
-      [
-        15500,
-        31000
-      ]
-    ],
-    "score": [
-      1,
-      3,
-      6,
-      12,
-      20,
-      30,
-      42,
-      57,
-      75,
-      100
-    ]
-  },
-  {
-    "id": 25,
-    "name": "Shipyard",
-    "buildable": true,
-    "media": "shipyard",
-    "info": "Enables recruitment of naval units and, if upgraded, increases their recruitment speed. Placing a Barracks nearby further increases recruitment speed.",
-    "bonus": {
-      "naval_recruit_speed": [
-        5,
-        10,
-        16,
-        24,
-        35,
-        50,
-        68,
-        90,
-        115,
-        150
-      ]
-    },
-    "resource_cost": [
-      [
-        50,
-        100
-      ],
-      [
-        100,
-        200
-      ],
-      [
-        200,
-        400
-      ],
-      [
-        500,
-        1000
-      ],
-      [
-        1500,
-        3000
-      ],
-      [
-        3500,
-        7000
-      ],
-      [
-        7000,
-        1400
-      ],
-      [
-        12000,
-        2400
-      ],
-      [
-        19000,
-        38000
-      ],
-      [
-        29000,
-        58000
-      ]
-    ],
-    "score": [
-      2,
-      5,
-      10,
-      19,
-      32,
-      48,
-      67,
-      91,
-      120,
-      160
-    ]
-  },
-  {
-    "id": 26,
-    "name": "Mill",
-    "buildable": true,
-    "media": "mill",
-    "info": "Increases the efficiency of bordering Farms and food storage capacity of any bordering Storage.",
-    "bonus": {
-      "farm_production": [
-        30,
-        35,
-        40,
-        45,
-        50,
-        55,
-        60,
-        65,
-        70,
-        75
-      ],
-      "food_storage": [
-        20,
-        40,
-        60,
-        80,
-        100,
-        120,
-        140,
-        160,
-        180,
-        200
-      ]
-    }
-  },
-  {
-    "id": 27,
-    "name": "Workshop",
-    "buildable": true,
-    "media": "workshop",
-    "info": "Allows construction of siege engines and, if upgraded, increases their construction speed. Placing a Barracks beside a Workshop will also increase recruitment speed.",
-    "bonus": {
-      "siege_recruitment_speed": [
-        5,
-        10,
-        16,
-        24,
-        35,
-        50,
-        68,
-        90,
-        115,
-        150
-      ]
-    },
-    "resource_cost": [
-      [
-        40,
-        80
-      ],
-      [
-        75,
-        150
-      ],
-      [
-        150,
-        300
-      ],
-      [
-        370,
-        740
-      ],
-      [
-        1100,
-        2200
-      ],
-      [
-        2600,
-        5200
-      ],
-      [
-        5200,
-        10400
-      ],
-      [
-        8900,
-        17800
-      ],
-      [
-        14000,
-        28000
-      ],
-      [
-        21500,
-        43000
-      ]
-    ],
-    "score": [
-      2,
-      5,
-      10,
-      19,
-      32,
-      48,
-      67,
-      91,
-      120,
-      160
     ]
   }
 ]

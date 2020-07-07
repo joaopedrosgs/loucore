@@ -7,20 +7,16 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func Authentication(email string, password string) bool {
-	var userInfo struct {
-		Email         string
-		PassworldHash string
-	}
-	err := client.User.Query().Where(user.EmailEQ(email)).Select(user.FieldEmail, user.FieldPasswordHash).Scan(context.Background(), &userInfo)
+func Authentication(email string, password string) error {
+	u, err := client.User.Query().Where(user.EmailEQ(email)).Only(context.Background())
 	if err != nil {
-		return false
+		return err
 	}
-	err = bcrypt.CompareHashAndPassword([]byte(userInfo.PassworldHash), []byte(password))
+	err = bcrypt.CompareHashAndPassword([]byte(u.PasswordHash), []byte(password))
 
-	return err == nil
-
+	return err
 }
+
 func CreateAccount(name string, email string, password string) (*ent.User, error) {
 	passwordHash, err := bcrypt.GenerateFromPassword([]byte(password), 4)
 	if err != nil {
@@ -28,5 +24,10 @@ func CreateAccount(name string, email string, password string) (*ent.User, error
 	}
 
 	return client.User.Create().SetPasswordHash(string(passwordHash)).SetEmail(email).SetName(name).Save(context.Background())
+
+}
+
+func DeleteAccount(userId int) error {
+	return client.User.DeleteOneID(userId).Exec(context.Background())
 
 }
