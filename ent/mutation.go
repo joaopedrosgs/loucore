@@ -13,7 +13,7 @@ import (
 	"github.com/joaopedrosgs/loucore/ent/queueitem"
 	"github.com/joaopedrosgs/loucore/ent/user"
 
-	"github.com/facebookincubator/ent"
+	"github.com/facebook/ent"
 )
 
 const (
@@ -45,40 +45,43 @@ type CityMutation struct {
 	name                  *string
 	points                *int
 	addpoints             *int
-	wood_production       *int
-	addwood_production    *int
-	stone_production      *int
-	addstone_production   *int
-	iron_production       *int
-	addiron_production    *int
-	food_production       *int
-	addfood_production    *int
-	wood_stored           *int
-	addwood_stored        *int
-	stone_stored          *int
-	addstone_stored       *int
-	iron_stored           *int
-	addiron_stored        *int
-	food_stored           *int
-	addfood_stored        *int
-	wood_limit            *int
-	addwood_limit         *int
-	stone_limit           *int
-	addstone_limit        *int
-	iron_limit            *int
-	addiron_limit         *int
-	food_limit            *int
-	addfood_limit         *int
+	wood_production       *float64
+	addwood_production    *float64
+	stone_production      *float64
+	addstone_production   *float64
+	iron_production       *float64
+	addiron_production    *float64
+	food_production       *float64
+	addfood_production    *float64
+	wood_stored           *float64
+	addwood_stored        *float64
+	stone_stored          *float64
+	addstone_stored       *float64
+	iron_stored           *float64
+	addiron_stored        *float64
+	food_stored           *float64
+	addfood_stored        *float64
+	wood_limit            *float64
+	addwood_limit         *float64
+	stone_limit           *float64
+	addstone_limit        *float64
+	iron_limit            *float64
+	addiron_limit         *float64
+	food_limit            *float64
+	addfood_limit         *float64
 	queue_time            *time.Time
 	construction_speed    *int
 	addconstruction_speed *int
+	last_updated          *time.Time
 	clearedFields         map[string]struct{}
 	owner                 *int
 	clearedowner          bool
 	constructions         map[int]struct{}
 	removedconstructions  map[int]struct{}
+	clearedconstructions  bool
 	queue                 map[int]struct{}
 	removedqueue          map[int]struct{}
+	clearedqueue          bool
 	done                  bool
 	oldValue              func(context.Context) (*City, error)
 }
@@ -371,13 +374,13 @@ func (m *CityMutation) ResetPoints() {
 }
 
 // SetWoodProduction sets the wood_production field.
-func (m *CityMutation) SetWoodProduction(i int) {
-	m.wood_production = &i
+func (m *CityMutation) SetWoodProduction(f float64) {
+	m.wood_production = &f
 	m.addwood_production = nil
 }
 
 // WoodProduction returns the wood_production value in the mutation.
-func (m *CityMutation) WoodProduction() (r int, exists bool) {
+func (m *CityMutation) WoodProduction() (r float64, exists bool) {
 	v := m.wood_production
 	if v == nil {
 		return
@@ -389,7 +392,7 @@ func (m *CityMutation) WoodProduction() (r int, exists bool) {
 // If the City object wasn't provided to the builder, the object is fetched
 // from the database.
 // An error is returned if the mutation operation is not UpdateOne, or database query fails.
-func (m *CityMutation) OldWoodProduction(ctx context.Context) (v int, err error) {
+func (m *CityMutation) OldWoodProduction(ctx context.Context) (v float64, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldWoodProduction is allowed only on UpdateOne operations")
 	}
@@ -403,17 +406,17 @@ func (m *CityMutation) OldWoodProduction(ctx context.Context) (v int, err error)
 	return oldValue.WoodProduction, nil
 }
 
-// AddWoodProduction adds i to wood_production.
-func (m *CityMutation) AddWoodProduction(i int) {
+// AddWoodProduction adds f to wood_production.
+func (m *CityMutation) AddWoodProduction(f float64) {
 	if m.addwood_production != nil {
-		*m.addwood_production += i
+		*m.addwood_production += f
 	} else {
-		m.addwood_production = &i
+		m.addwood_production = &f
 	}
 }
 
 // AddedWoodProduction returns the value that was added to the wood_production field in this mutation.
-func (m *CityMutation) AddedWoodProduction() (r int, exists bool) {
+func (m *CityMutation) AddedWoodProduction() (r float64, exists bool) {
 	v := m.addwood_production
 	if v == nil {
 		return
@@ -428,13 +431,13 @@ func (m *CityMutation) ResetWoodProduction() {
 }
 
 // SetStoneProduction sets the stone_production field.
-func (m *CityMutation) SetStoneProduction(i int) {
-	m.stone_production = &i
+func (m *CityMutation) SetStoneProduction(f float64) {
+	m.stone_production = &f
 	m.addstone_production = nil
 }
 
 // StoneProduction returns the stone_production value in the mutation.
-func (m *CityMutation) StoneProduction() (r int, exists bool) {
+func (m *CityMutation) StoneProduction() (r float64, exists bool) {
 	v := m.stone_production
 	if v == nil {
 		return
@@ -446,7 +449,7 @@ func (m *CityMutation) StoneProduction() (r int, exists bool) {
 // If the City object wasn't provided to the builder, the object is fetched
 // from the database.
 // An error is returned if the mutation operation is not UpdateOne, or database query fails.
-func (m *CityMutation) OldStoneProduction(ctx context.Context) (v int, err error) {
+func (m *CityMutation) OldStoneProduction(ctx context.Context) (v float64, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldStoneProduction is allowed only on UpdateOne operations")
 	}
@@ -460,17 +463,17 @@ func (m *CityMutation) OldStoneProduction(ctx context.Context) (v int, err error
 	return oldValue.StoneProduction, nil
 }
 
-// AddStoneProduction adds i to stone_production.
-func (m *CityMutation) AddStoneProduction(i int) {
+// AddStoneProduction adds f to stone_production.
+func (m *CityMutation) AddStoneProduction(f float64) {
 	if m.addstone_production != nil {
-		*m.addstone_production += i
+		*m.addstone_production += f
 	} else {
-		m.addstone_production = &i
+		m.addstone_production = &f
 	}
 }
 
 // AddedStoneProduction returns the value that was added to the stone_production field in this mutation.
-func (m *CityMutation) AddedStoneProduction() (r int, exists bool) {
+func (m *CityMutation) AddedStoneProduction() (r float64, exists bool) {
 	v := m.addstone_production
 	if v == nil {
 		return
@@ -485,13 +488,13 @@ func (m *CityMutation) ResetStoneProduction() {
 }
 
 // SetIronProduction sets the iron_production field.
-func (m *CityMutation) SetIronProduction(i int) {
-	m.iron_production = &i
+func (m *CityMutation) SetIronProduction(f float64) {
+	m.iron_production = &f
 	m.addiron_production = nil
 }
 
 // IronProduction returns the iron_production value in the mutation.
-func (m *CityMutation) IronProduction() (r int, exists bool) {
+func (m *CityMutation) IronProduction() (r float64, exists bool) {
 	v := m.iron_production
 	if v == nil {
 		return
@@ -503,7 +506,7 @@ func (m *CityMutation) IronProduction() (r int, exists bool) {
 // If the City object wasn't provided to the builder, the object is fetched
 // from the database.
 // An error is returned if the mutation operation is not UpdateOne, or database query fails.
-func (m *CityMutation) OldIronProduction(ctx context.Context) (v int, err error) {
+func (m *CityMutation) OldIronProduction(ctx context.Context) (v float64, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldIronProduction is allowed only on UpdateOne operations")
 	}
@@ -517,17 +520,17 @@ func (m *CityMutation) OldIronProduction(ctx context.Context) (v int, err error)
 	return oldValue.IronProduction, nil
 }
 
-// AddIronProduction adds i to iron_production.
-func (m *CityMutation) AddIronProduction(i int) {
+// AddIronProduction adds f to iron_production.
+func (m *CityMutation) AddIronProduction(f float64) {
 	if m.addiron_production != nil {
-		*m.addiron_production += i
+		*m.addiron_production += f
 	} else {
-		m.addiron_production = &i
+		m.addiron_production = &f
 	}
 }
 
 // AddedIronProduction returns the value that was added to the iron_production field in this mutation.
-func (m *CityMutation) AddedIronProduction() (r int, exists bool) {
+func (m *CityMutation) AddedIronProduction() (r float64, exists bool) {
 	v := m.addiron_production
 	if v == nil {
 		return
@@ -542,13 +545,13 @@ func (m *CityMutation) ResetIronProduction() {
 }
 
 // SetFoodProduction sets the food_production field.
-func (m *CityMutation) SetFoodProduction(i int) {
-	m.food_production = &i
+func (m *CityMutation) SetFoodProduction(f float64) {
+	m.food_production = &f
 	m.addfood_production = nil
 }
 
 // FoodProduction returns the food_production value in the mutation.
-func (m *CityMutation) FoodProduction() (r int, exists bool) {
+func (m *CityMutation) FoodProduction() (r float64, exists bool) {
 	v := m.food_production
 	if v == nil {
 		return
@@ -560,7 +563,7 @@ func (m *CityMutation) FoodProduction() (r int, exists bool) {
 // If the City object wasn't provided to the builder, the object is fetched
 // from the database.
 // An error is returned if the mutation operation is not UpdateOne, or database query fails.
-func (m *CityMutation) OldFoodProduction(ctx context.Context) (v int, err error) {
+func (m *CityMutation) OldFoodProduction(ctx context.Context) (v float64, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldFoodProduction is allowed only on UpdateOne operations")
 	}
@@ -574,17 +577,17 @@ func (m *CityMutation) OldFoodProduction(ctx context.Context) (v int, err error)
 	return oldValue.FoodProduction, nil
 }
 
-// AddFoodProduction adds i to food_production.
-func (m *CityMutation) AddFoodProduction(i int) {
+// AddFoodProduction adds f to food_production.
+func (m *CityMutation) AddFoodProduction(f float64) {
 	if m.addfood_production != nil {
-		*m.addfood_production += i
+		*m.addfood_production += f
 	} else {
-		m.addfood_production = &i
+		m.addfood_production = &f
 	}
 }
 
 // AddedFoodProduction returns the value that was added to the food_production field in this mutation.
-func (m *CityMutation) AddedFoodProduction() (r int, exists bool) {
+func (m *CityMutation) AddedFoodProduction() (r float64, exists bool) {
 	v := m.addfood_production
 	if v == nil {
 		return
@@ -599,13 +602,13 @@ func (m *CityMutation) ResetFoodProduction() {
 }
 
 // SetWoodStored sets the wood_stored field.
-func (m *CityMutation) SetWoodStored(i int) {
-	m.wood_stored = &i
+func (m *CityMutation) SetWoodStored(f float64) {
+	m.wood_stored = &f
 	m.addwood_stored = nil
 }
 
 // WoodStored returns the wood_stored value in the mutation.
-func (m *CityMutation) WoodStored() (r int, exists bool) {
+func (m *CityMutation) WoodStored() (r float64, exists bool) {
 	v := m.wood_stored
 	if v == nil {
 		return
@@ -617,7 +620,7 @@ func (m *CityMutation) WoodStored() (r int, exists bool) {
 // If the City object wasn't provided to the builder, the object is fetched
 // from the database.
 // An error is returned if the mutation operation is not UpdateOne, or database query fails.
-func (m *CityMutation) OldWoodStored(ctx context.Context) (v int, err error) {
+func (m *CityMutation) OldWoodStored(ctx context.Context) (v float64, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldWoodStored is allowed only on UpdateOne operations")
 	}
@@ -631,17 +634,17 @@ func (m *CityMutation) OldWoodStored(ctx context.Context) (v int, err error) {
 	return oldValue.WoodStored, nil
 }
 
-// AddWoodStored adds i to wood_stored.
-func (m *CityMutation) AddWoodStored(i int) {
+// AddWoodStored adds f to wood_stored.
+func (m *CityMutation) AddWoodStored(f float64) {
 	if m.addwood_stored != nil {
-		*m.addwood_stored += i
+		*m.addwood_stored += f
 	} else {
-		m.addwood_stored = &i
+		m.addwood_stored = &f
 	}
 }
 
 // AddedWoodStored returns the value that was added to the wood_stored field in this mutation.
-func (m *CityMutation) AddedWoodStored() (r int, exists bool) {
+func (m *CityMutation) AddedWoodStored() (r float64, exists bool) {
 	v := m.addwood_stored
 	if v == nil {
 		return
@@ -656,13 +659,13 @@ func (m *CityMutation) ResetWoodStored() {
 }
 
 // SetStoneStored sets the stone_stored field.
-func (m *CityMutation) SetStoneStored(i int) {
-	m.stone_stored = &i
+func (m *CityMutation) SetStoneStored(f float64) {
+	m.stone_stored = &f
 	m.addstone_stored = nil
 }
 
 // StoneStored returns the stone_stored value in the mutation.
-func (m *CityMutation) StoneStored() (r int, exists bool) {
+func (m *CityMutation) StoneStored() (r float64, exists bool) {
 	v := m.stone_stored
 	if v == nil {
 		return
@@ -674,7 +677,7 @@ func (m *CityMutation) StoneStored() (r int, exists bool) {
 // If the City object wasn't provided to the builder, the object is fetched
 // from the database.
 // An error is returned if the mutation operation is not UpdateOne, or database query fails.
-func (m *CityMutation) OldStoneStored(ctx context.Context) (v int, err error) {
+func (m *CityMutation) OldStoneStored(ctx context.Context) (v float64, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldStoneStored is allowed only on UpdateOne operations")
 	}
@@ -688,17 +691,17 @@ func (m *CityMutation) OldStoneStored(ctx context.Context) (v int, err error) {
 	return oldValue.StoneStored, nil
 }
 
-// AddStoneStored adds i to stone_stored.
-func (m *CityMutation) AddStoneStored(i int) {
+// AddStoneStored adds f to stone_stored.
+func (m *CityMutation) AddStoneStored(f float64) {
 	if m.addstone_stored != nil {
-		*m.addstone_stored += i
+		*m.addstone_stored += f
 	} else {
-		m.addstone_stored = &i
+		m.addstone_stored = &f
 	}
 }
 
 // AddedStoneStored returns the value that was added to the stone_stored field in this mutation.
-func (m *CityMutation) AddedStoneStored() (r int, exists bool) {
+func (m *CityMutation) AddedStoneStored() (r float64, exists bool) {
 	v := m.addstone_stored
 	if v == nil {
 		return
@@ -713,13 +716,13 @@ func (m *CityMutation) ResetStoneStored() {
 }
 
 // SetIronStored sets the iron_stored field.
-func (m *CityMutation) SetIronStored(i int) {
-	m.iron_stored = &i
+func (m *CityMutation) SetIronStored(f float64) {
+	m.iron_stored = &f
 	m.addiron_stored = nil
 }
 
 // IronStored returns the iron_stored value in the mutation.
-func (m *CityMutation) IronStored() (r int, exists bool) {
+func (m *CityMutation) IronStored() (r float64, exists bool) {
 	v := m.iron_stored
 	if v == nil {
 		return
@@ -731,7 +734,7 @@ func (m *CityMutation) IronStored() (r int, exists bool) {
 // If the City object wasn't provided to the builder, the object is fetched
 // from the database.
 // An error is returned if the mutation operation is not UpdateOne, or database query fails.
-func (m *CityMutation) OldIronStored(ctx context.Context) (v int, err error) {
+func (m *CityMutation) OldIronStored(ctx context.Context) (v float64, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldIronStored is allowed only on UpdateOne operations")
 	}
@@ -745,17 +748,17 @@ func (m *CityMutation) OldIronStored(ctx context.Context) (v int, err error) {
 	return oldValue.IronStored, nil
 }
 
-// AddIronStored adds i to iron_stored.
-func (m *CityMutation) AddIronStored(i int) {
+// AddIronStored adds f to iron_stored.
+func (m *CityMutation) AddIronStored(f float64) {
 	if m.addiron_stored != nil {
-		*m.addiron_stored += i
+		*m.addiron_stored += f
 	} else {
-		m.addiron_stored = &i
+		m.addiron_stored = &f
 	}
 }
 
 // AddedIronStored returns the value that was added to the iron_stored field in this mutation.
-func (m *CityMutation) AddedIronStored() (r int, exists bool) {
+func (m *CityMutation) AddedIronStored() (r float64, exists bool) {
 	v := m.addiron_stored
 	if v == nil {
 		return
@@ -770,13 +773,13 @@ func (m *CityMutation) ResetIronStored() {
 }
 
 // SetFoodStored sets the food_stored field.
-func (m *CityMutation) SetFoodStored(i int) {
-	m.food_stored = &i
+func (m *CityMutation) SetFoodStored(f float64) {
+	m.food_stored = &f
 	m.addfood_stored = nil
 }
 
 // FoodStored returns the food_stored value in the mutation.
-func (m *CityMutation) FoodStored() (r int, exists bool) {
+func (m *CityMutation) FoodStored() (r float64, exists bool) {
 	v := m.food_stored
 	if v == nil {
 		return
@@ -788,7 +791,7 @@ func (m *CityMutation) FoodStored() (r int, exists bool) {
 // If the City object wasn't provided to the builder, the object is fetched
 // from the database.
 // An error is returned if the mutation operation is not UpdateOne, or database query fails.
-func (m *CityMutation) OldFoodStored(ctx context.Context) (v int, err error) {
+func (m *CityMutation) OldFoodStored(ctx context.Context) (v float64, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldFoodStored is allowed only on UpdateOne operations")
 	}
@@ -802,17 +805,17 @@ func (m *CityMutation) OldFoodStored(ctx context.Context) (v int, err error) {
 	return oldValue.FoodStored, nil
 }
 
-// AddFoodStored adds i to food_stored.
-func (m *CityMutation) AddFoodStored(i int) {
+// AddFoodStored adds f to food_stored.
+func (m *CityMutation) AddFoodStored(f float64) {
 	if m.addfood_stored != nil {
-		*m.addfood_stored += i
+		*m.addfood_stored += f
 	} else {
-		m.addfood_stored = &i
+		m.addfood_stored = &f
 	}
 }
 
 // AddedFoodStored returns the value that was added to the food_stored field in this mutation.
-func (m *CityMutation) AddedFoodStored() (r int, exists bool) {
+func (m *CityMutation) AddedFoodStored() (r float64, exists bool) {
 	v := m.addfood_stored
 	if v == nil {
 		return
@@ -827,13 +830,13 @@ func (m *CityMutation) ResetFoodStored() {
 }
 
 // SetWoodLimit sets the wood_limit field.
-func (m *CityMutation) SetWoodLimit(i int) {
-	m.wood_limit = &i
+func (m *CityMutation) SetWoodLimit(f float64) {
+	m.wood_limit = &f
 	m.addwood_limit = nil
 }
 
 // WoodLimit returns the wood_limit value in the mutation.
-func (m *CityMutation) WoodLimit() (r int, exists bool) {
+func (m *CityMutation) WoodLimit() (r float64, exists bool) {
 	v := m.wood_limit
 	if v == nil {
 		return
@@ -845,7 +848,7 @@ func (m *CityMutation) WoodLimit() (r int, exists bool) {
 // If the City object wasn't provided to the builder, the object is fetched
 // from the database.
 // An error is returned if the mutation operation is not UpdateOne, or database query fails.
-func (m *CityMutation) OldWoodLimit(ctx context.Context) (v int, err error) {
+func (m *CityMutation) OldWoodLimit(ctx context.Context) (v float64, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldWoodLimit is allowed only on UpdateOne operations")
 	}
@@ -859,17 +862,17 @@ func (m *CityMutation) OldWoodLimit(ctx context.Context) (v int, err error) {
 	return oldValue.WoodLimit, nil
 }
 
-// AddWoodLimit adds i to wood_limit.
-func (m *CityMutation) AddWoodLimit(i int) {
+// AddWoodLimit adds f to wood_limit.
+func (m *CityMutation) AddWoodLimit(f float64) {
 	if m.addwood_limit != nil {
-		*m.addwood_limit += i
+		*m.addwood_limit += f
 	} else {
-		m.addwood_limit = &i
+		m.addwood_limit = &f
 	}
 }
 
 // AddedWoodLimit returns the value that was added to the wood_limit field in this mutation.
-func (m *CityMutation) AddedWoodLimit() (r int, exists bool) {
+func (m *CityMutation) AddedWoodLimit() (r float64, exists bool) {
 	v := m.addwood_limit
 	if v == nil {
 		return
@@ -884,13 +887,13 @@ func (m *CityMutation) ResetWoodLimit() {
 }
 
 // SetStoneLimit sets the stone_limit field.
-func (m *CityMutation) SetStoneLimit(i int) {
-	m.stone_limit = &i
+func (m *CityMutation) SetStoneLimit(f float64) {
+	m.stone_limit = &f
 	m.addstone_limit = nil
 }
 
 // StoneLimit returns the stone_limit value in the mutation.
-func (m *CityMutation) StoneLimit() (r int, exists bool) {
+func (m *CityMutation) StoneLimit() (r float64, exists bool) {
 	v := m.stone_limit
 	if v == nil {
 		return
@@ -902,7 +905,7 @@ func (m *CityMutation) StoneLimit() (r int, exists bool) {
 // If the City object wasn't provided to the builder, the object is fetched
 // from the database.
 // An error is returned if the mutation operation is not UpdateOne, or database query fails.
-func (m *CityMutation) OldStoneLimit(ctx context.Context) (v int, err error) {
+func (m *CityMutation) OldStoneLimit(ctx context.Context) (v float64, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldStoneLimit is allowed only on UpdateOne operations")
 	}
@@ -916,17 +919,17 @@ func (m *CityMutation) OldStoneLimit(ctx context.Context) (v int, err error) {
 	return oldValue.StoneLimit, nil
 }
 
-// AddStoneLimit adds i to stone_limit.
-func (m *CityMutation) AddStoneLimit(i int) {
+// AddStoneLimit adds f to stone_limit.
+func (m *CityMutation) AddStoneLimit(f float64) {
 	if m.addstone_limit != nil {
-		*m.addstone_limit += i
+		*m.addstone_limit += f
 	} else {
-		m.addstone_limit = &i
+		m.addstone_limit = &f
 	}
 }
 
 // AddedStoneLimit returns the value that was added to the stone_limit field in this mutation.
-func (m *CityMutation) AddedStoneLimit() (r int, exists bool) {
+func (m *CityMutation) AddedStoneLimit() (r float64, exists bool) {
 	v := m.addstone_limit
 	if v == nil {
 		return
@@ -941,13 +944,13 @@ func (m *CityMutation) ResetStoneLimit() {
 }
 
 // SetIronLimit sets the iron_limit field.
-func (m *CityMutation) SetIronLimit(i int) {
-	m.iron_limit = &i
+func (m *CityMutation) SetIronLimit(f float64) {
+	m.iron_limit = &f
 	m.addiron_limit = nil
 }
 
 // IronLimit returns the iron_limit value in the mutation.
-func (m *CityMutation) IronLimit() (r int, exists bool) {
+func (m *CityMutation) IronLimit() (r float64, exists bool) {
 	v := m.iron_limit
 	if v == nil {
 		return
@@ -959,7 +962,7 @@ func (m *CityMutation) IronLimit() (r int, exists bool) {
 // If the City object wasn't provided to the builder, the object is fetched
 // from the database.
 // An error is returned if the mutation operation is not UpdateOne, or database query fails.
-func (m *CityMutation) OldIronLimit(ctx context.Context) (v int, err error) {
+func (m *CityMutation) OldIronLimit(ctx context.Context) (v float64, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldIronLimit is allowed only on UpdateOne operations")
 	}
@@ -973,17 +976,17 @@ func (m *CityMutation) OldIronLimit(ctx context.Context) (v int, err error) {
 	return oldValue.IronLimit, nil
 }
 
-// AddIronLimit adds i to iron_limit.
-func (m *CityMutation) AddIronLimit(i int) {
+// AddIronLimit adds f to iron_limit.
+func (m *CityMutation) AddIronLimit(f float64) {
 	if m.addiron_limit != nil {
-		*m.addiron_limit += i
+		*m.addiron_limit += f
 	} else {
-		m.addiron_limit = &i
+		m.addiron_limit = &f
 	}
 }
 
 // AddedIronLimit returns the value that was added to the iron_limit field in this mutation.
-func (m *CityMutation) AddedIronLimit() (r int, exists bool) {
+func (m *CityMutation) AddedIronLimit() (r float64, exists bool) {
 	v := m.addiron_limit
 	if v == nil {
 		return
@@ -998,13 +1001,13 @@ func (m *CityMutation) ResetIronLimit() {
 }
 
 // SetFoodLimit sets the food_limit field.
-func (m *CityMutation) SetFoodLimit(i int) {
-	m.food_limit = &i
+func (m *CityMutation) SetFoodLimit(f float64) {
+	m.food_limit = &f
 	m.addfood_limit = nil
 }
 
 // FoodLimit returns the food_limit value in the mutation.
-func (m *CityMutation) FoodLimit() (r int, exists bool) {
+func (m *CityMutation) FoodLimit() (r float64, exists bool) {
 	v := m.food_limit
 	if v == nil {
 		return
@@ -1016,7 +1019,7 @@ func (m *CityMutation) FoodLimit() (r int, exists bool) {
 // If the City object wasn't provided to the builder, the object is fetched
 // from the database.
 // An error is returned if the mutation operation is not UpdateOne, or database query fails.
-func (m *CityMutation) OldFoodLimit(ctx context.Context) (v int, err error) {
+func (m *CityMutation) OldFoodLimit(ctx context.Context) (v float64, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldFoodLimit is allowed only on UpdateOne operations")
 	}
@@ -1030,17 +1033,17 @@ func (m *CityMutation) OldFoodLimit(ctx context.Context) (v int, err error) {
 	return oldValue.FoodLimit, nil
 }
 
-// AddFoodLimit adds i to food_limit.
-func (m *CityMutation) AddFoodLimit(i int) {
+// AddFoodLimit adds f to food_limit.
+func (m *CityMutation) AddFoodLimit(f float64) {
 	if m.addfood_limit != nil {
-		*m.addfood_limit += i
+		*m.addfood_limit += f
 	} else {
-		m.addfood_limit = &i
+		m.addfood_limit = &f
 	}
 }
 
 // AddedFoodLimit returns the value that was added to the food_limit field in this mutation.
-func (m *CityMutation) AddedFoodLimit() (r int, exists bool) {
+func (m *CityMutation) AddedFoodLimit() (r float64, exists bool) {
 	v := m.addfood_limit
 	if v == nil {
 		return
@@ -1148,6 +1151,43 @@ func (m *CityMutation) ResetConstructionSpeed() {
 	m.addconstruction_speed = nil
 }
 
+// SetLastUpdated sets the last_updated field.
+func (m *CityMutation) SetLastUpdated(t time.Time) {
+	m.last_updated = &t
+}
+
+// LastUpdated returns the last_updated value in the mutation.
+func (m *CityMutation) LastUpdated() (r time.Time, exists bool) {
+	v := m.last_updated
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldLastUpdated returns the old last_updated value of the City.
+// If the City object wasn't provided to the builder, the object is fetched
+// from the database.
+// An error is returned if the mutation operation is not UpdateOne, or database query fails.
+func (m *CityMutation) OldLastUpdated(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldLastUpdated is allowed only on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldLastUpdated requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldLastUpdated: %w", err)
+	}
+	return oldValue.LastUpdated, nil
+}
+
+// ResetLastUpdated reset all changes of the "last_updated" field.
+func (m *CityMutation) ResetLastUpdated() {
+	m.last_updated = nil
+}
+
 // SetOwnerID sets the owner edge to User by id.
 func (m *CityMutation) SetOwnerID(id int) {
 	m.owner = &id
@@ -1197,6 +1237,16 @@ func (m *CityMutation) AddConstructionIDs(ids ...int) {
 	}
 }
 
+// ClearConstructions clears the constructions edge to Construction.
+func (m *CityMutation) ClearConstructions() {
+	m.clearedconstructions = true
+}
+
+// ConstructionsCleared returns if the edge constructions was cleared.
+func (m *CityMutation) ConstructionsCleared() bool {
+	return m.clearedconstructions
+}
+
 // RemoveConstructionIDs removes the constructions edge to Construction by ids.
 func (m *CityMutation) RemoveConstructionIDs(ids ...int) {
 	if m.removedconstructions == nil {
@@ -1226,6 +1276,7 @@ func (m *CityMutation) ConstructionsIDs() (ids []int) {
 // ResetConstructions reset all changes of the "constructions" edge.
 func (m *CityMutation) ResetConstructions() {
 	m.constructions = nil
+	m.clearedconstructions = false
 	m.removedconstructions = nil
 }
 
@@ -1237,6 +1288,16 @@ func (m *CityMutation) AddQueueIDs(ids ...int) {
 	for i := range ids {
 		m.queue[ids[i]] = struct{}{}
 	}
+}
+
+// ClearQueue clears the queue edge to QueueItem.
+func (m *CityMutation) ClearQueue() {
+	m.clearedqueue = true
+}
+
+// QueueCleared returns if the edge queue was cleared.
+func (m *CityMutation) QueueCleared() bool {
+	return m.clearedqueue
 }
 
 // RemoveQueueIDs removes the queue edge to QueueItem by ids.
@@ -1268,6 +1329,7 @@ func (m *CityMutation) QueueIDs() (ids []int) {
 // ResetQueue reset all changes of the "queue" edge.
 func (m *CityMutation) ResetQueue() {
 	m.queue = nil
+	m.clearedqueue = false
 	m.removedqueue = nil
 }
 
@@ -1285,7 +1347,7 @@ func (m *CityMutation) Type() string {
 // this mutation. Note that, in order to get all numeric
 // fields that were in/decremented, call AddedFields().
 func (m *CityMutation) Fields() []string {
-	fields := make([]string, 0, 18)
+	fields := make([]string, 0, 19)
 	if m.x != nil {
 		fields = append(fields, city.FieldX)
 	}
@@ -1340,6 +1402,9 @@ func (m *CityMutation) Fields() []string {
 	if m.construction_speed != nil {
 		fields = append(fields, city.FieldConstructionSpeed)
 	}
+	if m.last_updated != nil {
+		fields = append(fields, city.FieldLastUpdated)
+	}
 	return fields
 }
 
@@ -1384,6 +1449,8 @@ func (m *CityMutation) Field(name string) (ent.Value, bool) {
 		return m.QueueTime()
 	case city.FieldConstructionSpeed:
 		return m.ConstructionSpeed()
+	case city.FieldLastUpdated:
+		return m.LastUpdated()
 	}
 	return nil, false
 }
@@ -1429,6 +1496,8 @@ func (m *CityMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldQueueTime(ctx)
 	case city.FieldConstructionSpeed:
 		return m.OldConstructionSpeed(ctx)
+	case city.FieldLastUpdated:
+		return m.OldLastUpdated(ctx)
 	}
 	return nil, fmt.Errorf("unknown City field %s", name)
 }
@@ -1467,84 +1536,84 @@ func (m *CityMutation) SetField(name string, value ent.Value) error {
 		m.SetPoints(v)
 		return nil
 	case city.FieldWoodProduction:
-		v, ok := value.(int)
+		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetWoodProduction(v)
 		return nil
 	case city.FieldStoneProduction:
-		v, ok := value.(int)
+		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetStoneProduction(v)
 		return nil
 	case city.FieldIronProduction:
-		v, ok := value.(int)
+		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetIronProduction(v)
 		return nil
 	case city.FieldFoodProduction:
-		v, ok := value.(int)
+		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetFoodProduction(v)
 		return nil
 	case city.FieldWoodStored:
-		v, ok := value.(int)
+		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetWoodStored(v)
 		return nil
 	case city.FieldStoneStored:
-		v, ok := value.(int)
+		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetStoneStored(v)
 		return nil
 	case city.FieldIronStored:
-		v, ok := value.(int)
+		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetIronStored(v)
 		return nil
 	case city.FieldFoodStored:
-		v, ok := value.(int)
+		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetFoodStored(v)
 		return nil
 	case city.FieldWoodLimit:
-		v, ok := value.(int)
+		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetWoodLimit(v)
 		return nil
 	case city.FieldStoneLimit:
-		v, ok := value.(int)
+		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetStoneLimit(v)
 		return nil
 	case city.FieldIronLimit:
-		v, ok := value.(int)
+		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetIronLimit(v)
 		return nil
 	case city.FieldFoodLimit:
-		v, ok := value.(int)
+		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -1563,6 +1632,13 @@ func (m *CityMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetConstructionSpeed(v)
+		return nil
+	case city.FieldLastUpdated:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetLastUpdated(v)
 		return nil
 	}
 	return fmt.Errorf("unknown City field %s", name)
@@ -1691,84 +1767,84 @@ func (m *CityMutation) AddField(name string, value ent.Value) error {
 		m.AddPoints(v)
 		return nil
 	case city.FieldWoodProduction:
-		v, ok := value.(int)
+		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddWoodProduction(v)
 		return nil
 	case city.FieldStoneProduction:
-		v, ok := value.(int)
+		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddStoneProduction(v)
 		return nil
 	case city.FieldIronProduction:
-		v, ok := value.(int)
+		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddIronProduction(v)
 		return nil
 	case city.FieldFoodProduction:
-		v, ok := value.(int)
+		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddFoodProduction(v)
 		return nil
 	case city.FieldWoodStored:
-		v, ok := value.(int)
+		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddWoodStored(v)
 		return nil
 	case city.FieldStoneStored:
-		v, ok := value.(int)
+		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddStoneStored(v)
 		return nil
 	case city.FieldIronStored:
-		v, ok := value.(int)
+		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddIronStored(v)
 		return nil
 	case city.FieldFoodStored:
-		v, ok := value.(int)
+		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddFoodStored(v)
 		return nil
 	case city.FieldWoodLimit:
-		v, ok := value.(int)
+		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddWoodLimit(v)
 		return nil
 	case city.FieldStoneLimit:
-		v, ok := value.(int)
+		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddStoneLimit(v)
 		return nil
 	case city.FieldIronLimit:
-		v, ok := value.(int)
+		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddIronLimit(v)
 		return nil
 	case city.FieldFoodLimit:
-		v, ok := value.(int)
+		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -1863,6 +1939,9 @@ func (m *CityMutation) ResetField(name string) error {
 	case city.FieldConstructionSpeed:
 		m.ResetConstructionSpeed()
 		return nil
+	case city.FieldLastUpdated:
+		m.ResetLastUpdated()
+		return nil
 	}
 	return fmt.Errorf("unknown City field %s", name)
 }
@@ -1947,6 +2026,12 @@ func (m *CityMutation) ClearedEdges() []string {
 	if m.clearedowner {
 		edges = append(edges, city.EdgeOwner)
 	}
+	if m.clearedconstructions {
+		edges = append(edges, city.EdgeConstructions)
+	}
+	if m.clearedqueue {
+		edges = append(edges, city.EdgeQueue)
+	}
 	return edges
 }
 
@@ -1956,6 +2041,10 @@ func (m *CityMutation) EdgeCleared(name string) bool {
 	switch name {
 	case city.EdgeOwner:
 		return m.clearedowner
+	case city.EdgeConstructions:
+		return m.clearedconstructions
+	case city.EdgeQueue:
+		return m.clearedqueue
 	}
 	return false
 }
@@ -2000,16 +2089,17 @@ type ConstructionMutation struct {
 	addx               *int
 	y                  *int
 	addy               *int
-	raw_production     *int
-	addraw_production  *int
-	production         *int
-	addproduction      *int
+	raw_production     *float64
+	addraw_production  *float64
+	production         *float64
+	addproduction      *float64
 	_type              *int
 	add_type           *int
 	level              *int
 	addlevel           *int
-	modifier           *int
-	addmodifier        *int
+	modifier           *float64
+	addmodifier        *float64
+	last_updated       *time.Time
 	need_refresh       *bool
 	clearedFields      map[string]struct{}
 	city               *int
@@ -2018,10 +2108,13 @@ type ConstructionMutation struct {
 	clearedowner       bool
 	queue              map[int]struct{}
 	removedqueue       map[int]struct{}
+	clearedqueue       bool
 	affects            map[int]struct{}
 	removedaffects     map[int]struct{}
+	clearedaffects     bool
 	affected_by        map[int]struct{}
 	removedaffected_by map[int]struct{}
+	clearedaffected_by bool
 	done               bool
 	oldValue           func(context.Context) (*Construction, error)
 }
@@ -2220,13 +2313,13 @@ func (m *ConstructionMutation) ResetY() {
 }
 
 // SetRawProduction sets the raw_production field.
-func (m *ConstructionMutation) SetRawProduction(i int) {
-	m.raw_production = &i
+func (m *ConstructionMutation) SetRawProduction(f float64) {
+	m.raw_production = &f
 	m.addraw_production = nil
 }
 
 // RawProduction returns the raw_production value in the mutation.
-func (m *ConstructionMutation) RawProduction() (r int, exists bool) {
+func (m *ConstructionMutation) RawProduction() (r float64, exists bool) {
 	v := m.raw_production
 	if v == nil {
 		return
@@ -2238,7 +2331,7 @@ func (m *ConstructionMutation) RawProduction() (r int, exists bool) {
 // If the Construction object wasn't provided to the builder, the object is fetched
 // from the database.
 // An error is returned if the mutation operation is not UpdateOne, or database query fails.
-func (m *ConstructionMutation) OldRawProduction(ctx context.Context) (v int, err error) {
+func (m *ConstructionMutation) OldRawProduction(ctx context.Context) (v float64, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldRawProduction is allowed only on UpdateOne operations")
 	}
@@ -2252,17 +2345,17 @@ func (m *ConstructionMutation) OldRawProduction(ctx context.Context) (v int, err
 	return oldValue.RawProduction, nil
 }
 
-// AddRawProduction adds i to raw_production.
-func (m *ConstructionMutation) AddRawProduction(i int) {
+// AddRawProduction adds f to raw_production.
+func (m *ConstructionMutation) AddRawProduction(f float64) {
 	if m.addraw_production != nil {
-		*m.addraw_production += i
+		*m.addraw_production += f
 	} else {
-		m.addraw_production = &i
+		m.addraw_production = &f
 	}
 }
 
 // AddedRawProduction returns the value that was added to the raw_production field in this mutation.
-func (m *ConstructionMutation) AddedRawProduction() (r int, exists bool) {
+func (m *ConstructionMutation) AddedRawProduction() (r float64, exists bool) {
 	v := m.addraw_production
 	if v == nil {
 		return
@@ -2277,13 +2370,13 @@ func (m *ConstructionMutation) ResetRawProduction() {
 }
 
 // SetProduction sets the production field.
-func (m *ConstructionMutation) SetProduction(i int) {
-	m.production = &i
+func (m *ConstructionMutation) SetProduction(f float64) {
+	m.production = &f
 	m.addproduction = nil
 }
 
 // Production returns the production value in the mutation.
-func (m *ConstructionMutation) Production() (r int, exists bool) {
+func (m *ConstructionMutation) Production() (r float64, exists bool) {
 	v := m.production
 	if v == nil {
 		return
@@ -2295,7 +2388,7 @@ func (m *ConstructionMutation) Production() (r int, exists bool) {
 // If the Construction object wasn't provided to the builder, the object is fetched
 // from the database.
 // An error is returned if the mutation operation is not UpdateOne, or database query fails.
-func (m *ConstructionMutation) OldProduction(ctx context.Context) (v int, err error) {
+func (m *ConstructionMutation) OldProduction(ctx context.Context) (v float64, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldProduction is allowed only on UpdateOne operations")
 	}
@@ -2309,17 +2402,17 @@ func (m *ConstructionMutation) OldProduction(ctx context.Context) (v int, err er
 	return oldValue.Production, nil
 }
 
-// AddProduction adds i to production.
-func (m *ConstructionMutation) AddProduction(i int) {
+// AddProduction adds f to production.
+func (m *ConstructionMutation) AddProduction(f float64) {
 	if m.addproduction != nil {
-		*m.addproduction += i
+		*m.addproduction += f
 	} else {
-		m.addproduction = &i
+		m.addproduction = &f
 	}
 }
 
 // AddedProduction returns the value that was added to the production field in this mutation.
-func (m *ConstructionMutation) AddedProduction() (r int, exists bool) {
+func (m *ConstructionMutation) AddedProduction() (r float64, exists bool) {
 	v := m.addproduction
 	if v == nil {
 		return
@@ -2448,13 +2541,13 @@ func (m *ConstructionMutation) ResetLevel() {
 }
 
 // SetModifier sets the modifier field.
-func (m *ConstructionMutation) SetModifier(i int) {
-	m.modifier = &i
+func (m *ConstructionMutation) SetModifier(f float64) {
+	m.modifier = &f
 	m.addmodifier = nil
 }
 
 // Modifier returns the modifier value in the mutation.
-func (m *ConstructionMutation) Modifier() (r int, exists bool) {
+func (m *ConstructionMutation) Modifier() (r float64, exists bool) {
 	v := m.modifier
 	if v == nil {
 		return
@@ -2466,7 +2559,7 @@ func (m *ConstructionMutation) Modifier() (r int, exists bool) {
 // If the Construction object wasn't provided to the builder, the object is fetched
 // from the database.
 // An error is returned if the mutation operation is not UpdateOne, or database query fails.
-func (m *ConstructionMutation) OldModifier(ctx context.Context) (v int, err error) {
+func (m *ConstructionMutation) OldModifier(ctx context.Context) (v float64, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldModifier is allowed only on UpdateOne operations")
 	}
@@ -2480,17 +2573,17 @@ func (m *ConstructionMutation) OldModifier(ctx context.Context) (v int, err erro
 	return oldValue.Modifier, nil
 }
 
-// AddModifier adds i to modifier.
-func (m *ConstructionMutation) AddModifier(i int) {
+// AddModifier adds f to modifier.
+func (m *ConstructionMutation) AddModifier(f float64) {
 	if m.addmodifier != nil {
-		*m.addmodifier += i
+		*m.addmodifier += f
 	} else {
-		m.addmodifier = &i
+		m.addmodifier = &f
 	}
 }
 
 // AddedModifier returns the value that was added to the modifier field in this mutation.
-func (m *ConstructionMutation) AddedModifier() (r int, exists bool) {
+func (m *ConstructionMutation) AddedModifier() (r float64, exists bool) {
 	v := m.addmodifier
 	if v == nil {
 		return
@@ -2502,6 +2595,43 @@ func (m *ConstructionMutation) AddedModifier() (r int, exists bool) {
 func (m *ConstructionMutation) ResetModifier() {
 	m.modifier = nil
 	m.addmodifier = nil
+}
+
+// SetLastUpdated sets the last_updated field.
+func (m *ConstructionMutation) SetLastUpdated(t time.Time) {
+	m.last_updated = &t
+}
+
+// LastUpdated returns the last_updated value in the mutation.
+func (m *ConstructionMutation) LastUpdated() (r time.Time, exists bool) {
+	v := m.last_updated
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldLastUpdated returns the old last_updated value of the Construction.
+// If the Construction object wasn't provided to the builder, the object is fetched
+// from the database.
+// An error is returned if the mutation operation is not UpdateOne, or database query fails.
+func (m *ConstructionMutation) OldLastUpdated(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldLastUpdated is allowed only on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldLastUpdated requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldLastUpdated: %w", err)
+	}
+	return oldValue.LastUpdated, nil
+}
+
+// ResetLastUpdated reset all changes of the "last_updated" field.
+func (m *ConstructionMutation) ResetLastUpdated() {
+	m.last_updated = nil
 }
 
 // SetNeedRefresh sets the need_refresh field.
@@ -2629,6 +2759,16 @@ func (m *ConstructionMutation) AddQueueIDs(ids ...int) {
 	}
 }
 
+// ClearQueue clears the queue edge to QueueItem.
+func (m *ConstructionMutation) ClearQueue() {
+	m.clearedqueue = true
+}
+
+// QueueCleared returns if the edge queue was cleared.
+func (m *ConstructionMutation) QueueCleared() bool {
+	return m.clearedqueue
+}
+
 // RemoveQueueIDs removes the queue edge to QueueItem by ids.
 func (m *ConstructionMutation) RemoveQueueIDs(ids ...int) {
 	if m.removedqueue == nil {
@@ -2658,6 +2798,7 @@ func (m *ConstructionMutation) QueueIDs() (ids []int) {
 // ResetQueue reset all changes of the "queue" edge.
 func (m *ConstructionMutation) ResetQueue() {
 	m.queue = nil
+	m.clearedqueue = false
 	m.removedqueue = nil
 }
 
@@ -2669,6 +2810,16 @@ func (m *ConstructionMutation) AddAffectIDs(ids ...int) {
 	for i := range ids {
 		m.affects[ids[i]] = struct{}{}
 	}
+}
+
+// ClearAffects clears the affects edge to Construction.
+func (m *ConstructionMutation) ClearAffects() {
+	m.clearedaffects = true
+}
+
+// AffectsCleared returns if the edge affects was cleared.
+func (m *ConstructionMutation) AffectsCleared() bool {
+	return m.clearedaffects
 }
 
 // RemoveAffectIDs removes the affects edge to Construction by ids.
@@ -2700,6 +2851,7 @@ func (m *ConstructionMutation) AffectsIDs() (ids []int) {
 // ResetAffects reset all changes of the "affects" edge.
 func (m *ConstructionMutation) ResetAffects() {
 	m.affects = nil
+	m.clearedaffects = false
 	m.removedaffects = nil
 }
 
@@ -2711,6 +2863,16 @@ func (m *ConstructionMutation) AddAffectedByIDs(ids ...int) {
 	for i := range ids {
 		m.affected_by[ids[i]] = struct{}{}
 	}
+}
+
+// ClearAffectedBy clears the affected_by edge to Construction.
+func (m *ConstructionMutation) ClearAffectedBy() {
+	m.clearedaffected_by = true
+}
+
+// AffectedByCleared returns if the edge affected_by was cleared.
+func (m *ConstructionMutation) AffectedByCleared() bool {
+	return m.clearedaffected_by
 }
 
 // RemoveAffectedByIDs removes the affected_by edge to Construction by ids.
@@ -2742,6 +2904,7 @@ func (m *ConstructionMutation) AffectedByIDs() (ids []int) {
 // ResetAffectedBy reset all changes of the "affected_by" edge.
 func (m *ConstructionMutation) ResetAffectedBy() {
 	m.affected_by = nil
+	m.clearedaffected_by = false
 	m.removedaffected_by = nil
 }
 
@@ -2759,7 +2922,7 @@ func (m *ConstructionMutation) Type() string {
 // this mutation. Note that, in order to get all numeric
 // fields that were in/decremented, call AddedFields().
 func (m *ConstructionMutation) Fields() []string {
-	fields := make([]string, 0, 8)
+	fields := make([]string, 0, 9)
 	if m.x != nil {
 		fields = append(fields, construction.FieldX)
 	}
@@ -2780,6 +2943,9 @@ func (m *ConstructionMutation) Fields() []string {
 	}
 	if m.modifier != nil {
 		fields = append(fields, construction.FieldModifier)
+	}
+	if m.last_updated != nil {
+		fields = append(fields, construction.FieldLastUpdated)
 	}
 	if m.need_refresh != nil {
 		fields = append(fields, construction.FieldNeedRefresh)
@@ -2806,6 +2972,8 @@ func (m *ConstructionMutation) Field(name string) (ent.Value, bool) {
 		return m.Level()
 	case construction.FieldModifier:
 		return m.Modifier()
+	case construction.FieldLastUpdated:
+		return m.LastUpdated()
 	case construction.FieldNeedRefresh:
 		return m.NeedRefresh()
 	}
@@ -2831,6 +2999,8 @@ func (m *ConstructionMutation) OldField(ctx context.Context, name string) (ent.V
 		return m.OldLevel(ctx)
 	case construction.FieldModifier:
 		return m.OldModifier(ctx)
+	case construction.FieldLastUpdated:
+		return m.OldLastUpdated(ctx)
 	case construction.FieldNeedRefresh:
 		return m.OldNeedRefresh(ctx)
 	}
@@ -2857,14 +3027,14 @@ func (m *ConstructionMutation) SetField(name string, value ent.Value) error {
 		m.SetY(v)
 		return nil
 	case construction.FieldRawProduction:
-		v, ok := value.(int)
+		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetRawProduction(v)
 		return nil
 	case construction.FieldProduction:
-		v, ok := value.(int)
+		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -2885,11 +3055,18 @@ func (m *ConstructionMutation) SetField(name string, value ent.Value) error {
 		m.SetLevel(v)
 		return nil
 	case construction.FieldModifier:
-		v, ok := value.(int)
+		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetModifier(v)
+		return nil
+	case construction.FieldLastUpdated:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetLastUpdated(v)
 		return nil
 	case construction.FieldNeedRefresh:
 		v, ok := value.(bool)
@@ -2973,14 +3150,14 @@ func (m *ConstructionMutation) AddField(name string, value ent.Value) error {
 		m.AddY(v)
 		return nil
 	case construction.FieldRawProduction:
-		v, ok := value.(int)
+		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddRawProduction(v)
 		return nil
 	case construction.FieldProduction:
-		v, ok := value.(int)
+		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -3001,7 +3178,7 @@ func (m *ConstructionMutation) AddField(name string, value ent.Value) error {
 		m.AddLevel(v)
 		return nil
 	case construction.FieldModifier:
-		v, ok := value.(int)
+		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -3055,6 +3232,9 @@ func (m *ConstructionMutation) ResetField(name string) error {
 		return nil
 	case construction.FieldModifier:
 		m.ResetModifier()
+		return nil
+	case construction.FieldLastUpdated:
+		m.ResetLastUpdated()
 		return nil
 	case construction.FieldNeedRefresh:
 		m.ResetNeedRefresh()
@@ -3171,6 +3351,15 @@ func (m *ConstructionMutation) ClearedEdges() []string {
 	if m.clearedowner {
 		edges = append(edges, construction.EdgeOwner)
 	}
+	if m.clearedqueue {
+		edges = append(edges, construction.EdgeQueue)
+	}
+	if m.clearedaffects {
+		edges = append(edges, construction.EdgeAffects)
+	}
+	if m.clearedaffected_by {
+		edges = append(edges, construction.EdgeAffectedBy)
+	}
 	return edges
 }
 
@@ -3182,6 +3371,12 @@ func (m *ConstructionMutation) EdgeCleared(name string) bool {
 		return m.clearedcity
 	case construction.EdgeOwner:
 		return m.clearedowner
+	case construction.EdgeQueue:
+		return m.clearedqueue
+	case construction.EdgeAffects:
+		return m.clearedaffects
+	case construction.EdgeAffectedBy:
+		return m.clearedaffected_by
 	}
 	return false
 }
@@ -3237,8 +3432,8 @@ type QueueItemMutation struct {
 	completion          *time.Time
 	action              *int
 	addaction           *int
-	order               *int
-	addorder            *int
+	_order              *int
+	add_order           *int
 	clearedFields       map[string]struct{}
 	owner               *int
 	clearedowner        bool
@@ -3519,13 +3714,13 @@ func (m *QueueItemMutation) ResetAction() {
 
 // SetOrder sets the order field.
 func (m *QueueItemMutation) SetOrder(i int) {
-	m.order = &i
-	m.addorder = nil
+	m._order = &i
+	m.add_order = nil
 }
 
 // Order returns the order value in the mutation.
 func (m *QueueItemMutation) Order() (r int, exists bool) {
-	v := m.order
+	v := m._order
 	if v == nil {
 		return
 	}
@@ -3552,16 +3747,16 @@ func (m *QueueItemMutation) OldOrder(ctx context.Context) (v int, err error) {
 
 // AddOrder adds i to order.
 func (m *QueueItemMutation) AddOrder(i int) {
-	if m.addorder != nil {
-		*m.addorder += i
+	if m.add_order != nil {
+		*m.add_order += i
 	} else {
-		m.addorder = &i
+		m.add_order = &i
 	}
 }
 
 // AddedOrder returns the value that was added to the order field in this mutation.
 func (m *QueueItemMutation) AddedOrder() (r int, exists bool) {
-	v := m.addorder
+	v := m.add_order
 	if v == nil {
 		return
 	}
@@ -3570,8 +3765,8 @@ func (m *QueueItemMutation) AddedOrder() (r int, exists bool) {
 
 // ResetOrder reset all changes of the "order" field.
 func (m *QueueItemMutation) ResetOrder() {
-	m.order = nil
-	m.addorder = nil
+	m._order = nil
+	m.add_order = nil
 }
 
 // SetOwnerID sets the owner edge to User by id.
@@ -3718,7 +3913,7 @@ func (m *QueueItemMutation) Fields() []string {
 	if m.action != nil {
 		fields = append(fields, queueitem.FieldAction)
 	}
-	if m.order != nil {
+	if m._order != nil {
 		fields = append(fields, queueitem.FieldOrder)
 	}
 	return fields
@@ -3816,7 +4011,7 @@ func (m *QueueItemMutation) AddedFields() []string {
 	if m.addaction != nil {
 		fields = append(fields, queueitem.FieldAction)
 	}
-	if m.addorder != nil {
+	if m.add_order != nil {
 		fields = append(fields, queueitem.FieldOrder)
 	}
 	return fields
@@ -4052,13 +4247,17 @@ type UserMutation struct {
 	addrank              *int
 	alliance_rank        *int
 	addalliance_rank     *int
+	last_updated         *time.Time
 	clearedFields        map[string]struct{}
 	cities               map[int]struct{}
 	removedcities        map[int]struct{}
+	clearedcities        bool
 	queue                map[int]struct{}
 	removedqueue         map[int]struct{}
+	clearedqueue         bool
 	constructions        map[int]struct{}
 	removedconstructions map[int]struct{}
+	clearedconstructions bool
 	done                 bool
 	oldValue             func(context.Context) (*User, error)
 }
@@ -4709,6 +4908,43 @@ func (m *UserMutation) ResetAllianceRank() {
 	m.addalliance_rank = nil
 }
 
+// SetLastUpdated sets the last_updated field.
+func (m *UserMutation) SetLastUpdated(t time.Time) {
+	m.last_updated = &t
+}
+
+// LastUpdated returns the last_updated value in the mutation.
+func (m *UserMutation) LastUpdated() (r time.Time, exists bool) {
+	v := m.last_updated
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldLastUpdated returns the old last_updated value of the User.
+// If the User object wasn't provided to the builder, the object is fetched
+// from the database.
+// An error is returned if the mutation operation is not UpdateOne, or database query fails.
+func (m *UserMutation) OldLastUpdated(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldLastUpdated is allowed only on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldLastUpdated requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldLastUpdated: %w", err)
+	}
+	return oldValue.LastUpdated, nil
+}
+
+// ResetLastUpdated reset all changes of the "last_updated" field.
+func (m *UserMutation) ResetLastUpdated() {
+	m.last_updated = nil
+}
+
 // AddCityIDs adds the cities edge to City by ids.
 func (m *UserMutation) AddCityIDs(ids ...int) {
 	if m.cities == nil {
@@ -4717,6 +4953,16 @@ func (m *UserMutation) AddCityIDs(ids ...int) {
 	for i := range ids {
 		m.cities[ids[i]] = struct{}{}
 	}
+}
+
+// ClearCities clears the cities edge to City.
+func (m *UserMutation) ClearCities() {
+	m.clearedcities = true
+}
+
+// CitiesCleared returns if the edge cities was cleared.
+func (m *UserMutation) CitiesCleared() bool {
+	return m.clearedcities
 }
 
 // RemoveCityIDs removes the cities edge to City by ids.
@@ -4748,6 +4994,7 @@ func (m *UserMutation) CitiesIDs() (ids []int) {
 // ResetCities reset all changes of the "cities" edge.
 func (m *UserMutation) ResetCities() {
 	m.cities = nil
+	m.clearedcities = false
 	m.removedcities = nil
 }
 
@@ -4759,6 +5006,16 @@ func (m *UserMutation) AddQueueIDs(ids ...int) {
 	for i := range ids {
 		m.queue[ids[i]] = struct{}{}
 	}
+}
+
+// ClearQueue clears the queue edge to QueueItem.
+func (m *UserMutation) ClearQueue() {
+	m.clearedqueue = true
+}
+
+// QueueCleared returns if the edge queue was cleared.
+func (m *UserMutation) QueueCleared() bool {
+	return m.clearedqueue
 }
 
 // RemoveQueueIDs removes the queue edge to QueueItem by ids.
@@ -4790,6 +5047,7 @@ func (m *UserMutation) QueueIDs() (ids []int) {
 // ResetQueue reset all changes of the "queue" edge.
 func (m *UserMutation) ResetQueue() {
 	m.queue = nil
+	m.clearedqueue = false
 	m.removedqueue = nil
 }
 
@@ -4801,6 +5059,16 @@ func (m *UserMutation) AddConstructionIDs(ids ...int) {
 	for i := range ids {
 		m.constructions[ids[i]] = struct{}{}
 	}
+}
+
+// ClearConstructions clears the constructions edge to Construction.
+func (m *UserMutation) ClearConstructions() {
+	m.clearedconstructions = true
+}
+
+// ConstructionsCleared returns if the edge constructions was cleared.
+func (m *UserMutation) ConstructionsCleared() bool {
+	return m.clearedconstructions
 }
 
 // RemoveConstructionIDs removes the constructions edge to Construction by ids.
@@ -4832,6 +5100,7 @@ func (m *UserMutation) ConstructionsIDs() (ids []int) {
 // ResetConstructions reset all changes of the "constructions" edge.
 func (m *UserMutation) ResetConstructions() {
 	m.constructions = nil
+	m.clearedconstructions = false
 	m.removedconstructions = nil
 }
 
@@ -4849,7 +5118,7 @@ func (m *UserMutation) Type() string {
 // this mutation. Note that, in order to get all numeric
 // fields that were in/decremented, call AddedFields().
 func (m *UserMutation) Fields() []string {
-	fields := make([]string, 0, 11)
+	fields := make([]string, 0, 12)
 	if m.name != nil {
 		fields = append(fields, user.FieldName)
 	}
@@ -4883,6 +5152,9 @@ func (m *UserMutation) Fields() []string {
 	if m.alliance_rank != nil {
 		fields = append(fields, user.FieldAllianceRank)
 	}
+	if m.last_updated != nil {
+		fields = append(fields, user.FieldLastUpdated)
+	}
 	return fields
 }
 
@@ -4913,6 +5185,8 @@ func (m *UserMutation) Field(name string) (ent.Value, bool) {
 		return m.Rank()
 	case user.FieldAllianceRank:
 		return m.AllianceRank()
+	case user.FieldLastUpdated:
+		return m.LastUpdated()
 	}
 	return nil, false
 }
@@ -4944,6 +5218,8 @@ func (m *UserMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldRank(ctx)
 	case user.FieldAllianceRank:
 		return m.OldAllianceRank(ctx)
+	case user.FieldLastUpdated:
+		return m.OldLastUpdated(ctx)
 	}
 	return nil, fmt.Errorf("unknown User field %s", name)
 }
@@ -5029,6 +5305,13 @@ func (m *UserMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetAllianceRank(v)
+		return nil
+	case user.FieldLastUpdated:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetLastUpdated(v)
 		return nil
 	}
 	return fmt.Errorf("unknown User field %s", name)
@@ -5212,6 +5495,9 @@ func (m *UserMutation) ResetField(name string) error {
 	case user.FieldAllianceRank:
 		m.ResetAllianceRank()
 		return nil
+	case user.FieldLastUpdated:
+		m.ResetLastUpdated()
+		return nil
 	}
 	return fmt.Errorf("unknown User field %s", name)
 }
@@ -5304,6 +5590,15 @@ func (m *UserMutation) RemovedIDs(name string) []ent.Value {
 // mutation.
 func (m *UserMutation) ClearedEdges() []string {
 	edges := make([]string, 0, 3)
+	if m.clearedcities {
+		edges = append(edges, user.EdgeCities)
+	}
+	if m.clearedqueue {
+		edges = append(edges, user.EdgeQueue)
+	}
+	if m.clearedconstructions {
+		edges = append(edges, user.EdgeConstructions)
+	}
 	return edges
 }
 
@@ -5311,6 +5606,12 @@ func (m *UserMutation) ClearedEdges() []string {
 // cleared in this mutation.
 func (m *UserMutation) EdgeCleared(name string) bool {
 	switch name {
+	case user.EdgeCities:
+		return m.clearedcities
+	case user.EdgeQueue:
+		return m.clearedqueue
+	case user.EdgeConstructions:
+		return m.clearedconstructions
 	}
 	return false
 }

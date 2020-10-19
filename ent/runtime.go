@@ -38,51 +38,51 @@ func init() {
 	// cityDescWoodProduction is the schema descriptor for wood_production field.
 	cityDescWoodProduction := cityFields[4].Descriptor()
 	// city.DefaultWoodProduction holds the default value on creation for the wood_production field.
-	city.DefaultWoodProduction = cityDescWoodProduction.Default.(int)
+	city.DefaultWoodProduction = cityDescWoodProduction.Default.(float64)
 	// cityDescStoneProduction is the schema descriptor for stone_production field.
 	cityDescStoneProduction := cityFields[5].Descriptor()
 	// city.DefaultStoneProduction holds the default value on creation for the stone_production field.
-	city.DefaultStoneProduction = cityDescStoneProduction.Default.(int)
+	city.DefaultStoneProduction = cityDescStoneProduction.Default.(float64)
 	// cityDescIronProduction is the schema descriptor for iron_production field.
 	cityDescIronProduction := cityFields[6].Descriptor()
 	// city.DefaultIronProduction holds the default value on creation for the iron_production field.
-	city.DefaultIronProduction = cityDescIronProduction.Default.(int)
+	city.DefaultIronProduction = cityDescIronProduction.Default.(float64)
 	// cityDescFoodProduction is the schema descriptor for food_production field.
 	cityDescFoodProduction := cityFields[7].Descriptor()
 	// city.DefaultFoodProduction holds the default value on creation for the food_production field.
-	city.DefaultFoodProduction = cityDescFoodProduction.Default.(int)
+	city.DefaultFoodProduction = cityDescFoodProduction.Default.(float64)
 	// cityDescWoodStored is the schema descriptor for wood_stored field.
 	cityDescWoodStored := cityFields[8].Descriptor()
 	// city.DefaultWoodStored holds the default value on creation for the wood_stored field.
-	city.DefaultWoodStored = cityDescWoodStored.Default.(int)
+	city.DefaultWoodStored = cityDescWoodStored.Default.(float64)
 	// cityDescStoneStored is the schema descriptor for stone_stored field.
 	cityDescStoneStored := cityFields[9].Descriptor()
 	// city.DefaultStoneStored holds the default value on creation for the stone_stored field.
-	city.DefaultStoneStored = cityDescStoneStored.Default.(int)
+	city.DefaultStoneStored = cityDescStoneStored.Default.(float64)
 	// cityDescIronStored is the schema descriptor for iron_stored field.
 	cityDescIronStored := cityFields[10].Descriptor()
 	// city.DefaultIronStored holds the default value on creation for the iron_stored field.
-	city.DefaultIronStored = cityDescIronStored.Default.(int)
+	city.DefaultIronStored = cityDescIronStored.Default.(float64)
 	// cityDescFoodStored is the schema descriptor for food_stored field.
 	cityDescFoodStored := cityFields[11].Descriptor()
 	// city.DefaultFoodStored holds the default value on creation for the food_stored field.
-	city.DefaultFoodStored = cityDescFoodStored.Default.(int)
+	city.DefaultFoodStored = cityDescFoodStored.Default.(float64)
 	// cityDescWoodLimit is the schema descriptor for wood_limit field.
 	cityDescWoodLimit := cityFields[12].Descriptor()
 	// city.DefaultWoodLimit holds the default value on creation for the wood_limit field.
-	city.DefaultWoodLimit = cityDescWoodLimit.Default.(int)
+	city.DefaultWoodLimit = cityDescWoodLimit.Default.(float64)
 	// cityDescStoneLimit is the schema descriptor for stone_limit field.
 	cityDescStoneLimit := cityFields[13].Descriptor()
 	// city.DefaultStoneLimit holds the default value on creation for the stone_limit field.
-	city.DefaultStoneLimit = cityDescStoneLimit.Default.(int)
+	city.DefaultStoneLimit = cityDescStoneLimit.Default.(float64)
 	// cityDescIronLimit is the schema descriptor for iron_limit field.
 	cityDescIronLimit := cityFields[14].Descriptor()
 	// city.DefaultIronLimit holds the default value on creation for the iron_limit field.
-	city.DefaultIronLimit = cityDescIronLimit.Default.(int)
+	city.DefaultIronLimit = cityDescIronLimit.Default.(float64)
 	// cityDescFoodLimit is the schema descriptor for food_limit field.
 	cityDescFoodLimit := cityFields[15].Descriptor()
 	// city.DefaultFoodLimit holds the default value on creation for the food_limit field.
-	city.DefaultFoodLimit = cityDescFoodLimit.Default.(int)
+	city.DefaultFoodLimit = cityDescFoodLimit.Default.(float64)
 	// cityDescQueueTime is the schema descriptor for queue_time field.
 	cityDescQueueTime := cityFields[16].Descriptor()
 	// city.DefaultQueueTime holds the default value on creation for the queue_time field.
@@ -91,16 +91,20 @@ func init() {
 	cityDescConstructionSpeed := cityFields[17].Descriptor()
 	// city.DefaultConstructionSpeed holds the default value on creation for the construction_speed field.
 	city.DefaultConstructionSpeed = cityDescConstructionSpeed.Default.(int)
+	// cityDescLastUpdated is the schema descriptor for last_updated field.
+	cityDescLastUpdated := cityFields[18].Descriptor()
+	// city.DefaultLastUpdated holds the default value on creation for the last_updated field.
+	city.DefaultLastUpdated = cityDescLastUpdated.Default.(func() time.Time)
 	constructionFields := schema.Construction{}.Fields()
 	_ = constructionFields
 	// constructionDescRawProduction is the schema descriptor for raw_production field.
 	constructionDescRawProduction := constructionFields[2].Descriptor()
 	// construction.DefaultRawProduction holds the default value on creation for the raw_production field.
-	construction.DefaultRawProduction = constructionDescRawProduction.Default.(int)
+	construction.DefaultRawProduction = constructionDescRawProduction.Default.(float64)
 	// constructionDescProduction is the schema descriptor for production field.
 	constructionDescProduction := constructionFields[3].Descriptor()
 	// construction.DefaultProduction holds the default value on creation for the production field.
-	construction.DefaultProduction = constructionDescProduction.Default.(int)
+	construction.DefaultProduction = constructionDescProduction.Default.(float64)
 	// constructionDescType is the schema descriptor for type field.
 	constructionDescType := constructionFields[4].Descriptor()
 	// construction.DefaultType holds the default value on creation for the type field.
@@ -112,9 +116,13 @@ func init() {
 	// constructionDescModifier is the schema descriptor for modifier field.
 	constructionDescModifier := constructionFields[6].Descriptor()
 	// construction.DefaultModifier holds the default value on creation for the modifier field.
-	construction.DefaultModifier = constructionDescModifier.Default.(int)
+	construction.DefaultModifier = constructionDescModifier.Default.(float64)
+	// constructionDescLastUpdated is the schema descriptor for last_updated field.
+	constructionDescLastUpdated := constructionFields[7].Descriptor()
+	// construction.DefaultLastUpdated holds the default value on creation for the last_updated field.
+	construction.DefaultLastUpdated = constructionDescLastUpdated.Default.(func() time.Time)
 	// constructionDescNeedRefresh is the schema descriptor for need_refresh field.
-	constructionDescNeedRefresh := constructionFields[7].Descriptor()
+	constructionDescNeedRefresh := constructionFields[8].Descriptor()
 	// construction.DefaultNeedRefresh holds the default value on creation for the need_refresh field.
 	construction.DefaultNeedRefresh = constructionDescNeedRefresh.Default.(bool)
 	userFields := schema.User{}.Fields()
@@ -163,4 +171,8 @@ func init() {
 	userDescAllianceRank := userFields[10].Descriptor()
 	// user.DefaultAllianceRank holds the default value on creation for the alliance_rank field.
 	user.DefaultAllianceRank = userDescAllianceRank.Default.(int)
+	// userDescLastUpdated is the schema descriptor for last_updated field.
+	userDescLastUpdated := userFields[11].Descriptor()
+	// user.DefaultLastUpdated holds the default value on creation for the last_updated field.
+	user.DefaultLastUpdated = userDescLastUpdated.Default.(func() time.Time)
 }

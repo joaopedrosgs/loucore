@@ -3,8 +3,10 @@
 package user
 
 import (
-	"github.com/facebookincubator/ent/dialect/sql"
-	"github.com/facebookincubator/ent/dialect/sql/sqlgraph"
+	"time"
+
+	"github.com/facebook/ent/dialect/sql"
+	"github.com/facebook/ent/dialect/sql/sqlgraph"
 	"github.com/joaopedrosgs/loucore/ent/predicate"
 )
 
@@ -165,6 +167,13 @@ func Rank(v int) predicate.User {
 func AllianceRank(v int) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldAllianceRank), v))
+	})
+}
+
+// LastUpdated applies equality check predicate on the "last_updated" field. It's identical to LastUpdatedEQ.
+func LastUpdated(v time.Time) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldLastUpdated), v))
 	})
 }
 
@@ -1106,6 +1115,82 @@ func AllianceRankLT(v int) predicate.User {
 func AllianceRankLTE(v int) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldAllianceRank), v))
+	})
+}
+
+// LastUpdatedEQ applies the EQ predicate on the "last_updated" field.
+func LastUpdatedEQ(v time.Time) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldLastUpdated), v))
+	})
+}
+
+// LastUpdatedNEQ applies the NEQ predicate on the "last_updated" field.
+func LastUpdatedNEQ(v time.Time) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldLastUpdated), v))
+	})
+}
+
+// LastUpdatedIn applies the In predicate on the "last_updated" field.
+func LastUpdatedIn(vs ...time.Time) predicate.User {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.User(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldLastUpdated), v...))
+	})
+}
+
+// LastUpdatedNotIn applies the NotIn predicate on the "last_updated" field.
+func LastUpdatedNotIn(vs ...time.Time) predicate.User {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.User(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldLastUpdated), v...))
+	})
+}
+
+// LastUpdatedGT applies the GT predicate on the "last_updated" field.
+func LastUpdatedGT(v time.Time) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldLastUpdated), v))
+	})
+}
+
+// LastUpdatedGTE applies the GTE predicate on the "last_updated" field.
+func LastUpdatedGTE(v time.Time) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldLastUpdated), v))
+	})
+}
+
+// LastUpdatedLT applies the LT predicate on the "last_updated" field.
+func LastUpdatedLT(v time.Time) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldLastUpdated), v))
+	})
+}
+
+// LastUpdatedLTE applies the LTE predicate on the "last_updated" field.
+func LastUpdatedLTE(v time.Time) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldLastUpdated), v))
 	})
 }
 

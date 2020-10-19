@@ -14,9 +14,9 @@ import (
 	"github.com/joaopedrosgs/loucore/ent/queueitem"
 	"github.com/joaopedrosgs/loucore/ent/user"
 
-	"github.com/facebookincubator/ent/dialect"
-	"github.com/facebookincubator/ent/dialect/sql"
-	"github.com/facebookincubator/ent/dialect/sql/sqlgraph"
+	"github.com/facebook/ent/dialect"
+	"github.com/facebook/ent/dialect/sql"
+	"github.com/facebook/ent/dialect/sql/sqlgraph"
 )
 
 // Client is the client that holds all ent builders.
@@ -67,7 +67,8 @@ func Open(driverName, dataSourceName string, options ...Option) (*Client, error)
 	}
 }
 
-// Tx returns a new transactional client.
+// Tx returns a new transactional client. The provided context
+// is used until the transaction is committed or rolled back.
 func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	if _, ok := c.driver.(*txDriver); ok {
 		return nil, fmt.Errorf("ent: cannot start a transaction within a transaction")
@@ -78,6 +79,7 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	}
 	cfg := config{driver: tx, log: c.log, debug: c.debug, hooks: c.hooks}
 	return &Tx{
+		ctx:          ctx,
 		config:       cfg,
 		City:         NewCityClient(cfg),
 		Construction: NewConstructionClient(cfg),
@@ -158,6 +160,11 @@ func (c *CityClient) Create() *CityCreate {
 	return &CityCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
+// BulkCreate returns a builder for creating a bulk of City entities.
+func (c *CityClient) CreateBulk(builders ...*CityCreate) *CityCreateBulk {
+	return &CityCreateBulk{config: c.config, builders: builders}
+}
+
 // Update returns an update builder for City.
 func (c *CityClient) Update() *CityUpdate {
 	mutation := newCityMutation(c.config, OpUpdate)
@@ -195,7 +202,7 @@ func (c *CityClient) DeleteOneID(id int) *CityDeleteOne {
 	return &CityDeleteOne{builder}
 }
 
-// Create returns a query builder for City.
+// Query returns a query builder for City.
 func (c *CityClient) Query() *CityQuery {
 	return &CityQuery{config: c.config}
 }
@@ -207,11 +214,11 @@ func (c *CityClient) Get(ctx context.Context, id int) (*City, error) {
 
 // GetX is like Get, but panics if an error occurs.
 func (c *CityClient) GetX(ctx context.Context, id int) *City {
-	ci, err := c.Get(ctx, id)
+	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)
 	}
-	return ci
+	return obj
 }
 
 // QueryOwner queries the owner edge of a City.
@@ -289,6 +296,11 @@ func (c *ConstructionClient) Create() *ConstructionCreate {
 	return &ConstructionCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
+// BulkCreate returns a builder for creating a bulk of Construction entities.
+func (c *ConstructionClient) CreateBulk(builders ...*ConstructionCreate) *ConstructionCreateBulk {
+	return &ConstructionCreateBulk{config: c.config, builders: builders}
+}
+
 // Update returns an update builder for Construction.
 func (c *ConstructionClient) Update() *ConstructionUpdate {
 	mutation := newConstructionMutation(c.config, OpUpdate)
@@ -326,7 +338,7 @@ func (c *ConstructionClient) DeleteOneID(id int) *ConstructionDeleteOne {
 	return &ConstructionDeleteOne{builder}
 }
 
-// Create returns a query builder for Construction.
+// Query returns a query builder for Construction.
 func (c *ConstructionClient) Query() *ConstructionQuery {
 	return &ConstructionQuery{config: c.config}
 }
@@ -338,11 +350,11 @@ func (c *ConstructionClient) Get(ctx context.Context, id int) (*Construction, er
 
 // GetX is like Get, but panics if an error occurs.
 func (c *ConstructionClient) GetX(ctx context.Context, id int) *Construction {
-	co, err := c.Get(ctx, id)
+	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)
 	}
-	return co
+	return obj
 }
 
 // QueryCity queries the city edge of a Construction.
@@ -452,6 +464,11 @@ func (c *QueueItemClient) Create() *QueueItemCreate {
 	return &QueueItemCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
+// BulkCreate returns a builder for creating a bulk of QueueItem entities.
+func (c *QueueItemClient) CreateBulk(builders ...*QueueItemCreate) *QueueItemCreateBulk {
+	return &QueueItemCreateBulk{config: c.config, builders: builders}
+}
+
 // Update returns an update builder for QueueItem.
 func (c *QueueItemClient) Update() *QueueItemUpdate {
 	mutation := newQueueItemMutation(c.config, OpUpdate)
@@ -489,7 +506,7 @@ func (c *QueueItemClient) DeleteOneID(id int) *QueueItemDeleteOne {
 	return &QueueItemDeleteOne{builder}
 }
 
-// Create returns a query builder for QueueItem.
+// Query returns a query builder for QueueItem.
 func (c *QueueItemClient) Query() *QueueItemQuery {
 	return &QueueItemQuery{config: c.config}
 }
@@ -501,11 +518,11 @@ func (c *QueueItemClient) Get(ctx context.Context, id int) (*QueueItem, error) {
 
 // GetX is like Get, but panics if an error occurs.
 func (c *QueueItemClient) GetX(ctx context.Context, id int) *QueueItem {
-	qi, err := c.Get(ctx, id)
+	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)
 	}
-	return qi
+	return obj
 }
 
 // QueryOwner queries the owner edge of a QueueItem.
@@ -583,6 +600,11 @@ func (c *UserClient) Create() *UserCreate {
 	return &UserCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
+// BulkCreate returns a builder for creating a bulk of User entities.
+func (c *UserClient) CreateBulk(builders ...*UserCreate) *UserCreateBulk {
+	return &UserCreateBulk{config: c.config, builders: builders}
+}
+
 // Update returns an update builder for User.
 func (c *UserClient) Update() *UserUpdate {
 	mutation := newUserMutation(c.config, OpUpdate)
@@ -620,7 +642,7 @@ func (c *UserClient) DeleteOneID(id int) *UserDeleteOne {
 	return &UserDeleteOne{builder}
 }
 
-// Create returns a query builder for User.
+// Query returns a query builder for User.
 func (c *UserClient) Query() *UserQuery {
 	return &UserQuery{config: c.config}
 }
@@ -632,11 +654,11 @@ func (c *UserClient) Get(ctx context.Context, id int) (*User, error) {
 
 // GetX is like Get, but panics if an error occurs.
 func (c *UserClient) GetX(ctx context.Context, id int) *User {
-	u, err := c.Get(ctx, id)
+	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)
 	}
-	return u
+	return obj
 }
 
 // QueryCities queries the cities edge of a User.

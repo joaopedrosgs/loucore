@@ -3,8 +3,8 @@
 package migrate
 
 import (
-	"github.com/facebookincubator/ent/dialect/sql/schema"
-	"github.com/facebookincubator/ent/schema/field"
+	"github.com/facebook/ent/dialect/sql/schema"
+	"github.com/facebook/ent/schema/field"
 )
 
 var (
@@ -15,20 +15,21 @@ var (
 		{Name: "y", Type: field.TypeInt},
 		{Name: "name", Type: field.TypeString, Default: "New city"},
 		{Name: "points", Type: field.TypeInt, Default: 3},
-		{Name: "wood_production", Type: field.TypeInt, Default: 300},
-		{Name: "stone_production", Type: field.TypeInt},
-		{Name: "iron_production", Type: field.TypeInt},
-		{Name: "food_production", Type: field.TypeInt},
-		{Name: "wood_stored", Type: field.TypeInt, Default: 300},
-		{Name: "stone_stored", Type: field.TypeInt},
-		{Name: "iron_stored", Type: field.TypeInt},
-		{Name: "food_stored", Type: field.TypeInt},
-		{Name: "wood_limit", Type: field.TypeInt, Default: 300},
-		{Name: "stone_limit", Type: field.TypeInt},
-		{Name: "iron_limit", Type: field.TypeInt},
-		{Name: "food_limit", Type: field.TypeInt},
+		{Name: "wood_production", Type: field.TypeFloat64, Default: 5},
+		{Name: "stone_production", Type: field.TypeFloat64},
+		{Name: "iron_production", Type: field.TypeFloat64},
+		{Name: "food_production", Type: field.TypeFloat64},
+		{Name: "wood_stored", Type: field.TypeFloat64, Default: 300},
+		{Name: "stone_stored", Type: field.TypeFloat64},
+		{Name: "iron_stored", Type: field.TypeFloat64},
+		{Name: "food_stored", Type: field.TypeFloat64},
+		{Name: "wood_limit", Type: field.TypeFloat64, Default: 300},
+		{Name: "stone_limit", Type: field.TypeFloat64},
+		{Name: "iron_limit", Type: field.TypeFloat64},
+		{Name: "food_limit", Type: field.TypeFloat64},
 		{Name: "queue_time", Type: field.TypeTime},
 		{Name: "construction_speed", Type: field.TypeInt, Default: 1},
+		{Name: "last_updated", Type: field.TypeTime},
 		{Name: "user_cities", Type: field.TypeInt, Nullable: true},
 	}
 	// CitiesTable holds the schema information for the "cities" table.
@@ -39,7 +40,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:  "cities_users_cities",
-				Columns: []*schema.Column{CitiesColumns[19]},
+				Columns: []*schema.Column{CitiesColumns[20]},
 
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
@@ -58,11 +59,12 @@ var (
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "x", Type: field.TypeInt},
 		{Name: "y", Type: field.TypeInt},
-		{Name: "raw_production", Type: field.TypeInt},
-		{Name: "production", Type: field.TypeInt},
+		{Name: "raw_production", Type: field.TypeFloat64},
+		{Name: "production", Type: field.TypeFloat64},
 		{Name: "type", Type: field.TypeInt},
 		{Name: "level", Type: field.TypeInt},
-		{Name: "modifier", Type: field.TypeInt, Default: 1},
+		{Name: "modifier", Type: field.TypeFloat64, Default: 1},
+		{Name: "last_updated", Type: field.TypeTime},
 		{Name: "need_refresh", Type: field.TypeBool, Default: true},
 		{Name: "city_constructions", Type: field.TypeInt, Nullable: true},
 		{Name: "user_constructions", Type: field.TypeInt, Nullable: true},
@@ -75,14 +77,14 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:  "constructions_cities_constructions",
-				Columns: []*schema.Column{ConstructionsColumns[9]},
+				Columns: []*schema.Column{ConstructionsColumns[10]},
 
 				RefColumns: []*schema.Column{CitiesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "constructions_users_constructions",
-				Columns: []*schema.Column{ConstructionsColumns[10]},
+				Columns: []*schema.Column{ConstructionsColumns[11]},
 
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
@@ -92,7 +94,7 @@ var (
 			{
 				Name:    "construction_x_y_city_constructions",
 				Unique:  true,
-				Columns: []*schema.Column{ConstructionsColumns[1], ConstructionsColumns[2], ConstructionsColumns[9]},
+				Columns: []*schema.Column{ConstructionsColumns[1], ConstructionsColumns[2], ConstructionsColumns[10]},
 			},
 		},
 	}
@@ -158,6 +160,7 @@ var (
 		{Name: "trueseed", Type: field.TypeInt},
 		{Name: "rank", Type: field.TypeInt},
 		{Name: "alliance_rank", Type: field.TypeInt},
+		{Name: "last_updated", Type: field.TypeTime},
 	}
 	// UsersTable holds the schema information for the "users" table.
 	UsersTable = &schema.Table{

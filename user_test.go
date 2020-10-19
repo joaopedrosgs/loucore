@@ -15,6 +15,20 @@ func TestAuthentication(t *testing.T) {
 	_ = DeleteAccount(user.ID)
 
 }
+func TestAuthenticationShouldFailBecauseWrongPassword(t *testing.T) {
+	var userName = "user"
+	var email = "email@email.com"
+	var password = "password"
+	var wrongPassword = "password2"
+	user, _ := CreateAccount(userName, email, password)
+	err := Authentication(email, wrongPassword)
+	if err == nil {
+		t.Errorf("Failed to check password with user user=%v, email=%v and password=%v: %v", userName, email, password, err)
+		return
+	}
+	_ = DeleteAccount(user.ID)
+
+}
 
 func TestCreateAccount(t *testing.T) {
 	var userName = "user"

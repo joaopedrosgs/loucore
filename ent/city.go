@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/facebookincubator/ent/dialect/sql"
+	"github.com/facebook/ent/dialect/sql"
 	"github.com/joaopedrosgs/loucore/ent/city"
 	"github.com/joaopedrosgs/loucore/ent/user"
 )
@@ -26,33 +26,35 @@ type City struct {
 	// Points holds the value of the "points" field.
 	Points int `json:"points,omitempty"`
 	// WoodProduction holds the value of the "wood_production" field.
-	WoodProduction int `json:"wood_production,omitempty"`
+	WoodProduction float64 `json:"wood_production,omitempty"`
 	// StoneProduction holds the value of the "stone_production" field.
-	StoneProduction int `json:"stone_production,omitempty"`
+	StoneProduction float64 `json:"stone_production,omitempty"`
 	// IronProduction holds the value of the "iron_production" field.
-	IronProduction int `json:"iron_production,omitempty"`
+	IronProduction float64 `json:"iron_production,omitempty"`
 	// FoodProduction holds the value of the "food_production" field.
-	FoodProduction int `json:"food_production,omitempty"`
+	FoodProduction float64 `json:"food_production,omitempty"`
 	// WoodStored holds the value of the "wood_stored" field.
-	WoodStored int `json:"wood_stored,omitempty"`
+	WoodStored float64 `json:"wood_stored,omitempty"`
 	// StoneStored holds the value of the "stone_stored" field.
-	StoneStored int `json:"stone_stored,omitempty"`
+	StoneStored float64 `json:"stone_stored,omitempty"`
 	// IronStored holds the value of the "iron_stored" field.
-	IronStored int `json:"iron_stored,omitempty"`
+	IronStored float64 `json:"iron_stored,omitempty"`
 	// FoodStored holds the value of the "food_stored" field.
-	FoodStored int `json:"food_stored,omitempty"`
+	FoodStored float64 `json:"food_stored,omitempty"`
 	// WoodLimit holds the value of the "wood_limit" field.
-	WoodLimit int `json:"wood_limit,omitempty"`
+	WoodLimit float64 `json:"wood_limit,omitempty"`
 	// StoneLimit holds the value of the "stone_limit" field.
-	StoneLimit int `json:"stone_limit,omitempty"`
+	StoneLimit float64 `json:"stone_limit,omitempty"`
 	// IronLimit holds the value of the "iron_limit" field.
-	IronLimit int `json:"iron_limit,omitempty"`
+	IronLimit float64 `json:"iron_limit,omitempty"`
 	// FoodLimit holds the value of the "food_limit" field.
-	FoodLimit int `json:"food_limit,omitempty"`
+	FoodLimit float64 `json:"food_limit,omitempty"`
 	// QueueTime holds the value of the "queue_time" field.
 	QueueTime time.Time `json:"queue_time,omitempty"`
 	// ConstructionSpeed holds the value of the "construction_speed" field.
 	ConstructionSpeed int `json:"construction_speed,omitempty"`
+	// LastUpdated holds the value of the "last_updated" field.
+	LastUpdated time.Time `json:"last_updated,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the CityQuery when eager-loading is set.
 	Edges       CityEdges `json:"edges"`
@@ -107,25 +109,26 @@ func (e CityEdges) QueueOrErr() ([]*QueueItem, error) {
 // scanValues returns the types for scanning values from sql.Rows.
 func (*City) scanValues() []interface{} {
 	return []interface{}{
-		&sql.NullInt64{},  // id
-		&sql.NullInt64{},  // x
-		&sql.NullInt64{},  // y
-		&sql.NullString{}, // name
-		&sql.NullInt64{},  // points
-		&sql.NullInt64{},  // wood_production
-		&sql.NullInt64{},  // stone_production
-		&sql.NullInt64{},  // iron_production
-		&sql.NullInt64{},  // food_production
-		&sql.NullInt64{},  // wood_stored
-		&sql.NullInt64{},  // stone_stored
-		&sql.NullInt64{},  // iron_stored
-		&sql.NullInt64{},  // food_stored
-		&sql.NullInt64{},  // wood_limit
-		&sql.NullInt64{},  // stone_limit
-		&sql.NullInt64{},  // iron_limit
-		&sql.NullInt64{},  // food_limit
-		&sql.NullTime{},   // queue_time
-		&sql.NullInt64{},  // construction_speed
+		&sql.NullInt64{},   // id
+		&sql.NullInt64{},   // x
+		&sql.NullInt64{},   // y
+		&sql.NullString{},  // name
+		&sql.NullInt64{},   // points
+		&sql.NullFloat64{}, // wood_production
+		&sql.NullFloat64{}, // stone_production
+		&sql.NullFloat64{}, // iron_production
+		&sql.NullFloat64{}, // food_production
+		&sql.NullFloat64{}, // wood_stored
+		&sql.NullFloat64{}, // stone_stored
+		&sql.NullFloat64{}, // iron_stored
+		&sql.NullFloat64{}, // food_stored
+		&sql.NullFloat64{}, // wood_limit
+		&sql.NullFloat64{}, // stone_limit
+		&sql.NullFloat64{}, // iron_limit
+		&sql.NullFloat64{}, // food_limit
+		&sql.NullTime{},    // queue_time
+		&sql.NullInt64{},   // construction_speed
+		&sql.NullTime{},    // last_updated
 	}
 }
 
@@ -168,65 +171,65 @@ func (c *City) assignValues(values ...interface{}) error {
 	} else if value.Valid {
 		c.Points = int(value.Int64)
 	}
-	if value, ok := values[4].(*sql.NullInt64); !ok {
+	if value, ok := values[4].(*sql.NullFloat64); !ok {
 		return fmt.Errorf("unexpected type %T for field wood_production", values[4])
 	} else if value.Valid {
-		c.WoodProduction = int(value.Int64)
+		c.WoodProduction = value.Float64
 	}
-	if value, ok := values[5].(*sql.NullInt64); !ok {
+	if value, ok := values[5].(*sql.NullFloat64); !ok {
 		return fmt.Errorf("unexpected type %T for field stone_production", values[5])
 	} else if value.Valid {
-		c.StoneProduction = int(value.Int64)
+		c.StoneProduction = value.Float64
 	}
-	if value, ok := values[6].(*sql.NullInt64); !ok {
+	if value, ok := values[6].(*sql.NullFloat64); !ok {
 		return fmt.Errorf("unexpected type %T for field iron_production", values[6])
 	} else if value.Valid {
-		c.IronProduction = int(value.Int64)
+		c.IronProduction = value.Float64
 	}
-	if value, ok := values[7].(*sql.NullInt64); !ok {
+	if value, ok := values[7].(*sql.NullFloat64); !ok {
 		return fmt.Errorf("unexpected type %T for field food_production", values[7])
 	} else if value.Valid {
-		c.FoodProduction = int(value.Int64)
+		c.FoodProduction = value.Float64
 	}
-	if value, ok := values[8].(*sql.NullInt64); !ok {
+	if value, ok := values[8].(*sql.NullFloat64); !ok {
 		return fmt.Errorf("unexpected type %T for field wood_stored", values[8])
 	} else if value.Valid {
-		c.WoodStored = int(value.Int64)
+		c.WoodStored = value.Float64
 	}
-	if value, ok := values[9].(*sql.NullInt64); !ok {
+	if value, ok := values[9].(*sql.NullFloat64); !ok {
 		return fmt.Errorf("unexpected type %T for field stone_stored", values[9])
 	} else if value.Valid {
-		c.StoneStored = int(value.Int64)
+		c.StoneStored = value.Float64
 	}
-	if value, ok := values[10].(*sql.NullInt64); !ok {
+	if value, ok := values[10].(*sql.NullFloat64); !ok {
 		return fmt.Errorf("unexpected type %T for field iron_stored", values[10])
 	} else if value.Valid {
-		c.IronStored = int(value.Int64)
+		c.IronStored = value.Float64
 	}
-	if value, ok := values[11].(*sql.NullInt64); !ok {
+	if value, ok := values[11].(*sql.NullFloat64); !ok {
 		return fmt.Errorf("unexpected type %T for field food_stored", values[11])
 	} else if value.Valid {
-		c.FoodStored = int(value.Int64)
+		c.FoodStored = value.Float64
 	}
-	if value, ok := values[12].(*sql.NullInt64); !ok {
+	if value, ok := values[12].(*sql.NullFloat64); !ok {
 		return fmt.Errorf("unexpected type %T for field wood_limit", values[12])
 	} else if value.Valid {
-		c.WoodLimit = int(value.Int64)
+		c.WoodLimit = value.Float64
 	}
-	if value, ok := values[13].(*sql.NullInt64); !ok {
+	if value, ok := values[13].(*sql.NullFloat64); !ok {
 		return fmt.Errorf("unexpected type %T for field stone_limit", values[13])
 	} else if value.Valid {
-		c.StoneLimit = int(value.Int64)
+		c.StoneLimit = value.Float64
 	}
-	if value, ok := values[14].(*sql.NullInt64); !ok {
+	if value, ok := values[14].(*sql.NullFloat64); !ok {
 		return fmt.Errorf("unexpected type %T for field iron_limit", values[14])
 	} else if value.Valid {
-		c.IronLimit = int(value.Int64)
+		c.IronLimit = value.Float64
 	}
-	if value, ok := values[15].(*sql.NullInt64); !ok {
+	if value, ok := values[15].(*sql.NullFloat64); !ok {
 		return fmt.Errorf("unexpected type %T for field food_limit", values[15])
 	} else if value.Valid {
-		c.FoodLimit = int(value.Int64)
+		c.FoodLimit = value.Float64
 	}
 	if value, ok := values[16].(*sql.NullTime); !ok {
 		return fmt.Errorf("unexpected type %T for field queue_time", values[16])
@@ -238,7 +241,12 @@ func (c *City) assignValues(values ...interface{}) error {
 	} else if value.Valid {
 		c.ConstructionSpeed = int(value.Int64)
 	}
-	values = values[18:]
+	if value, ok := values[18].(*sql.NullTime); !ok {
+		return fmt.Errorf("unexpected type %T for field last_updated", values[18])
+	} else if value.Valid {
+		c.LastUpdated = value.Time
+	}
+	values = values[19:]
 	if len(values) == len(city.ForeignKeys) {
 		if value, ok := values[0].(*sql.NullInt64); !ok {
 			return fmt.Errorf("unexpected type %T for edge-field user_cities", value)
@@ -324,6 +332,8 @@ func (c *City) String() string {
 	builder.WriteString(c.QueueTime.Format(time.ANSIC))
 	builder.WriteString(", construction_speed=")
 	builder.WriteString(fmt.Sprintf("%v", c.ConstructionSpeed))
+	builder.WriteString(", last_updated=")
+	builder.WriteString(c.LastUpdated.Format(time.ANSIC))
 	builder.WriteByte(')')
 	return builder.String()
 }

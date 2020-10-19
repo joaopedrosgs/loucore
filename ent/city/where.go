@@ -5,8 +5,8 @@ package city
 import (
 	"time"
 
-	"github.com/facebookincubator/ent/dialect/sql"
-	"github.com/facebookincubator/ent/dialect/sql/sqlgraph"
+	"github.com/facebook/ent/dialect/sql"
+	"github.com/facebook/ent/dialect/sql/sqlgraph"
 	"github.com/joaopedrosgs/loucore/ent/predicate"
 )
 
@@ -122,84 +122,84 @@ func Points(v int) predicate.City {
 }
 
 // WoodProduction applies equality check predicate on the "wood_production" field. It's identical to WoodProductionEQ.
-func WoodProduction(v int) predicate.City {
+func WoodProduction(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldWoodProduction), v))
 	})
 }
 
 // StoneProduction applies equality check predicate on the "stone_production" field. It's identical to StoneProductionEQ.
-func StoneProduction(v int) predicate.City {
+func StoneProduction(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldStoneProduction), v))
 	})
 }
 
 // IronProduction applies equality check predicate on the "iron_production" field. It's identical to IronProductionEQ.
-func IronProduction(v int) predicate.City {
+func IronProduction(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldIronProduction), v))
 	})
 }
 
 // FoodProduction applies equality check predicate on the "food_production" field. It's identical to FoodProductionEQ.
-func FoodProduction(v int) predicate.City {
+func FoodProduction(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldFoodProduction), v))
 	})
 }
 
 // WoodStored applies equality check predicate on the "wood_stored" field. It's identical to WoodStoredEQ.
-func WoodStored(v int) predicate.City {
+func WoodStored(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldWoodStored), v))
 	})
 }
 
 // StoneStored applies equality check predicate on the "stone_stored" field. It's identical to StoneStoredEQ.
-func StoneStored(v int) predicate.City {
+func StoneStored(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldStoneStored), v))
 	})
 }
 
 // IronStored applies equality check predicate on the "iron_stored" field. It's identical to IronStoredEQ.
-func IronStored(v int) predicate.City {
+func IronStored(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldIronStored), v))
 	})
 }
 
 // FoodStored applies equality check predicate on the "food_stored" field. It's identical to FoodStoredEQ.
-func FoodStored(v int) predicate.City {
+func FoodStored(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldFoodStored), v))
 	})
 }
 
 // WoodLimit applies equality check predicate on the "wood_limit" field. It's identical to WoodLimitEQ.
-func WoodLimit(v int) predicate.City {
+func WoodLimit(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldWoodLimit), v))
 	})
 }
 
 // StoneLimit applies equality check predicate on the "stone_limit" field. It's identical to StoneLimitEQ.
-func StoneLimit(v int) predicate.City {
+func StoneLimit(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldStoneLimit), v))
 	})
 }
 
 // IronLimit applies equality check predicate on the "iron_limit" field. It's identical to IronLimitEQ.
-func IronLimit(v int) predicate.City {
+func IronLimit(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldIronLimit), v))
 	})
 }
 
 // FoodLimit applies equality check predicate on the "food_limit" field. It's identical to FoodLimitEQ.
-func FoodLimit(v int) predicate.City {
+func FoodLimit(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldFoodLimit), v))
 	})
@@ -216,6 +216,13 @@ func QueueTime(v time.Time) predicate.City {
 func ConstructionSpeed(v int) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldConstructionSpeed), v))
+	})
+}
+
+// LastUpdated applies equality check predicate on the "last_updated" field. It's identical to LastUpdatedEQ.
+func LastUpdated(v time.Time) predicate.City {
+	return predicate.City(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldLastUpdated), v))
 	})
 }
 
@@ -559,21 +566,21 @@ func PointsLTE(v int) predicate.City {
 }
 
 // WoodProductionEQ applies the EQ predicate on the "wood_production" field.
-func WoodProductionEQ(v int) predicate.City {
+func WoodProductionEQ(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldWoodProduction), v))
 	})
 }
 
 // WoodProductionNEQ applies the NEQ predicate on the "wood_production" field.
-func WoodProductionNEQ(v int) predicate.City {
+func WoodProductionNEQ(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldWoodProduction), v))
 	})
 }
 
 // WoodProductionIn applies the In predicate on the "wood_production" field.
-func WoodProductionIn(vs ...int) predicate.City {
+func WoodProductionIn(vs ...float64) predicate.City {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -590,7 +597,7 @@ func WoodProductionIn(vs ...int) predicate.City {
 }
 
 // WoodProductionNotIn applies the NotIn predicate on the "wood_production" field.
-func WoodProductionNotIn(vs ...int) predicate.City {
+func WoodProductionNotIn(vs ...float64) predicate.City {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -607,49 +614,49 @@ func WoodProductionNotIn(vs ...int) predicate.City {
 }
 
 // WoodProductionGT applies the GT predicate on the "wood_production" field.
-func WoodProductionGT(v int) predicate.City {
+func WoodProductionGT(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldWoodProduction), v))
 	})
 }
 
 // WoodProductionGTE applies the GTE predicate on the "wood_production" field.
-func WoodProductionGTE(v int) predicate.City {
+func WoodProductionGTE(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldWoodProduction), v))
 	})
 }
 
 // WoodProductionLT applies the LT predicate on the "wood_production" field.
-func WoodProductionLT(v int) predicate.City {
+func WoodProductionLT(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldWoodProduction), v))
 	})
 }
 
 // WoodProductionLTE applies the LTE predicate on the "wood_production" field.
-func WoodProductionLTE(v int) predicate.City {
+func WoodProductionLTE(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldWoodProduction), v))
 	})
 }
 
 // StoneProductionEQ applies the EQ predicate on the "stone_production" field.
-func StoneProductionEQ(v int) predicate.City {
+func StoneProductionEQ(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldStoneProduction), v))
 	})
 }
 
 // StoneProductionNEQ applies the NEQ predicate on the "stone_production" field.
-func StoneProductionNEQ(v int) predicate.City {
+func StoneProductionNEQ(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldStoneProduction), v))
 	})
 }
 
 // StoneProductionIn applies the In predicate on the "stone_production" field.
-func StoneProductionIn(vs ...int) predicate.City {
+func StoneProductionIn(vs ...float64) predicate.City {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -666,7 +673,7 @@ func StoneProductionIn(vs ...int) predicate.City {
 }
 
 // StoneProductionNotIn applies the NotIn predicate on the "stone_production" field.
-func StoneProductionNotIn(vs ...int) predicate.City {
+func StoneProductionNotIn(vs ...float64) predicate.City {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -683,49 +690,49 @@ func StoneProductionNotIn(vs ...int) predicate.City {
 }
 
 // StoneProductionGT applies the GT predicate on the "stone_production" field.
-func StoneProductionGT(v int) predicate.City {
+func StoneProductionGT(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldStoneProduction), v))
 	})
 }
 
 // StoneProductionGTE applies the GTE predicate on the "stone_production" field.
-func StoneProductionGTE(v int) predicate.City {
+func StoneProductionGTE(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldStoneProduction), v))
 	})
 }
 
 // StoneProductionLT applies the LT predicate on the "stone_production" field.
-func StoneProductionLT(v int) predicate.City {
+func StoneProductionLT(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldStoneProduction), v))
 	})
 }
 
 // StoneProductionLTE applies the LTE predicate on the "stone_production" field.
-func StoneProductionLTE(v int) predicate.City {
+func StoneProductionLTE(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldStoneProduction), v))
 	})
 }
 
 // IronProductionEQ applies the EQ predicate on the "iron_production" field.
-func IronProductionEQ(v int) predicate.City {
+func IronProductionEQ(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldIronProduction), v))
 	})
 }
 
 // IronProductionNEQ applies the NEQ predicate on the "iron_production" field.
-func IronProductionNEQ(v int) predicate.City {
+func IronProductionNEQ(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldIronProduction), v))
 	})
 }
 
 // IronProductionIn applies the In predicate on the "iron_production" field.
-func IronProductionIn(vs ...int) predicate.City {
+func IronProductionIn(vs ...float64) predicate.City {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -742,7 +749,7 @@ func IronProductionIn(vs ...int) predicate.City {
 }
 
 // IronProductionNotIn applies the NotIn predicate on the "iron_production" field.
-func IronProductionNotIn(vs ...int) predicate.City {
+func IronProductionNotIn(vs ...float64) predicate.City {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -759,49 +766,49 @@ func IronProductionNotIn(vs ...int) predicate.City {
 }
 
 // IronProductionGT applies the GT predicate on the "iron_production" field.
-func IronProductionGT(v int) predicate.City {
+func IronProductionGT(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldIronProduction), v))
 	})
 }
 
 // IronProductionGTE applies the GTE predicate on the "iron_production" field.
-func IronProductionGTE(v int) predicate.City {
+func IronProductionGTE(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldIronProduction), v))
 	})
 }
 
 // IronProductionLT applies the LT predicate on the "iron_production" field.
-func IronProductionLT(v int) predicate.City {
+func IronProductionLT(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldIronProduction), v))
 	})
 }
 
 // IronProductionLTE applies the LTE predicate on the "iron_production" field.
-func IronProductionLTE(v int) predicate.City {
+func IronProductionLTE(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldIronProduction), v))
 	})
 }
 
 // FoodProductionEQ applies the EQ predicate on the "food_production" field.
-func FoodProductionEQ(v int) predicate.City {
+func FoodProductionEQ(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldFoodProduction), v))
 	})
 }
 
 // FoodProductionNEQ applies the NEQ predicate on the "food_production" field.
-func FoodProductionNEQ(v int) predicate.City {
+func FoodProductionNEQ(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldFoodProduction), v))
 	})
 }
 
 // FoodProductionIn applies the In predicate on the "food_production" field.
-func FoodProductionIn(vs ...int) predicate.City {
+func FoodProductionIn(vs ...float64) predicate.City {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -818,7 +825,7 @@ func FoodProductionIn(vs ...int) predicate.City {
 }
 
 // FoodProductionNotIn applies the NotIn predicate on the "food_production" field.
-func FoodProductionNotIn(vs ...int) predicate.City {
+func FoodProductionNotIn(vs ...float64) predicate.City {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -835,49 +842,49 @@ func FoodProductionNotIn(vs ...int) predicate.City {
 }
 
 // FoodProductionGT applies the GT predicate on the "food_production" field.
-func FoodProductionGT(v int) predicate.City {
+func FoodProductionGT(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldFoodProduction), v))
 	})
 }
 
 // FoodProductionGTE applies the GTE predicate on the "food_production" field.
-func FoodProductionGTE(v int) predicate.City {
+func FoodProductionGTE(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldFoodProduction), v))
 	})
 }
 
 // FoodProductionLT applies the LT predicate on the "food_production" field.
-func FoodProductionLT(v int) predicate.City {
+func FoodProductionLT(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldFoodProduction), v))
 	})
 }
 
 // FoodProductionLTE applies the LTE predicate on the "food_production" field.
-func FoodProductionLTE(v int) predicate.City {
+func FoodProductionLTE(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldFoodProduction), v))
 	})
 }
 
 // WoodStoredEQ applies the EQ predicate on the "wood_stored" field.
-func WoodStoredEQ(v int) predicate.City {
+func WoodStoredEQ(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldWoodStored), v))
 	})
 }
 
 // WoodStoredNEQ applies the NEQ predicate on the "wood_stored" field.
-func WoodStoredNEQ(v int) predicate.City {
+func WoodStoredNEQ(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldWoodStored), v))
 	})
 }
 
 // WoodStoredIn applies the In predicate on the "wood_stored" field.
-func WoodStoredIn(vs ...int) predicate.City {
+func WoodStoredIn(vs ...float64) predicate.City {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -894,7 +901,7 @@ func WoodStoredIn(vs ...int) predicate.City {
 }
 
 // WoodStoredNotIn applies the NotIn predicate on the "wood_stored" field.
-func WoodStoredNotIn(vs ...int) predicate.City {
+func WoodStoredNotIn(vs ...float64) predicate.City {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -911,49 +918,49 @@ func WoodStoredNotIn(vs ...int) predicate.City {
 }
 
 // WoodStoredGT applies the GT predicate on the "wood_stored" field.
-func WoodStoredGT(v int) predicate.City {
+func WoodStoredGT(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldWoodStored), v))
 	})
 }
 
 // WoodStoredGTE applies the GTE predicate on the "wood_stored" field.
-func WoodStoredGTE(v int) predicate.City {
+func WoodStoredGTE(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldWoodStored), v))
 	})
 }
 
 // WoodStoredLT applies the LT predicate on the "wood_stored" field.
-func WoodStoredLT(v int) predicate.City {
+func WoodStoredLT(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldWoodStored), v))
 	})
 }
 
 // WoodStoredLTE applies the LTE predicate on the "wood_stored" field.
-func WoodStoredLTE(v int) predicate.City {
+func WoodStoredLTE(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldWoodStored), v))
 	})
 }
 
 // StoneStoredEQ applies the EQ predicate on the "stone_stored" field.
-func StoneStoredEQ(v int) predicate.City {
+func StoneStoredEQ(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldStoneStored), v))
 	})
 }
 
 // StoneStoredNEQ applies the NEQ predicate on the "stone_stored" field.
-func StoneStoredNEQ(v int) predicate.City {
+func StoneStoredNEQ(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldStoneStored), v))
 	})
 }
 
 // StoneStoredIn applies the In predicate on the "stone_stored" field.
-func StoneStoredIn(vs ...int) predicate.City {
+func StoneStoredIn(vs ...float64) predicate.City {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -970,7 +977,7 @@ func StoneStoredIn(vs ...int) predicate.City {
 }
 
 // StoneStoredNotIn applies the NotIn predicate on the "stone_stored" field.
-func StoneStoredNotIn(vs ...int) predicate.City {
+func StoneStoredNotIn(vs ...float64) predicate.City {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -987,49 +994,49 @@ func StoneStoredNotIn(vs ...int) predicate.City {
 }
 
 // StoneStoredGT applies the GT predicate on the "stone_stored" field.
-func StoneStoredGT(v int) predicate.City {
+func StoneStoredGT(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldStoneStored), v))
 	})
 }
 
 // StoneStoredGTE applies the GTE predicate on the "stone_stored" field.
-func StoneStoredGTE(v int) predicate.City {
+func StoneStoredGTE(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldStoneStored), v))
 	})
 }
 
 // StoneStoredLT applies the LT predicate on the "stone_stored" field.
-func StoneStoredLT(v int) predicate.City {
+func StoneStoredLT(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldStoneStored), v))
 	})
 }
 
 // StoneStoredLTE applies the LTE predicate on the "stone_stored" field.
-func StoneStoredLTE(v int) predicate.City {
+func StoneStoredLTE(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldStoneStored), v))
 	})
 }
 
 // IronStoredEQ applies the EQ predicate on the "iron_stored" field.
-func IronStoredEQ(v int) predicate.City {
+func IronStoredEQ(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldIronStored), v))
 	})
 }
 
 // IronStoredNEQ applies the NEQ predicate on the "iron_stored" field.
-func IronStoredNEQ(v int) predicate.City {
+func IronStoredNEQ(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldIronStored), v))
 	})
 }
 
 // IronStoredIn applies the In predicate on the "iron_stored" field.
-func IronStoredIn(vs ...int) predicate.City {
+func IronStoredIn(vs ...float64) predicate.City {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -1046,7 +1053,7 @@ func IronStoredIn(vs ...int) predicate.City {
 }
 
 // IronStoredNotIn applies the NotIn predicate on the "iron_stored" field.
-func IronStoredNotIn(vs ...int) predicate.City {
+func IronStoredNotIn(vs ...float64) predicate.City {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -1063,49 +1070,49 @@ func IronStoredNotIn(vs ...int) predicate.City {
 }
 
 // IronStoredGT applies the GT predicate on the "iron_stored" field.
-func IronStoredGT(v int) predicate.City {
+func IronStoredGT(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldIronStored), v))
 	})
 }
 
 // IronStoredGTE applies the GTE predicate on the "iron_stored" field.
-func IronStoredGTE(v int) predicate.City {
+func IronStoredGTE(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldIronStored), v))
 	})
 }
 
 // IronStoredLT applies the LT predicate on the "iron_stored" field.
-func IronStoredLT(v int) predicate.City {
+func IronStoredLT(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldIronStored), v))
 	})
 }
 
 // IronStoredLTE applies the LTE predicate on the "iron_stored" field.
-func IronStoredLTE(v int) predicate.City {
+func IronStoredLTE(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldIronStored), v))
 	})
 }
 
 // FoodStoredEQ applies the EQ predicate on the "food_stored" field.
-func FoodStoredEQ(v int) predicate.City {
+func FoodStoredEQ(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldFoodStored), v))
 	})
 }
 
 // FoodStoredNEQ applies the NEQ predicate on the "food_stored" field.
-func FoodStoredNEQ(v int) predicate.City {
+func FoodStoredNEQ(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldFoodStored), v))
 	})
 }
 
 // FoodStoredIn applies the In predicate on the "food_stored" field.
-func FoodStoredIn(vs ...int) predicate.City {
+func FoodStoredIn(vs ...float64) predicate.City {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -1122,7 +1129,7 @@ func FoodStoredIn(vs ...int) predicate.City {
 }
 
 // FoodStoredNotIn applies the NotIn predicate on the "food_stored" field.
-func FoodStoredNotIn(vs ...int) predicate.City {
+func FoodStoredNotIn(vs ...float64) predicate.City {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -1139,49 +1146,49 @@ func FoodStoredNotIn(vs ...int) predicate.City {
 }
 
 // FoodStoredGT applies the GT predicate on the "food_stored" field.
-func FoodStoredGT(v int) predicate.City {
+func FoodStoredGT(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldFoodStored), v))
 	})
 }
 
 // FoodStoredGTE applies the GTE predicate on the "food_stored" field.
-func FoodStoredGTE(v int) predicate.City {
+func FoodStoredGTE(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldFoodStored), v))
 	})
 }
 
 // FoodStoredLT applies the LT predicate on the "food_stored" field.
-func FoodStoredLT(v int) predicate.City {
+func FoodStoredLT(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldFoodStored), v))
 	})
 }
 
 // FoodStoredLTE applies the LTE predicate on the "food_stored" field.
-func FoodStoredLTE(v int) predicate.City {
+func FoodStoredLTE(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldFoodStored), v))
 	})
 }
 
 // WoodLimitEQ applies the EQ predicate on the "wood_limit" field.
-func WoodLimitEQ(v int) predicate.City {
+func WoodLimitEQ(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldWoodLimit), v))
 	})
 }
 
 // WoodLimitNEQ applies the NEQ predicate on the "wood_limit" field.
-func WoodLimitNEQ(v int) predicate.City {
+func WoodLimitNEQ(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldWoodLimit), v))
 	})
 }
 
 // WoodLimitIn applies the In predicate on the "wood_limit" field.
-func WoodLimitIn(vs ...int) predicate.City {
+func WoodLimitIn(vs ...float64) predicate.City {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -1198,7 +1205,7 @@ func WoodLimitIn(vs ...int) predicate.City {
 }
 
 // WoodLimitNotIn applies the NotIn predicate on the "wood_limit" field.
-func WoodLimitNotIn(vs ...int) predicate.City {
+func WoodLimitNotIn(vs ...float64) predicate.City {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -1215,49 +1222,49 @@ func WoodLimitNotIn(vs ...int) predicate.City {
 }
 
 // WoodLimitGT applies the GT predicate on the "wood_limit" field.
-func WoodLimitGT(v int) predicate.City {
+func WoodLimitGT(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldWoodLimit), v))
 	})
 }
 
 // WoodLimitGTE applies the GTE predicate on the "wood_limit" field.
-func WoodLimitGTE(v int) predicate.City {
+func WoodLimitGTE(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldWoodLimit), v))
 	})
 }
 
 // WoodLimitLT applies the LT predicate on the "wood_limit" field.
-func WoodLimitLT(v int) predicate.City {
+func WoodLimitLT(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldWoodLimit), v))
 	})
 }
 
 // WoodLimitLTE applies the LTE predicate on the "wood_limit" field.
-func WoodLimitLTE(v int) predicate.City {
+func WoodLimitLTE(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldWoodLimit), v))
 	})
 }
 
 // StoneLimitEQ applies the EQ predicate on the "stone_limit" field.
-func StoneLimitEQ(v int) predicate.City {
+func StoneLimitEQ(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldStoneLimit), v))
 	})
 }
 
 // StoneLimitNEQ applies the NEQ predicate on the "stone_limit" field.
-func StoneLimitNEQ(v int) predicate.City {
+func StoneLimitNEQ(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldStoneLimit), v))
 	})
 }
 
 // StoneLimitIn applies the In predicate on the "stone_limit" field.
-func StoneLimitIn(vs ...int) predicate.City {
+func StoneLimitIn(vs ...float64) predicate.City {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -1274,7 +1281,7 @@ func StoneLimitIn(vs ...int) predicate.City {
 }
 
 // StoneLimitNotIn applies the NotIn predicate on the "stone_limit" field.
-func StoneLimitNotIn(vs ...int) predicate.City {
+func StoneLimitNotIn(vs ...float64) predicate.City {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -1291,49 +1298,49 @@ func StoneLimitNotIn(vs ...int) predicate.City {
 }
 
 // StoneLimitGT applies the GT predicate on the "stone_limit" field.
-func StoneLimitGT(v int) predicate.City {
+func StoneLimitGT(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldStoneLimit), v))
 	})
 }
 
 // StoneLimitGTE applies the GTE predicate on the "stone_limit" field.
-func StoneLimitGTE(v int) predicate.City {
+func StoneLimitGTE(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldStoneLimit), v))
 	})
 }
 
 // StoneLimitLT applies the LT predicate on the "stone_limit" field.
-func StoneLimitLT(v int) predicate.City {
+func StoneLimitLT(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldStoneLimit), v))
 	})
 }
 
 // StoneLimitLTE applies the LTE predicate on the "stone_limit" field.
-func StoneLimitLTE(v int) predicate.City {
+func StoneLimitLTE(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldStoneLimit), v))
 	})
 }
 
 // IronLimitEQ applies the EQ predicate on the "iron_limit" field.
-func IronLimitEQ(v int) predicate.City {
+func IronLimitEQ(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldIronLimit), v))
 	})
 }
 
 // IronLimitNEQ applies the NEQ predicate on the "iron_limit" field.
-func IronLimitNEQ(v int) predicate.City {
+func IronLimitNEQ(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldIronLimit), v))
 	})
 }
 
 // IronLimitIn applies the In predicate on the "iron_limit" field.
-func IronLimitIn(vs ...int) predicate.City {
+func IronLimitIn(vs ...float64) predicate.City {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -1350,7 +1357,7 @@ func IronLimitIn(vs ...int) predicate.City {
 }
 
 // IronLimitNotIn applies the NotIn predicate on the "iron_limit" field.
-func IronLimitNotIn(vs ...int) predicate.City {
+func IronLimitNotIn(vs ...float64) predicate.City {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -1367,49 +1374,49 @@ func IronLimitNotIn(vs ...int) predicate.City {
 }
 
 // IronLimitGT applies the GT predicate on the "iron_limit" field.
-func IronLimitGT(v int) predicate.City {
+func IronLimitGT(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldIronLimit), v))
 	})
 }
 
 // IronLimitGTE applies the GTE predicate on the "iron_limit" field.
-func IronLimitGTE(v int) predicate.City {
+func IronLimitGTE(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldIronLimit), v))
 	})
 }
 
 // IronLimitLT applies the LT predicate on the "iron_limit" field.
-func IronLimitLT(v int) predicate.City {
+func IronLimitLT(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldIronLimit), v))
 	})
 }
 
 // IronLimitLTE applies the LTE predicate on the "iron_limit" field.
-func IronLimitLTE(v int) predicate.City {
+func IronLimitLTE(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldIronLimit), v))
 	})
 }
 
 // FoodLimitEQ applies the EQ predicate on the "food_limit" field.
-func FoodLimitEQ(v int) predicate.City {
+func FoodLimitEQ(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldFoodLimit), v))
 	})
 }
 
 // FoodLimitNEQ applies the NEQ predicate on the "food_limit" field.
-func FoodLimitNEQ(v int) predicate.City {
+func FoodLimitNEQ(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldFoodLimit), v))
 	})
 }
 
 // FoodLimitIn applies the In predicate on the "food_limit" field.
-func FoodLimitIn(vs ...int) predicate.City {
+func FoodLimitIn(vs ...float64) predicate.City {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -1426,7 +1433,7 @@ func FoodLimitIn(vs ...int) predicate.City {
 }
 
 // FoodLimitNotIn applies the NotIn predicate on the "food_limit" field.
-func FoodLimitNotIn(vs ...int) predicate.City {
+func FoodLimitNotIn(vs ...float64) predicate.City {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -1443,28 +1450,28 @@ func FoodLimitNotIn(vs ...int) predicate.City {
 }
 
 // FoodLimitGT applies the GT predicate on the "food_limit" field.
-func FoodLimitGT(v int) predicate.City {
+func FoodLimitGT(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldFoodLimit), v))
 	})
 }
 
 // FoodLimitGTE applies the GTE predicate on the "food_limit" field.
-func FoodLimitGTE(v int) predicate.City {
+func FoodLimitGTE(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldFoodLimit), v))
 	})
 }
 
 // FoodLimitLT applies the LT predicate on the "food_limit" field.
-func FoodLimitLT(v int) predicate.City {
+func FoodLimitLT(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldFoodLimit), v))
 	})
 }
 
 // FoodLimitLTE applies the LTE predicate on the "food_limit" field.
-func FoodLimitLTE(v int) predicate.City {
+func FoodLimitLTE(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldFoodLimit), v))
 	})
@@ -1619,6 +1626,82 @@ func ConstructionSpeedLT(v int) predicate.City {
 func ConstructionSpeedLTE(v int) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldConstructionSpeed), v))
+	})
+}
+
+// LastUpdatedEQ applies the EQ predicate on the "last_updated" field.
+func LastUpdatedEQ(v time.Time) predicate.City {
+	return predicate.City(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldLastUpdated), v))
+	})
+}
+
+// LastUpdatedNEQ applies the NEQ predicate on the "last_updated" field.
+func LastUpdatedNEQ(v time.Time) predicate.City {
+	return predicate.City(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldLastUpdated), v))
+	})
+}
+
+// LastUpdatedIn applies the In predicate on the "last_updated" field.
+func LastUpdatedIn(vs ...time.Time) predicate.City {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.City(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldLastUpdated), v...))
+	})
+}
+
+// LastUpdatedNotIn applies the NotIn predicate on the "last_updated" field.
+func LastUpdatedNotIn(vs ...time.Time) predicate.City {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.City(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldLastUpdated), v...))
+	})
+}
+
+// LastUpdatedGT applies the GT predicate on the "last_updated" field.
+func LastUpdatedGT(v time.Time) predicate.City {
+	return predicate.City(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldLastUpdated), v))
+	})
+}
+
+// LastUpdatedGTE applies the GTE predicate on the "last_updated" field.
+func LastUpdatedGTE(v time.Time) predicate.City {
+	return predicate.City(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldLastUpdated), v))
+	})
+}
+
+// LastUpdatedLT applies the LT predicate on the "last_updated" field.
+func LastUpdatedLT(v time.Time) predicate.City {
+	return predicate.City(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldLastUpdated), v))
+	})
+}
+
+// LastUpdatedLTE applies the LTE predicate on the "last_updated" field.
+func LastUpdatedLTE(v time.Time) predicate.City {
+	return predicate.City(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldLastUpdated), v))
 	})
 }
 

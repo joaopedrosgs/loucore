@@ -4,11 +4,12 @@ package ent
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"time"
 
-	"github.com/facebookincubator/ent/dialect/sql/sqlgraph"
-	"github.com/facebookincubator/ent/schema/field"
+	"github.com/facebook/ent/dialect/sql/sqlgraph"
+	"github.com/facebook/ent/schema/field"
 	"github.com/joaopedrosgs/loucore/ent/city"
 	"github.com/joaopedrosgs/loucore/ent/construction"
 	"github.com/joaopedrosgs/loucore/ent/queueitem"
@@ -79,169 +80,169 @@ func (cc *CityCreate) SetNillablePoints(i *int) *CityCreate {
 }
 
 // SetWoodProduction sets the wood_production field.
-func (cc *CityCreate) SetWoodProduction(i int) *CityCreate {
-	cc.mutation.SetWoodProduction(i)
+func (cc *CityCreate) SetWoodProduction(f float64) *CityCreate {
+	cc.mutation.SetWoodProduction(f)
 	return cc
 }
 
 // SetNillableWoodProduction sets the wood_production field if the given value is not nil.
-func (cc *CityCreate) SetNillableWoodProduction(i *int) *CityCreate {
-	if i != nil {
-		cc.SetWoodProduction(*i)
+func (cc *CityCreate) SetNillableWoodProduction(f *float64) *CityCreate {
+	if f != nil {
+		cc.SetWoodProduction(*f)
 	}
 	return cc
 }
 
 // SetStoneProduction sets the stone_production field.
-func (cc *CityCreate) SetStoneProduction(i int) *CityCreate {
-	cc.mutation.SetStoneProduction(i)
+func (cc *CityCreate) SetStoneProduction(f float64) *CityCreate {
+	cc.mutation.SetStoneProduction(f)
 	return cc
 }
 
 // SetNillableStoneProduction sets the stone_production field if the given value is not nil.
-func (cc *CityCreate) SetNillableStoneProduction(i *int) *CityCreate {
-	if i != nil {
-		cc.SetStoneProduction(*i)
+func (cc *CityCreate) SetNillableStoneProduction(f *float64) *CityCreate {
+	if f != nil {
+		cc.SetStoneProduction(*f)
 	}
 	return cc
 }
 
 // SetIronProduction sets the iron_production field.
-func (cc *CityCreate) SetIronProduction(i int) *CityCreate {
-	cc.mutation.SetIronProduction(i)
+func (cc *CityCreate) SetIronProduction(f float64) *CityCreate {
+	cc.mutation.SetIronProduction(f)
 	return cc
 }
 
 // SetNillableIronProduction sets the iron_production field if the given value is not nil.
-func (cc *CityCreate) SetNillableIronProduction(i *int) *CityCreate {
-	if i != nil {
-		cc.SetIronProduction(*i)
+func (cc *CityCreate) SetNillableIronProduction(f *float64) *CityCreate {
+	if f != nil {
+		cc.SetIronProduction(*f)
 	}
 	return cc
 }
 
 // SetFoodProduction sets the food_production field.
-func (cc *CityCreate) SetFoodProduction(i int) *CityCreate {
-	cc.mutation.SetFoodProduction(i)
+func (cc *CityCreate) SetFoodProduction(f float64) *CityCreate {
+	cc.mutation.SetFoodProduction(f)
 	return cc
 }
 
 // SetNillableFoodProduction sets the food_production field if the given value is not nil.
-func (cc *CityCreate) SetNillableFoodProduction(i *int) *CityCreate {
-	if i != nil {
-		cc.SetFoodProduction(*i)
+func (cc *CityCreate) SetNillableFoodProduction(f *float64) *CityCreate {
+	if f != nil {
+		cc.SetFoodProduction(*f)
 	}
 	return cc
 }
 
 // SetWoodStored sets the wood_stored field.
-func (cc *CityCreate) SetWoodStored(i int) *CityCreate {
-	cc.mutation.SetWoodStored(i)
+func (cc *CityCreate) SetWoodStored(f float64) *CityCreate {
+	cc.mutation.SetWoodStored(f)
 	return cc
 }
 
 // SetNillableWoodStored sets the wood_stored field if the given value is not nil.
-func (cc *CityCreate) SetNillableWoodStored(i *int) *CityCreate {
-	if i != nil {
-		cc.SetWoodStored(*i)
+func (cc *CityCreate) SetNillableWoodStored(f *float64) *CityCreate {
+	if f != nil {
+		cc.SetWoodStored(*f)
 	}
 	return cc
 }
 
 // SetStoneStored sets the stone_stored field.
-func (cc *CityCreate) SetStoneStored(i int) *CityCreate {
-	cc.mutation.SetStoneStored(i)
+func (cc *CityCreate) SetStoneStored(f float64) *CityCreate {
+	cc.mutation.SetStoneStored(f)
 	return cc
 }
 
 // SetNillableStoneStored sets the stone_stored field if the given value is not nil.
-func (cc *CityCreate) SetNillableStoneStored(i *int) *CityCreate {
-	if i != nil {
-		cc.SetStoneStored(*i)
+func (cc *CityCreate) SetNillableStoneStored(f *float64) *CityCreate {
+	if f != nil {
+		cc.SetStoneStored(*f)
 	}
 	return cc
 }
 
 // SetIronStored sets the iron_stored field.
-func (cc *CityCreate) SetIronStored(i int) *CityCreate {
-	cc.mutation.SetIronStored(i)
+func (cc *CityCreate) SetIronStored(f float64) *CityCreate {
+	cc.mutation.SetIronStored(f)
 	return cc
 }
 
 // SetNillableIronStored sets the iron_stored field if the given value is not nil.
-func (cc *CityCreate) SetNillableIronStored(i *int) *CityCreate {
-	if i != nil {
-		cc.SetIronStored(*i)
+func (cc *CityCreate) SetNillableIronStored(f *float64) *CityCreate {
+	if f != nil {
+		cc.SetIronStored(*f)
 	}
 	return cc
 }
 
 // SetFoodStored sets the food_stored field.
-func (cc *CityCreate) SetFoodStored(i int) *CityCreate {
-	cc.mutation.SetFoodStored(i)
+func (cc *CityCreate) SetFoodStored(f float64) *CityCreate {
+	cc.mutation.SetFoodStored(f)
 	return cc
 }
 
 // SetNillableFoodStored sets the food_stored field if the given value is not nil.
-func (cc *CityCreate) SetNillableFoodStored(i *int) *CityCreate {
-	if i != nil {
-		cc.SetFoodStored(*i)
+func (cc *CityCreate) SetNillableFoodStored(f *float64) *CityCreate {
+	if f != nil {
+		cc.SetFoodStored(*f)
 	}
 	return cc
 }
 
 // SetWoodLimit sets the wood_limit field.
-func (cc *CityCreate) SetWoodLimit(i int) *CityCreate {
-	cc.mutation.SetWoodLimit(i)
+func (cc *CityCreate) SetWoodLimit(f float64) *CityCreate {
+	cc.mutation.SetWoodLimit(f)
 	return cc
 }
 
 // SetNillableWoodLimit sets the wood_limit field if the given value is not nil.
-func (cc *CityCreate) SetNillableWoodLimit(i *int) *CityCreate {
-	if i != nil {
-		cc.SetWoodLimit(*i)
+func (cc *CityCreate) SetNillableWoodLimit(f *float64) *CityCreate {
+	if f != nil {
+		cc.SetWoodLimit(*f)
 	}
 	return cc
 }
 
 // SetStoneLimit sets the stone_limit field.
-func (cc *CityCreate) SetStoneLimit(i int) *CityCreate {
-	cc.mutation.SetStoneLimit(i)
+func (cc *CityCreate) SetStoneLimit(f float64) *CityCreate {
+	cc.mutation.SetStoneLimit(f)
 	return cc
 }
 
 // SetNillableStoneLimit sets the stone_limit field if the given value is not nil.
-func (cc *CityCreate) SetNillableStoneLimit(i *int) *CityCreate {
-	if i != nil {
-		cc.SetStoneLimit(*i)
+func (cc *CityCreate) SetNillableStoneLimit(f *float64) *CityCreate {
+	if f != nil {
+		cc.SetStoneLimit(*f)
 	}
 	return cc
 }
 
 // SetIronLimit sets the iron_limit field.
-func (cc *CityCreate) SetIronLimit(i int) *CityCreate {
-	cc.mutation.SetIronLimit(i)
+func (cc *CityCreate) SetIronLimit(f float64) *CityCreate {
+	cc.mutation.SetIronLimit(f)
 	return cc
 }
 
 // SetNillableIronLimit sets the iron_limit field if the given value is not nil.
-func (cc *CityCreate) SetNillableIronLimit(i *int) *CityCreate {
-	if i != nil {
-		cc.SetIronLimit(*i)
+func (cc *CityCreate) SetNillableIronLimit(f *float64) *CityCreate {
+	if f != nil {
+		cc.SetIronLimit(*f)
 	}
 	return cc
 }
 
 // SetFoodLimit sets the food_limit field.
-func (cc *CityCreate) SetFoodLimit(i int) *CityCreate {
-	cc.mutation.SetFoodLimit(i)
+func (cc *CityCreate) SetFoodLimit(f float64) *CityCreate {
+	cc.mutation.SetFoodLimit(f)
 	return cc
 }
 
 // SetNillableFoodLimit sets the food_limit field if the given value is not nil.
-func (cc *CityCreate) SetNillableFoodLimit(i *int) *CityCreate {
-	if i != nil {
-		cc.SetFoodLimit(*i)
+func (cc *CityCreate) SetNillableFoodLimit(f *float64) *CityCreate {
+	if f != nil {
+		cc.SetFoodLimit(*f)
 	}
 	return cc
 }
@@ -270,6 +271,20 @@ func (cc *CityCreate) SetConstructionSpeed(i int) *CityCreate {
 func (cc *CityCreate) SetNillableConstructionSpeed(i *int) *CityCreate {
 	if i != nil {
 		cc.SetConstructionSpeed(*i)
+	}
+	return cc
+}
+
+// SetLastUpdated sets the last_updated field.
+func (cc *CityCreate) SetLastUpdated(t time.Time) *CityCreate {
+	cc.mutation.SetLastUpdated(t)
+	return cc
+}
+
+// SetNillableLastUpdated sets the last_updated field if the given value is not nil.
+func (cc *CityCreate) SetNillableLastUpdated(t *time.Time) *CityCreate {
+	if t != nil {
+		cc.SetLastUpdated(*t)
 	}
 	return cc
 }
@@ -323,8 +338,58 @@ func (cc *CityCreate) AddQueue(q ...*QueueItem) *CityCreate {
 	return cc.AddQueueIDs(ids...)
 }
 
+// Mutation returns the CityMutation object of the builder.
+func (cc *CityCreate) Mutation() *CityMutation {
+	return cc.mutation
+}
+
 // Save creates the City in the database.
 func (cc *CityCreate) Save(ctx context.Context) (*City, error) {
+	var (
+		err  error
+		node *City
+	)
+	cc.defaults()
+	if len(cc.hooks) == 0 {
+		if err = cc.check(); err != nil {
+			return nil, err
+		}
+		node, err = cc.sqlSave(ctx)
+	} else {
+		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
+			mutation, ok := m.(*CityMutation)
+			if !ok {
+				return nil, fmt.Errorf("unexpected mutation type %T", m)
+			}
+			if err = cc.check(); err != nil {
+				return nil, err
+			}
+			cc.mutation = mutation
+			node, err = cc.sqlSave(ctx)
+			mutation.done = true
+			return node, err
+		})
+		for i := len(cc.hooks) - 1; i >= 0; i-- {
+			mut = cc.hooks[i](mut)
+		}
+		if _, err := mut.Mutate(ctx, cc.mutation); err != nil {
+			return nil, err
+		}
+	}
+	return node, err
+}
+
+// SaveX calls Save and panics if Save returns an error.
+func (cc *CityCreate) SaveX(ctx context.Context) *City {
+	v, err := cc.Save(ctx)
+	if err != nil {
+		panic(err)
+	}
+	return v
+}
+
+// defaults sets the default values of the builder before save.
+func (cc *CityCreate) defaults() {
 	if _, ok := cc.mutation.X(); !ok {
 		v := city.DefaultX
 		cc.mutation.SetX(v)
@@ -336,11 +401,6 @@ func (cc *CityCreate) Save(ctx context.Context) (*City, error) {
 	if _, ok := cc.mutation.Name(); !ok {
 		v := city.DefaultName
 		cc.mutation.SetName(v)
-	}
-	if v, ok := cc.mutation.Name(); ok {
-		if err := city.NameValidator(v); err != nil {
-			return nil, fmt.Errorf("ent: validator failed for field \"name\": %w", err)
-		}
 	}
 	if _, ok := cc.mutation.Points(); !ok {
 		v := city.DefaultPoints
@@ -402,45 +462,95 @@ func (cc *CityCreate) Save(ctx context.Context) (*City, error) {
 		v := city.DefaultConstructionSpeed
 		cc.mutation.SetConstructionSpeed(v)
 	}
-	var (
-		err  error
-		node *City
-	)
-	if len(cc.hooks) == 0 {
-		node, err = cc.sqlSave(ctx)
-	} else {
-		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
-			mutation, ok := m.(*CityMutation)
-			if !ok {
-				return nil, fmt.Errorf("unexpected mutation type %T", m)
-			}
-			cc.mutation = mutation
-			node, err = cc.sqlSave(ctx)
-			mutation.done = true
-			return node, err
-		})
-		for i := len(cc.hooks) - 1; i >= 0; i-- {
-			mut = cc.hooks[i](mut)
-		}
-		if _, err := mut.Mutate(ctx, cc.mutation); err != nil {
-			return nil, err
-		}
+	if _, ok := cc.mutation.LastUpdated(); !ok {
+		v := city.DefaultLastUpdated()
+		cc.mutation.SetLastUpdated(v)
 	}
-	return node, err
 }
 
-// SaveX calls Save and panics if Save returns an error.
-func (cc *CityCreate) SaveX(ctx context.Context) *City {
-	v, err := cc.Save(ctx)
-	if err != nil {
-		panic(err)
+// check runs all checks and user-defined validators on the builder.
+func (cc *CityCreate) check() error {
+	if _, ok := cc.mutation.X(); !ok {
+		return &ValidationError{Name: "x", err: errors.New("ent: missing required field \"x\"")}
 	}
-	return v
+	if _, ok := cc.mutation.Y(); !ok {
+		return &ValidationError{Name: "y", err: errors.New("ent: missing required field \"y\"")}
+	}
+	if _, ok := cc.mutation.Name(); !ok {
+		return &ValidationError{Name: "name", err: errors.New("ent: missing required field \"name\"")}
+	}
+	if v, ok := cc.mutation.Name(); ok {
+		if err := city.NameValidator(v); err != nil {
+			return &ValidationError{Name: "name", err: fmt.Errorf("ent: validator failed for field \"name\": %w", err)}
+		}
+	}
+	if _, ok := cc.mutation.Points(); !ok {
+		return &ValidationError{Name: "points", err: errors.New("ent: missing required field \"points\"")}
+	}
+	if _, ok := cc.mutation.WoodProduction(); !ok {
+		return &ValidationError{Name: "wood_production", err: errors.New("ent: missing required field \"wood_production\"")}
+	}
+	if _, ok := cc.mutation.StoneProduction(); !ok {
+		return &ValidationError{Name: "stone_production", err: errors.New("ent: missing required field \"stone_production\"")}
+	}
+	if _, ok := cc.mutation.IronProduction(); !ok {
+		return &ValidationError{Name: "iron_production", err: errors.New("ent: missing required field \"iron_production\"")}
+	}
+	if _, ok := cc.mutation.FoodProduction(); !ok {
+		return &ValidationError{Name: "food_production", err: errors.New("ent: missing required field \"food_production\"")}
+	}
+	if _, ok := cc.mutation.WoodStored(); !ok {
+		return &ValidationError{Name: "wood_stored", err: errors.New("ent: missing required field \"wood_stored\"")}
+	}
+	if _, ok := cc.mutation.StoneStored(); !ok {
+		return &ValidationError{Name: "stone_stored", err: errors.New("ent: missing required field \"stone_stored\"")}
+	}
+	if _, ok := cc.mutation.IronStored(); !ok {
+		return &ValidationError{Name: "iron_stored", err: errors.New("ent: missing required field \"iron_stored\"")}
+	}
+	if _, ok := cc.mutation.FoodStored(); !ok {
+		return &ValidationError{Name: "food_stored", err: errors.New("ent: missing required field \"food_stored\"")}
+	}
+	if _, ok := cc.mutation.WoodLimit(); !ok {
+		return &ValidationError{Name: "wood_limit", err: errors.New("ent: missing required field \"wood_limit\"")}
+	}
+	if _, ok := cc.mutation.StoneLimit(); !ok {
+		return &ValidationError{Name: "stone_limit", err: errors.New("ent: missing required field \"stone_limit\"")}
+	}
+	if _, ok := cc.mutation.IronLimit(); !ok {
+		return &ValidationError{Name: "iron_limit", err: errors.New("ent: missing required field \"iron_limit\"")}
+	}
+	if _, ok := cc.mutation.FoodLimit(); !ok {
+		return &ValidationError{Name: "food_limit", err: errors.New("ent: missing required field \"food_limit\"")}
+	}
+	if _, ok := cc.mutation.QueueTime(); !ok {
+		return &ValidationError{Name: "queue_time", err: errors.New("ent: missing required field \"queue_time\"")}
+	}
+	if _, ok := cc.mutation.ConstructionSpeed(); !ok {
+		return &ValidationError{Name: "construction_speed", err: errors.New("ent: missing required field \"construction_speed\"")}
+	}
+	if _, ok := cc.mutation.LastUpdated(); !ok {
+		return &ValidationError{Name: "last_updated", err: errors.New("ent: missing required field \"last_updated\"")}
+	}
+	return nil
 }
 
 func (cc *CityCreate) sqlSave(ctx context.Context) (*City, error) {
+	_node, _spec := cc.createSpec()
+	if err := sqlgraph.CreateNode(ctx, cc.driver, _spec); err != nil {
+		if cerr, ok := isSQLConstraintError(err); ok {
+			err = cerr
+		}
+		return nil, err
+	}
+	id := _spec.ID.Value.(int64)
+	_node.ID = int(id)
+	return _node, nil
+}
+
+func (cc *CityCreate) createSpec() (*City, *sqlgraph.CreateSpec) {
 	var (
-		c     = &City{config: cc.config}
+		_node = &City{config: cc.config}
 		_spec = &sqlgraph.CreateSpec{
 			Table: city.Table,
 			ID: &sqlgraph.FieldSpec{
@@ -455,7 +565,7 @@ func (cc *CityCreate) sqlSave(ctx context.Context) (*City, error) {
 			Value:  value,
 			Column: city.FieldX,
 		})
-		c.X = value
+		_node.X = value
 	}
 	if value, ok := cc.mutation.Y(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -463,7 +573,7 @@ func (cc *CityCreate) sqlSave(ctx context.Context) (*City, error) {
 			Value:  value,
 			Column: city.FieldY,
 		})
-		c.Y = value
+		_node.Y = value
 	}
 	if value, ok := cc.mutation.Name(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -471,7 +581,7 @@ func (cc *CityCreate) sqlSave(ctx context.Context) (*City, error) {
 			Value:  value,
 			Column: city.FieldName,
 		})
-		c.Name = value
+		_node.Name = value
 	}
 	if value, ok := cc.mutation.Points(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -479,103 +589,103 @@ func (cc *CityCreate) sqlSave(ctx context.Context) (*City, error) {
 			Value:  value,
 			Column: city.FieldPoints,
 		})
-		c.Points = value
+		_node.Points = value
 	}
 	if value, ok := cc.mutation.WoodProduction(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldWoodProduction,
 		})
-		c.WoodProduction = value
+		_node.WoodProduction = value
 	}
 	if value, ok := cc.mutation.StoneProduction(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldStoneProduction,
 		})
-		c.StoneProduction = value
+		_node.StoneProduction = value
 	}
 	if value, ok := cc.mutation.IronProduction(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldIronProduction,
 		})
-		c.IronProduction = value
+		_node.IronProduction = value
 	}
 	if value, ok := cc.mutation.FoodProduction(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldFoodProduction,
 		})
-		c.FoodProduction = value
+		_node.FoodProduction = value
 	}
 	if value, ok := cc.mutation.WoodStored(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldWoodStored,
 		})
-		c.WoodStored = value
+		_node.WoodStored = value
 	}
 	if value, ok := cc.mutation.StoneStored(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldStoneStored,
 		})
-		c.StoneStored = value
+		_node.StoneStored = value
 	}
 	if value, ok := cc.mutation.IronStored(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldIronStored,
 		})
-		c.IronStored = value
+		_node.IronStored = value
 	}
 	if value, ok := cc.mutation.FoodStored(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldFoodStored,
 		})
-		c.FoodStored = value
+		_node.FoodStored = value
 	}
 	if value, ok := cc.mutation.WoodLimit(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldWoodLimit,
 		})
-		c.WoodLimit = value
+		_node.WoodLimit = value
 	}
 	if value, ok := cc.mutation.StoneLimit(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldStoneLimit,
 		})
-		c.StoneLimit = value
+		_node.StoneLimit = value
 	}
 	if value, ok := cc.mutation.IronLimit(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldIronLimit,
 		})
-		c.IronLimit = value
+		_node.IronLimit = value
 	}
 	if value, ok := cc.mutation.FoodLimit(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldFoodLimit,
 		})
-		c.FoodLimit = value
+		_node.FoodLimit = value
 	}
 	if value, ok := cc.mutation.QueueTime(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -583,7 +693,7 @@ func (cc *CityCreate) sqlSave(ctx context.Context) (*City, error) {
 			Value:  value,
 			Column: city.FieldQueueTime,
 		})
-		c.QueueTime = value
+		_node.QueueTime = value
 	}
 	if value, ok := cc.mutation.ConstructionSpeed(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -591,7 +701,15 @@ func (cc *CityCreate) sqlSave(ctx context.Context) (*City, error) {
 			Value:  value,
 			Column: city.FieldConstructionSpeed,
 		})
-		c.ConstructionSpeed = value
+		_node.ConstructionSpeed = value
+	}
+	if value, ok := cc.mutation.LastUpdated(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: city.FieldLastUpdated,
+		})
+		_node.LastUpdated = value
 	}
 	if nodes := cc.mutation.OwnerIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
@@ -650,13 +768,72 @@ func (cc *CityCreate) sqlSave(ctx context.Context) (*City, error) {
 		}
 		_spec.Edges = append(_spec.Edges, edge)
 	}
-	if err := sqlgraph.CreateNode(ctx, cc.driver, _spec); err != nil {
-		if cerr, ok := isSQLConstraintError(err); ok {
-			err = cerr
-		}
-		return nil, err
+	return _node, _spec
+}
+
+// CityCreateBulk is the builder for creating a bulk of City entities.
+type CityCreateBulk struct {
+	config
+	builders []*CityCreate
+}
+
+// Save creates the City entities in the database.
+func (ccb *CityCreateBulk) Save(ctx context.Context) ([]*City, error) {
+	specs := make([]*sqlgraph.CreateSpec, len(ccb.builders))
+	nodes := make([]*City, len(ccb.builders))
+	mutators := make([]Mutator, len(ccb.builders))
+	for i := range ccb.builders {
+		func(i int, root context.Context) {
+			builder := ccb.builders[i]
+			builder.defaults()
+			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
+				mutation, ok := m.(*CityMutation)
+				if !ok {
+					return nil, fmt.Errorf("unexpected mutation type %T", m)
+				}
+				if err := builder.check(); err != nil {
+					return nil, err
+				}
+				builder.mutation = mutation
+				nodes[i], specs[i] = builder.createSpec()
+				var err error
+				if i < len(mutators)-1 {
+					_, err = mutators[i+1].Mutate(root, ccb.builders[i+1].mutation)
+				} else {
+					// Invoke the actual operation on the latest mutation in the chain.
+					if err = sqlgraph.BatchCreate(ctx, ccb.driver, &sqlgraph.BatchCreateSpec{Nodes: specs}); err != nil {
+						if cerr, ok := isSQLConstraintError(err); ok {
+							err = cerr
+						}
+					}
+				}
+				mutation.done = true
+				if err != nil {
+					return nil, err
+				}
+				id := specs[i].ID.Value.(int64)
+				nodes[i].ID = int(id)
+				return nodes[i], nil
+			})
+			for i := len(builder.hooks) - 1; i >= 0; i-- {
+				mut = builder.hooks[i](mut)
+			}
+			mutators[i] = mut
+		}(i, ctx)
 	}
-	id := _spec.ID.Value.(int64)
-	c.ID = int(id)
-	return c, nil
+	if len(mutators) > 0 {
+		if _, err := mutators[0].Mutate(ctx, ccb.builders[0].mutation); err != nil {
+			return nil, err
+		}
+	}
+	return nodes, nil
+}
+
+// SaveX calls Save and panics if Save returns an error.
+func (ccb *CityCreateBulk) SaveX(ctx context.Context) []*City {
+	v, err := ccb.Save(ctx)
+	if err != nil {
+		panic(err)
+	}
+	return v
 }

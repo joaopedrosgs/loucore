@@ -6,10 +6,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"time"
 
-	"github.com/facebookincubator/ent/dialect/sql"
-	"github.com/facebookincubator/ent/dialect/sql/sqlgraph"
-	"github.com/facebookincubator/ent/schema/field"
+	"github.com/facebook/ent/dialect/sql"
+	"github.com/facebook/ent/dialect/sql/sqlgraph"
+	"github.com/facebook/ent/schema/field"
 	"github.com/joaopedrosgs/loucore/ent/city"
 	"github.com/joaopedrosgs/loucore/ent/construction"
 	"github.com/joaopedrosgs/loucore/ent/predicate"
@@ -58,44 +59,44 @@ func (cu *ConstructionUpdate) AddY(i int) *ConstructionUpdate {
 }
 
 // SetRawProduction sets the raw_production field.
-func (cu *ConstructionUpdate) SetRawProduction(i int) *ConstructionUpdate {
+func (cu *ConstructionUpdate) SetRawProduction(f float64) *ConstructionUpdate {
 	cu.mutation.ResetRawProduction()
-	cu.mutation.SetRawProduction(i)
+	cu.mutation.SetRawProduction(f)
 	return cu
 }
 
 // SetNillableRawProduction sets the raw_production field if the given value is not nil.
-func (cu *ConstructionUpdate) SetNillableRawProduction(i *int) *ConstructionUpdate {
-	if i != nil {
-		cu.SetRawProduction(*i)
+func (cu *ConstructionUpdate) SetNillableRawProduction(f *float64) *ConstructionUpdate {
+	if f != nil {
+		cu.SetRawProduction(*f)
 	}
 	return cu
 }
 
-// AddRawProduction adds i to raw_production.
-func (cu *ConstructionUpdate) AddRawProduction(i int) *ConstructionUpdate {
-	cu.mutation.AddRawProduction(i)
+// AddRawProduction adds f to raw_production.
+func (cu *ConstructionUpdate) AddRawProduction(f float64) *ConstructionUpdate {
+	cu.mutation.AddRawProduction(f)
 	return cu
 }
 
 // SetProduction sets the production field.
-func (cu *ConstructionUpdate) SetProduction(i int) *ConstructionUpdate {
+func (cu *ConstructionUpdate) SetProduction(f float64) *ConstructionUpdate {
 	cu.mutation.ResetProduction()
-	cu.mutation.SetProduction(i)
+	cu.mutation.SetProduction(f)
 	return cu
 }
 
 // SetNillableProduction sets the production field if the given value is not nil.
-func (cu *ConstructionUpdate) SetNillableProduction(i *int) *ConstructionUpdate {
-	if i != nil {
-		cu.SetProduction(*i)
+func (cu *ConstructionUpdate) SetNillableProduction(f *float64) *ConstructionUpdate {
+	if f != nil {
+		cu.SetProduction(*f)
 	}
 	return cu
 }
 
-// AddProduction adds i to production.
-func (cu *ConstructionUpdate) AddProduction(i int) *ConstructionUpdate {
-	cu.mutation.AddProduction(i)
+// AddProduction adds f to production.
+func (cu *ConstructionUpdate) AddProduction(f float64) *ConstructionUpdate {
+	cu.mutation.AddProduction(f)
 	return cu
 }
 
@@ -142,23 +143,37 @@ func (cu *ConstructionUpdate) AddLevel(i int) *ConstructionUpdate {
 }
 
 // SetModifier sets the modifier field.
-func (cu *ConstructionUpdate) SetModifier(i int) *ConstructionUpdate {
+func (cu *ConstructionUpdate) SetModifier(f float64) *ConstructionUpdate {
 	cu.mutation.ResetModifier()
-	cu.mutation.SetModifier(i)
+	cu.mutation.SetModifier(f)
 	return cu
 }
 
 // SetNillableModifier sets the modifier field if the given value is not nil.
-func (cu *ConstructionUpdate) SetNillableModifier(i *int) *ConstructionUpdate {
-	if i != nil {
-		cu.SetModifier(*i)
+func (cu *ConstructionUpdate) SetNillableModifier(f *float64) *ConstructionUpdate {
+	if f != nil {
+		cu.SetModifier(*f)
 	}
 	return cu
 }
 
-// AddModifier adds i to modifier.
-func (cu *ConstructionUpdate) AddModifier(i int) *ConstructionUpdate {
-	cu.mutation.AddModifier(i)
+// AddModifier adds f to modifier.
+func (cu *ConstructionUpdate) AddModifier(f float64) *ConstructionUpdate {
+	cu.mutation.AddModifier(f)
+	return cu
+}
+
+// SetLastUpdated sets the last_updated field.
+func (cu *ConstructionUpdate) SetLastUpdated(t time.Time) *ConstructionUpdate {
+	cu.mutation.SetLastUpdated(t)
+	return cu
+}
+
+// SetNillableLastUpdated sets the last_updated field if the given value is not nil.
+func (cu *ConstructionUpdate) SetNillableLastUpdated(t *time.Time) *ConstructionUpdate {
+	if t != nil {
+		cu.SetLastUpdated(*t)
+	}
 	return cu
 }
 
@@ -251,15 +266,26 @@ func (cu *ConstructionUpdate) AddAffectedBy(c ...*Construction) *ConstructionUpd
 	return cu.AddAffectedByIDs(ids...)
 }
 
-// ClearCity clears the city edge to City.
+// Mutation returns the ConstructionMutation object of the builder.
+func (cu *ConstructionUpdate) Mutation() *ConstructionMutation {
+	return cu.mutation
+}
+
+// ClearCity clears the "city" edge to type City.
 func (cu *ConstructionUpdate) ClearCity() *ConstructionUpdate {
 	cu.mutation.ClearCity()
 	return cu
 }
 
-// ClearOwner clears the owner edge to User.
+// ClearOwner clears the "owner" edge to type User.
 func (cu *ConstructionUpdate) ClearOwner() *ConstructionUpdate {
 	cu.mutation.ClearOwner()
+	return cu
+}
+
+// ClearQueue clears all "queue" edges to type QueueItem.
+func (cu *ConstructionUpdate) ClearQueue() *ConstructionUpdate {
+	cu.mutation.ClearQueue()
 	return cu
 }
 
@@ -278,6 +304,12 @@ func (cu *ConstructionUpdate) RemoveQueue(q ...*QueueItem) *ConstructionUpdate {
 	return cu.RemoveQueueIDs(ids...)
 }
 
+// ClearAffects clears all "affects" edges to type Construction.
+func (cu *ConstructionUpdate) ClearAffects() *ConstructionUpdate {
+	cu.mutation.ClearAffects()
+	return cu
+}
+
 // RemoveAffectIDs removes the affects edge to Construction by ids.
 func (cu *ConstructionUpdate) RemoveAffectIDs(ids ...int) *ConstructionUpdate {
 	cu.mutation.RemoveAffectIDs(ids...)
@@ -291,6 +323,12 @@ func (cu *ConstructionUpdate) RemoveAffects(c ...*Construction) *ConstructionUpd
 		ids[i] = c[i].ID
 	}
 	return cu.RemoveAffectIDs(ids...)
+}
+
+// ClearAffectedBy clears all "affected_by" edges to type Construction.
+func (cu *ConstructionUpdate) ClearAffectedBy() *ConstructionUpdate {
+	cu.mutation.ClearAffectedBy()
+	return cu
 }
 
 // RemoveAffectedByIDs removes the affected_by edge to Construction by ids.
@@ -310,22 +348,23 @@ func (cu *ConstructionUpdate) RemoveAffectedBy(c ...*Construction) *Construction
 
 // Save executes the query and returns the number of rows/vertices matched by this operation.
 func (cu *ConstructionUpdate) Save(ctx context.Context) (int, error) {
-
-	if _, ok := cu.mutation.CityID(); cu.mutation.CityCleared() && !ok {
-		return 0, errors.New("ent: clearing a unique edge \"city\"")
-	}
-
 	var (
 		err      error
 		affected int
 	)
 	if len(cu.hooks) == 0 {
+		if err = cu.check(); err != nil {
+			return 0, err
+		}
 		affected, err = cu.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 			mutation, ok := m.(*ConstructionMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
+			}
+			if err = cu.check(); err != nil {
+				return 0, err
 			}
 			cu.mutation = mutation
 			affected, err = cu.sqlSave(ctx)
@@ -362,6 +401,14 @@ func (cu *ConstructionUpdate) ExecX(ctx context.Context) {
 	if err := cu.Exec(ctx); err != nil {
 		panic(err)
 	}
+}
+
+// check runs all checks and user-defined validators on the builder.
+func (cu *ConstructionUpdate) check() error {
+	if _, ok := cu.mutation.CityID(); cu.mutation.CityCleared() && !ok {
+		return errors.New("ent: clearing a required unique edge \"city\"")
+	}
+	return nil
 }
 
 func (cu *ConstructionUpdate) sqlSave(ctx context.Context) (n int, err error) {
@@ -412,28 +459,28 @@ func (cu *ConstructionUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := cu.mutation.RawProduction(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: construction.FieldRawProduction,
 		})
 	}
 	if value, ok := cu.mutation.AddedRawProduction(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: construction.FieldRawProduction,
 		})
 	}
 	if value, ok := cu.mutation.Production(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: construction.FieldProduction,
 		})
 	}
 	if value, ok := cu.mutation.AddedProduction(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: construction.FieldProduction,
 		})
@@ -468,16 +515,23 @@ func (cu *ConstructionUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := cu.mutation.Modifier(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: construction.FieldModifier,
 		})
 	}
 	if value, ok := cu.mutation.AddedModifier(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: construction.FieldModifier,
+		})
+	}
+	if value, ok := cu.mutation.LastUpdated(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: construction.FieldLastUpdated,
 		})
 	}
 	if value, ok := cu.mutation.NeedRefresh(); ok {
@@ -557,7 +611,23 @@ func (cu *ConstructionUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if nodes := cu.mutation.RemovedQueueIDs(); len(nodes) > 0 {
+	if cu.mutation.QueueCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   construction.QueueTable,
+			Columns: []string{construction.QueueColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: queueitem.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.RemovedQueueIDs(); len(nodes) > 0 && !cu.mutation.QueueCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
@@ -595,7 +665,23 @@ func (cu *ConstructionUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if nodes := cu.mutation.RemovedAffectsIDs(); len(nodes) > 0 {
+	if cu.mutation.AffectsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   construction.AffectsTable,
+			Columns: construction.AffectsPrimaryKey,
+			Bidi:    true,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: construction.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.RemovedAffectsIDs(); len(nodes) > 0 && !cu.mutation.AffectsCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
 			Inverse: false,
@@ -633,7 +719,23 @@ func (cu *ConstructionUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if nodes := cu.mutation.RemovedAffectedByIDs(); len(nodes) > 0 {
+	if cu.mutation.AffectedByCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   construction.AffectedByTable,
+			Columns: construction.AffectedByPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: construction.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.RemovedAffectedByIDs(); len(nodes) > 0 && !cu.mutation.AffectedByCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
 			Inverse: true,
@@ -716,44 +818,44 @@ func (cuo *ConstructionUpdateOne) AddY(i int) *ConstructionUpdateOne {
 }
 
 // SetRawProduction sets the raw_production field.
-func (cuo *ConstructionUpdateOne) SetRawProduction(i int) *ConstructionUpdateOne {
+func (cuo *ConstructionUpdateOne) SetRawProduction(f float64) *ConstructionUpdateOne {
 	cuo.mutation.ResetRawProduction()
-	cuo.mutation.SetRawProduction(i)
+	cuo.mutation.SetRawProduction(f)
 	return cuo
 }
 
 // SetNillableRawProduction sets the raw_production field if the given value is not nil.
-func (cuo *ConstructionUpdateOne) SetNillableRawProduction(i *int) *ConstructionUpdateOne {
-	if i != nil {
-		cuo.SetRawProduction(*i)
+func (cuo *ConstructionUpdateOne) SetNillableRawProduction(f *float64) *ConstructionUpdateOne {
+	if f != nil {
+		cuo.SetRawProduction(*f)
 	}
 	return cuo
 }
 
-// AddRawProduction adds i to raw_production.
-func (cuo *ConstructionUpdateOne) AddRawProduction(i int) *ConstructionUpdateOne {
-	cuo.mutation.AddRawProduction(i)
+// AddRawProduction adds f to raw_production.
+func (cuo *ConstructionUpdateOne) AddRawProduction(f float64) *ConstructionUpdateOne {
+	cuo.mutation.AddRawProduction(f)
 	return cuo
 }
 
 // SetProduction sets the production field.
-func (cuo *ConstructionUpdateOne) SetProduction(i int) *ConstructionUpdateOne {
+func (cuo *ConstructionUpdateOne) SetProduction(f float64) *ConstructionUpdateOne {
 	cuo.mutation.ResetProduction()
-	cuo.mutation.SetProduction(i)
+	cuo.mutation.SetProduction(f)
 	return cuo
 }
 
 // SetNillableProduction sets the production field if the given value is not nil.
-func (cuo *ConstructionUpdateOne) SetNillableProduction(i *int) *ConstructionUpdateOne {
-	if i != nil {
-		cuo.SetProduction(*i)
+func (cuo *ConstructionUpdateOne) SetNillableProduction(f *float64) *ConstructionUpdateOne {
+	if f != nil {
+		cuo.SetProduction(*f)
 	}
 	return cuo
 }
 
-// AddProduction adds i to production.
-func (cuo *ConstructionUpdateOne) AddProduction(i int) *ConstructionUpdateOne {
-	cuo.mutation.AddProduction(i)
+// AddProduction adds f to production.
+func (cuo *ConstructionUpdateOne) AddProduction(f float64) *ConstructionUpdateOne {
+	cuo.mutation.AddProduction(f)
 	return cuo
 }
 
@@ -800,23 +902,37 @@ func (cuo *ConstructionUpdateOne) AddLevel(i int) *ConstructionUpdateOne {
 }
 
 // SetModifier sets the modifier field.
-func (cuo *ConstructionUpdateOne) SetModifier(i int) *ConstructionUpdateOne {
+func (cuo *ConstructionUpdateOne) SetModifier(f float64) *ConstructionUpdateOne {
 	cuo.mutation.ResetModifier()
-	cuo.mutation.SetModifier(i)
+	cuo.mutation.SetModifier(f)
 	return cuo
 }
 
 // SetNillableModifier sets the modifier field if the given value is not nil.
-func (cuo *ConstructionUpdateOne) SetNillableModifier(i *int) *ConstructionUpdateOne {
-	if i != nil {
-		cuo.SetModifier(*i)
+func (cuo *ConstructionUpdateOne) SetNillableModifier(f *float64) *ConstructionUpdateOne {
+	if f != nil {
+		cuo.SetModifier(*f)
 	}
 	return cuo
 }
 
-// AddModifier adds i to modifier.
-func (cuo *ConstructionUpdateOne) AddModifier(i int) *ConstructionUpdateOne {
-	cuo.mutation.AddModifier(i)
+// AddModifier adds f to modifier.
+func (cuo *ConstructionUpdateOne) AddModifier(f float64) *ConstructionUpdateOne {
+	cuo.mutation.AddModifier(f)
+	return cuo
+}
+
+// SetLastUpdated sets the last_updated field.
+func (cuo *ConstructionUpdateOne) SetLastUpdated(t time.Time) *ConstructionUpdateOne {
+	cuo.mutation.SetLastUpdated(t)
+	return cuo
+}
+
+// SetNillableLastUpdated sets the last_updated field if the given value is not nil.
+func (cuo *ConstructionUpdateOne) SetNillableLastUpdated(t *time.Time) *ConstructionUpdateOne {
+	if t != nil {
+		cuo.SetLastUpdated(*t)
+	}
 	return cuo
 }
 
@@ -909,15 +1025,26 @@ func (cuo *ConstructionUpdateOne) AddAffectedBy(c ...*Construction) *Constructio
 	return cuo.AddAffectedByIDs(ids...)
 }
 
-// ClearCity clears the city edge to City.
+// Mutation returns the ConstructionMutation object of the builder.
+func (cuo *ConstructionUpdateOne) Mutation() *ConstructionMutation {
+	return cuo.mutation
+}
+
+// ClearCity clears the "city" edge to type City.
 func (cuo *ConstructionUpdateOne) ClearCity() *ConstructionUpdateOne {
 	cuo.mutation.ClearCity()
 	return cuo
 }
 
-// ClearOwner clears the owner edge to User.
+// ClearOwner clears the "owner" edge to type User.
 func (cuo *ConstructionUpdateOne) ClearOwner() *ConstructionUpdateOne {
 	cuo.mutation.ClearOwner()
+	return cuo
+}
+
+// ClearQueue clears all "queue" edges to type QueueItem.
+func (cuo *ConstructionUpdateOne) ClearQueue() *ConstructionUpdateOne {
+	cuo.mutation.ClearQueue()
 	return cuo
 }
 
@@ -936,6 +1063,12 @@ func (cuo *ConstructionUpdateOne) RemoveQueue(q ...*QueueItem) *ConstructionUpda
 	return cuo.RemoveQueueIDs(ids...)
 }
 
+// ClearAffects clears all "affects" edges to type Construction.
+func (cuo *ConstructionUpdateOne) ClearAffects() *ConstructionUpdateOne {
+	cuo.mutation.ClearAffects()
+	return cuo
+}
+
 // RemoveAffectIDs removes the affects edge to Construction by ids.
 func (cuo *ConstructionUpdateOne) RemoveAffectIDs(ids ...int) *ConstructionUpdateOne {
 	cuo.mutation.RemoveAffectIDs(ids...)
@@ -949,6 +1082,12 @@ func (cuo *ConstructionUpdateOne) RemoveAffects(c ...*Construction) *Constructio
 		ids[i] = c[i].ID
 	}
 	return cuo.RemoveAffectIDs(ids...)
+}
+
+// ClearAffectedBy clears all "affected_by" edges to type Construction.
+func (cuo *ConstructionUpdateOne) ClearAffectedBy() *ConstructionUpdateOne {
+	cuo.mutation.ClearAffectedBy()
+	return cuo
 }
 
 // RemoveAffectedByIDs removes the affected_by edge to Construction by ids.
@@ -968,22 +1107,23 @@ func (cuo *ConstructionUpdateOne) RemoveAffectedBy(c ...*Construction) *Construc
 
 // Save executes the query and returns the updated entity.
 func (cuo *ConstructionUpdateOne) Save(ctx context.Context) (*Construction, error) {
-
-	if _, ok := cuo.mutation.CityID(); cuo.mutation.CityCleared() && !ok {
-		return nil, errors.New("ent: clearing a unique edge \"city\"")
-	}
-
 	var (
 		err  error
 		node *Construction
 	)
 	if len(cuo.hooks) == 0 {
+		if err = cuo.check(); err != nil {
+			return nil, err
+		}
 		node, err = cuo.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 			mutation, ok := m.(*ConstructionMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
+			}
+			if err = cuo.check(); err != nil {
+				return nil, err
 			}
 			cuo.mutation = mutation
 			node, err = cuo.sqlSave(ctx)
@@ -1002,11 +1142,11 @@ func (cuo *ConstructionUpdateOne) Save(ctx context.Context) (*Construction, erro
 
 // SaveX is like Save, but panics if an error occurs.
 func (cuo *ConstructionUpdateOne) SaveX(ctx context.Context) *Construction {
-	c, err := cuo.Save(ctx)
+	node, err := cuo.Save(ctx)
 	if err != nil {
 		panic(err)
 	}
-	return c
+	return node
 }
 
 // Exec executes the query on the entity.
@@ -1022,7 +1162,15 @@ func (cuo *ConstructionUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
-func (cuo *ConstructionUpdateOne) sqlSave(ctx context.Context) (c *Construction, err error) {
+// check runs all checks and user-defined validators on the builder.
+func (cuo *ConstructionUpdateOne) check() error {
+	if _, ok := cuo.mutation.CityID(); cuo.mutation.CityCleared() && !ok {
+		return errors.New("ent: clearing a required unique edge \"city\"")
+	}
+	return nil
+}
+
+func (cuo *ConstructionUpdateOne) sqlSave(ctx context.Context) (_node *Construction, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
 			Table:   construction.Table,
@@ -1035,7 +1183,7 @@ func (cuo *ConstructionUpdateOne) sqlSave(ctx context.Context) (c *Construction,
 	}
 	id, ok := cuo.mutation.ID()
 	if !ok {
-		return nil, fmt.Errorf("missing Construction.ID for update")
+		return nil, &ValidationError{Name: "ID", err: fmt.Errorf("missing Construction.ID for update")}
 	}
 	_spec.Node.ID.Value = id
 	if value, ok := cuo.mutation.X(); ok {
@@ -1068,28 +1216,28 @@ func (cuo *ConstructionUpdateOne) sqlSave(ctx context.Context) (c *Construction,
 	}
 	if value, ok := cuo.mutation.RawProduction(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: construction.FieldRawProduction,
 		})
 	}
 	if value, ok := cuo.mutation.AddedRawProduction(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: construction.FieldRawProduction,
 		})
 	}
 	if value, ok := cuo.mutation.Production(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: construction.FieldProduction,
 		})
 	}
 	if value, ok := cuo.mutation.AddedProduction(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: construction.FieldProduction,
 		})
@@ -1124,16 +1272,23 @@ func (cuo *ConstructionUpdateOne) sqlSave(ctx context.Context) (c *Construction,
 	}
 	if value, ok := cuo.mutation.Modifier(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: construction.FieldModifier,
 		})
 	}
 	if value, ok := cuo.mutation.AddedModifier(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: construction.FieldModifier,
+		})
+	}
+	if value, ok := cuo.mutation.LastUpdated(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: construction.FieldLastUpdated,
 		})
 	}
 	if value, ok := cuo.mutation.NeedRefresh(); ok {
@@ -1213,7 +1368,23 @@ func (cuo *ConstructionUpdateOne) sqlSave(ctx context.Context) (c *Construction,
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if nodes := cuo.mutation.RemovedQueueIDs(); len(nodes) > 0 {
+	if cuo.mutation.QueueCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   construction.QueueTable,
+			Columns: []string{construction.QueueColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: queueitem.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.RemovedQueueIDs(); len(nodes) > 0 && !cuo.mutation.QueueCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
@@ -1251,7 +1422,23 @@ func (cuo *ConstructionUpdateOne) sqlSave(ctx context.Context) (c *Construction,
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if nodes := cuo.mutation.RemovedAffectsIDs(); len(nodes) > 0 {
+	if cuo.mutation.AffectsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   construction.AffectsTable,
+			Columns: construction.AffectsPrimaryKey,
+			Bidi:    true,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: construction.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.RemovedAffectsIDs(); len(nodes) > 0 && !cuo.mutation.AffectsCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
 			Inverse: false,
@@ -1289,7 +1476,23 @@ func (cuo *ConstructionUpdateOne) sqlSave(ctx context.Context) (c *Construction,
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if nodes := cuo.mutation.RemovedAffectedByIDs(); len(nodes) > 0 {
+	if cuo.mutation.AffectedByCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   construction.AffectedByTable,
+			Columns: construction.AffectedByPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: construction.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.RemovedAffectedByIDs(); len(nodes) > 0 && !cuo.mutation.AffectedByCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
 			Inverse: true,
@@ -1327,9 +1530,9 @@ func (cuo *ConstructionUpdateOne) sqlSave(ctx context.Context) (c *Construction,
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	c = &Construction{config: cuo.config}
-	_spec.Assign = c.assignValues
-	_spec.ScanValues = c.scanValues()
+	_node = &Construction{config: cuo.config}
+	_spec.Assign = _node.assignValues
+	_spec.ScanValues = _node.scanValues()
 	if err = sqlgraph.UpdateNode(ctx, cuo.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{construction.Label}
@@ -1338,5 +1541,5 @@ func (cuo *ConstructionUpdateOne) sqlSave(ctx context.Context) (c *Construction,
 		}
 		return nil, err
 	}
-	return c, nil
+	return _node, nil
 }

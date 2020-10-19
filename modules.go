@@ -14,11 +14,23 @@ type StructureBlueprint struct {
 	Buildable    bool       `json:"buildable"`
 	Media        string     `json:"media"`
 	Info         string     `json:"info"`
-	Bonus        [10]int    `json:"bonus"`
+	Bonus        [10]float64    `json:"bonus"`
 	BonusType    string     `json:"bonus_type"`
-	ResourceCost [10][2]int `json:"resource_cost"`
+	ResourceCost [10][2]float64 `json:"resource_cost"`
 	Score        [10]int    `json:"score"`
+	Affects []int `json:"affects"`
+	AffectedBy []int `json:"affectedBy"`
+
 }
+func (s *StructureBlueprint) DoesAffect(i int) bool {
+	for v:= range s.Affects {
+		if v==i {
+			return true
+		}
+	}
+	return false
+}
+
 
 var Modules struct {
 	Structures []StructureBlueprint

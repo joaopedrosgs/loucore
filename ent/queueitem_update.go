@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/facebookincubator/ent/dialect/sql"
-	"github.com/facebookincubator/ent/dialect/sql/sqlgraph"
-	"github.com/facebookincubator/ent/schema/field"
+	"github.com/facebook/ent/dialect/sql"
+	"github.com/facebook/ent/dialect/sql/sqlgraph"
+	"github.com/facebook/ent/schema/field"
 	"github.com/joaopedrosgs/loucore/ent/city"
 	"github.com/joaopedrosgs/loucore/ent/construction"
 	"github.com/joaopedrosgs/loucore/ent/predicate"
@@ -139,19 +139,24 @@ func (qiu *QueueItemUpdate) SetConstruction(c *Construction) *QueueItemUpdate {
 	return qiu.SetConstructionID(c.ID)
 }
 
-// ClearOwner clears the owner edge to User.
+// Mutation returns the QueueItemMutation object of the builder.
+func (qiu *QueueItemUpdate) Mutation() *QueueItemMutation {
+	return qiu.mutation
+}
+
+// ClearOwner clears the "owner" edge to type User.
 func (qiu *QueueItemUpdate) ClearOwner() *QueueItemUpdate {
 	qiu.mutation.ClearOwner()
 	return qiu
 }
 
-// ClearCity clears the city edge to City.
+// ClearCity clears the "city" edge to type City.
 func (qiu *QueueItemUpdate) ClearCity() *QueueItemUpdate {
 	qiu.mutation.ClearCity()
 	return qiu
 }
 
-// ClearConstruction clears the construction edge to Construction.
+// ClearConstruction clears the "construction" edge to type Construction.
 func (qiu *QueueItemUpdate) ClearConstruction() *QueueItemUpdate {
 	qiu.mutation.ClearConstruction()
 	return qiu
@@ -159,7 +164,6 @@ func (qiu *QueueItemUpdate) ClearConstruction() *QueueItemUpdate {
 
 // Save executes the query and returns the number of rows/vertices matched by this operation.
 func (qiu *QueueItemUpdate) Save(ctx context.Context) (int, error) {
-
 	var (
 		err      error
 		affected int
@@ -514,19 +518,24 @@ func (qiuo *QueueItemUpdateOne) SetConstruction(c *Construction) *QueueItemUpdat
 	return qiuo.SetConstructionID(c.ID)
 }
 
-// ClearOwner clears the owner edge to User.
+// Mutation returns the QueueItemMutation object of the builder.
+func (qiuo *QueueItemUpdateOne) Mutation() *QueueItemMutation {
+	return qiuo.mutation
+}
+
+// ClearOwner clears the "owner" edge to type User.
 func (qiuo *QueueItemUpdateOne) ClearOwner() *QueueItemUpdateOne {
 	qiuo.mutation.ClearOwner()
 	return qiuo
 }
 
-// ClearCity clears the city edge to City.
+// ClearCity clears the "city" edge to type City.
 func (qiuo *QueueItemUpdateOne) ClearCity() *QueueItemUpdateOne {
 	qiuo.mutation.ClearCity()
 	return qiuo
 }
 
-// ClearConstruction clears the construction edge to Construction.
+// ClearConstruction clears the "construction" edge to type Construction.
 func (qiuo *QueueItemUpdateOne) ClearConstruction() *QueueItemUpdateOne {
 	qiuo.mutation.ClearConstruction()
 	return qiuo
@@ -534,7 +543,6 @@ func (qiuo *QueueItemUpdateOne) ClearConstruction() *QueueItemUpdateOne {
 
 // Save executes the query and returns the updated entity.
 func (qiuo *QueueItemUpdateOne) Save(ctx context.Context) (*QueueItem, error) {
-
 	var (
 		err  error
 		node *QueueItem
@@ -564,11 +572,11 @@ func (qiuo *QueueItemUpdateOne) Save(ctx context.Context) (*QueueItem, error) {
 
 // SaveX is like Save, but panics if an error occurs.
 func (qiuo *QueueItemUpdateOne) SaveX(ctx context.Context) *QueueItem {
-	qi, err := qiuo.Save(ctx)
+	node, err := qiuo.Save(ctx)
 	if err != nil {
 		panic(err)
 	}
-	return qi
+	return node
 }
 
 // Exec executes the query on the entity.
@@ -584,7 +592,7 @@ func (qiuo *QueueItemUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
-func (qiuo *QueueItemUpdateOne) sqlSave(ctx context.Context) (qi *QueueItem, err error) {
+func (qiuo *QueueItemUpdateOne) sqlSave(ctx context.Context) (_node *QueueItem, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
 			Table:   queueitem.Table,
@@ -597,7 +605,7 @@ func (qiuo *QueueItemUpdateOne) sqlSave(ctx context.Context) (qi *QueueItem, err
 	}
 	id, ok := qiuo.mutation.ID()
 	if !ok {
-		return nil, fmt.Errorf("missing QueueItem.ID for update")
+		return nil, &ValidationError{Name: "ID", err: fmt.Errorf("missing QueueItem.ID for update")}
 	}
 	_spec.Node.ID.Value = id
 	if value, ok := qiuo.mutation.StartAt(); ok {
@@ -761,9 +769,9 @@ func (qiuo *QueueItemUpdateOne) sqlSave(ctx context.Context) (qi *QueueItem, err
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	qi = &QueueItem{config: qiuo.config}
-	_spec.Assign = qi.assignValues
-	_spec.ScanValues = qi.scanValues()
+	_node = &QueueItem{config: qiuo.config}
+	_spec.Assign = _node.assignValues
+	_spec.ScanValues = _node.scanValues()
 	if err = sqlgraph.UpdateNode(ctx, qiuo.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{queueitem.Label}
@@ -772,5 +780,5 @@ func (qiuo *QueueItemUpdateOne) sqlSave(ctx context.Context) (qi *QueueItem, err
 		}
 		return nil, err
 	}
-	return qi, nil
+	return _node, nil
 }

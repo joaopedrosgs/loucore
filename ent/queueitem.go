@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/facebookincubator/ent/dialect/sql"
+	"github.com/facebook/ent/dialect/sql"
 	"github.com/joaopedrosgs/loucore/ent/city"
 	"github.com/joaopedrosgs/loucore/ent/construction"
 	"github.com/joaopedrosgs/loucore/ent/queueitem"

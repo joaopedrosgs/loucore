@@ -2,6 +2,10 @@
 
 package construction
 
+import (
+	"time"
+)
+
 const (
 	// Label holds the string label denoting the construction type in the database.
 	Label = "construction"
@@ -21,6 +25,8 @@ const (
 	FieldLevel = "level"
 	// FieldModifier holds the string denoting the modifier field in the database.
 	FieldModifier = "modifier"
+	// FieldLastUpdated holds the string denoting the last_updated field in the database.
+	FieldLastUpdated = "last_updated"
 	// FieldNeedRefresh holds the string denoting the need_refresh field in the database.
 	FieldNeedRefresh = "need_refresh"
 
@@ -74,6 +80,7 @@ var Columns = []string{
 	FieldType,
 	FieldLevel,
 	FieldModifier,
+	FieldLastUpdated,
 	FieldNeedRefresh,
 }
 
@@ -92,17 +99,34 @@ var (
 	AffectedByPrimaryKey = []string{"construction_id", "affected_by_id"}
 )
 
+// ValidColumn reports if the column name is valid (part of the table columns).
+func ValidColumn(column string) bool {
+	for i := range Columns {
+		if column == Columns[i] {
+			return true
+		}
+	}
+	for i := range ForeignKeys {
+		if column == ForeignKeys[i] {
+			return true
+		}
+	}
+	return false
+}
+
 var (
 	// DefaultRawProduction holds the default value on creation for the raw_production field.
-	DefaultRawProduction int
+	DefaultRawProduction float64
 	// DefaultProduction holds the default value on creation for the production field.
-	DefaultProduction int
+	DefaultProduction float64
 	// DefaultType holds the default value on creation for the type field.
 	DefaultType int
 	// DefaultLevel holds the default value on creation for the level field.
 	DefaultLevel int
 	// DefaultModifier holds the default value on creation for the modifier field.
-	DefaultModifier int
+	DefaultModifier float64
+	// DefaultLastUpdated holds the default value on creation for the last_updated field.
+	DefaultLastUpdated func() time.Time
 	// DefaultNeedRefresh holds the default value on creation for the need_refresh field.
 	DefaultNeedRefresh bool
 )

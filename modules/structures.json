@@ -6,10 +6,14 @@
     "media": "wood",
     "type": "production_bonus",
     "info": "Natural wood.",
-    "bonus": [30],
-    "bonus_type": "wood_prod_bonus"
-
-
+    "bonus": [
+      30
+    ],
+    "bonus_type": "wood_prod_bonus",
+    "affects": [
+      5
+    ],
+    "affectedBy": []
   },
   {
     "id": 1,
@@ -18,8 +22,14 @@
     "media": "lake",
     "type": "production_bonus",
     "info": "Natural lake.",
-    "bonus": [30],
-    "bonus_type": "food_prod_bonus"
+    "bonus": [
+      30
+    ],
+    "bonus_type": "food_prod_bonus",
+    "affects": [
+      7
+    ],
+    "affectedBy": []
   },
   {
     "id": 2,
@@ -28,8 +38,14 @@
     "media": "stone",
     "type": "production_bonus",
     "info": "Natural stone.",
-    "bonus": [30],
-    "bonus_type": "stone_prod_bonus"
+    "bonus": [
+      30
+    ],
+    "bonus_type": "stone_prod_bonus",
+    "affects": [
+      6
+    ],
+    "affectedBy": []
   },
   {
     "id": 3,
@@ -38,8 +54,14 @@
     "media": "iron",
     "type": "production_bonus",
     "info": "Natural Iron.",
-    "bonus": [30],
-    "bonus_type": "iron_prod_bonus"
+    "bonus": [
+      30
+    ],
+    "bonus_type": "iron_prod_bonus",
+    "affects": [
+      8
+    ],
+    "affectedBy": []
   },
   {
     "id": 4,
@@ -47,19 +69,20 @@
     "buildable": false,
     "media": "townhall",
     "info": "Provides basic storage and wood production. Also determines the maximum number of buildings in a city. Only one can be built in each city. Cannot be totally demolished or destroyed.",
-      "bonus": [
-        300,
-        300,
-        300,
-        300,
-        300,
-        300,
-        300,
-        300,
-        300,
-        300
-      ]
-  ,
+    "bonus": [
+      300,
+      300,
+      300,
+      300,
+      300,
+      300,
+      300,
+      300,
+      300,
+      300
+    ],
+    "affects": [],
+    "affectedBy": [],
     "bonus_type": "wood_prod",
     "resource_cost": [
       [
@@ -117,22 +140,25 @@
     "name": "Woodcutter's Hut",
     "buildable": true,
     "media": "woodcutter",
+    "affects": [],
+    "affectedBy": [
+      0,
+      9
+    ],
     "info": "Produces wood. Any bordering woods, Cottages and a maximum of one Sawmill will increase productivity.",
-
-      "bonus": [
-        5,
-        10,
-        15,
-        20,
-        30,
-        45,
-        75,
-        120,
-        200,
-        300
-      ],
-    "bonus_type": "wood_prod"
-    ,
+    "bonus": [
+      5,
+      10,
+      15,
+      20,
+      30,
+      45,
+      75,
+      120,
+      200,
+      300
+    ],
+    "bonus_type": "wood_prod",
     "resource_cost": [
       [
         50,
@@ -181,6 +207,10 @@
     "name": "Quarry",
     "buildable": true,
     "media": "quarry",
+    "affectedBy": [
+      2,
+      9
+    ],
     "info": "Produces Stone. Productivity can be increased by bordering Rocks, Cottages and a maximum of one Stonemason.",
     "bonus": [
       20,
@@ -194,15 +224,20 @@
       250,
       300
     ],
-    "bonus_type": "stone_prod"
+    "affects": []
   },
   {
     "id": 7,
     "name": "Farm",
     "buildable": true,
     "media": "farm",
+    "affects": [],
+    "affectedBy": [
+      1,
+      9
+    ],
     "info": "Produces food. Any bordering grassland, lakes, Cottages and Mills will increase productivity.",
-    "bonus" :[
+    "bonus": [
       5,
       10,
       15,
@@ -213,8 +248,7 @@
       120,
       200,
       300
-    ]
-  ,
+    ],
     "bonus_type": "food_prod",
     "score": [
       1,
@@ -234,8 +268,14 @@
     "name": "Iron mine",
     "buildable": true,
     "media": "ironmine",
+    "affects": [],
+
+    "affectedBy": [
+      3,
+      9
+    ],
     "info": "Produces iron. Any bordering ore deposits, Cottages and a maximum of one Foundry will increase productivity.",
-    "bonus" :[
+    "bonus": [
       5,
       10,
       15,
@@ -246,32 +286,36 @@
       120,
       200,
       300
-    ]
-  ,
+    ],
     "bonus_type": "iron_prod"
   },
-
   {
     "id": 9,
     "name": "Cottage",
     "buildable": true,
     "media": "cottage",
+    "affects": [
+      5,
+      6,
+      7,
+      8
+    ],
+    "affectedBy": [],
     "info": "Increases the construction speed of all build orders in a city. Also increases productivity of bordering resource buildings.",
-    "bonus":  [
-        3,
-        6,
-        9,
-        12,
-        15,
-        18,
-        21,
-        24,
-        27,
-        30,
-        30
-      ],
-      "bonus_type" : "all_prod_bonus",
-
+    "bonus": [
+      3,
+      6,
+      9,
+      12,
+      15,
+      18,
+      21,
+      24,
+      27,
+      30,
+      30
+    ],
+    "bonus_type": "all_prod_bonus",
     "resource_cost": [
       [
         50,
@@ -332,21 +376,22 @@
     "name": "Warehouse",
     "buildable": true,
     "media": "warehouse",
+    "affects": [],
+    "affectedBy": [],
     "info": "Increases the storage capacity for all resources. Enhanced by any bordering Sawmill, Stonemason, Mill or Foundry.",
-    "bonus":  [
-        2500,
-        5000,
-        9000,
-        16000,
-        26000,
-        42000,
-        65000,
-        100000,
-        145000,
-        200000
-      ],
-    "bonus_type": "storage"
-    ,
+    "bonus": [
+      2500,
+      5000,
+      9000,
+      16000,
+      26000,
+      42000,
+      65000,
+      100000,
+      145000,
+      200000
+    ],
+    "bonus_type": "storage",
     "resource_cost": [
       [
         60,

@@ -5,10 +5,11 @@ package ent
 import (
 	"context"
 	"fmt"
+	"time"
 
-	"github.com/facebookincubator/ent/dialect/sql"
-	"github.com/facebookincubator/ent/dialect/sql/sqlgraph"
-	"github.com/facebookincubator/ent/schema/field"
+	"github.com/facebook/ent/dialect/sql"
+	"github.com/facebook/ent/dialect/sql/sqlgraph"
+	"github.com/facebook/ent/schema/field"
 	"github.com/joaopedrosgs/loucore/ent/city"
 	"github.com/joaopedrosgs/loucore/ent/construction"
 	"github.com/joaopedrosgs/loucore/ent/predicate"
@@ -216,6 +217,20 @@ func (uu *UserUpdate) AddAllianceRank(i int) *UserUpdate {
 	return uu
 }
 
+// SetLastUpdated sets the last_updated field.
+func (uu *UserUpdate) SetLastUpdated(t time.Time) *UserUpdate {
+	uu.mutation.SetLastUpdated(t)
+	return uu
+}
+
+// SetNillableLastUpdated sets the last_updated field if the given value is not nil.
+func (uu *UserUpdate) SetNillableLastUpdated(t *time.Time) *UserUpdate {
+	if t != nil {
+		uu.SetLastUpdated(*t)
+	}
+	return uu
+}
+
 // AddCityIDs adds the cities edge to City by ids.
 func (uu *UserUpdate) AddCityIDs(ids ...int) *UserUpdate {
 	uu.mutation.AddCityIDs(ids...)
@@ -261,6 +276,17 @@ func (uu *UserUpdate) AddConstructions(c ...*Construction) *UserUpdate {
 	return uu.AddConstructionIDs(ids...)
 }
 
+// Mutation returns the UserMutation object of the builder.
+func (uu *UserUpdate) Mutation() *UserMutation {
+	return uu.mutation
+}
+
+// ClearCities clears all "cities" edges to type City.
+func (uu *UserUpdate) ClearCities() *UserUpdate {
+	uu.mutation.ClearCities()
+	return uu
+}
+
 // RemoveCityIDs removes the cities edge to City by ids.
 func (uu *UserUpdate) RemoveCityIDs(ids ...int) *UserUpdate {
 	uu.mutation.RemoveCityIDs(ids...)
@@ -276,6 +302,12 @@ func (uu *UserUpdate) RemoveCities(c ...*City) *UserUpdate {
 	return uu.RemoveCityIDs(ids...)
 }
 
+// ClearQueue clears all "queue" edges to type QueueItem.
+func (uu *UserUpdate) ClearQueue() *UserUpdate {
+	uu.mutation.ClearQueue()
+	return uu
+}
+
 // RemoveQueueIDs removes the queue edge to QueueItem by ids.
 func (uu *UserUpdate) RemoveQueueIDs(ids ...int) *UserUpdate {
 	uu.mutation.RemoveQueueIDs(ids...)
@@ -289,6 +321,12 @@ func (uu *UserUpdate) RemoveQueue(q ...*QueueItem) *UserUpdate {
 		ids[i] = q[i].ID
 	}
 	return uu.RemoveQueueIDs(ids...)
+}
+
+// ClearConstructions clears all "constructions" edges to type Construction.
+func (uu *UserUpdate) ClearConstructions() *UserUpdate {
+	uu.mutation.ClearConstructions()
+	return uu
 }
 
 // RemoveConstructionIDs removes the constructions edge to Construction by ids.
@@ -308,33 +346,23 @@ func (uu *UserUpdate) RemoveConstructions(c ...*Construction) *UserUpdate {
 
 // Save executes the query and returns the number of rows/vertices matched by this operation.
 func (uu *UserUpdate) Save(ctx context.Context) (int, error) {
-	if v, ok := uu.mutation.Name(); ok {
-		if err := user.NameValidator(v); err != nil {
-			return 0, fmt.Errorf("ent: validator failed for field \"name\": %w", err)
-		}
-	}
-	if v, ok := uu.mutation.Email(); ok {
-		if err := user.EmailValidator(v); err != nil {
-			return 0, fmt.Errorf("ent: validator failed for field \"email\": %w", err)
-		}
-	}
-	if v, ok := uu.mutation.PasswordHash(); ok {
-		if err := user.PasswordHashValidator(v); err != nil {
-			return 0, fmt.Errorf("ent: validator failed for field \"password_hash\": %w", err)
-		}
-	}
-
 	var (
 		err      error
 		affected int
 	)
 	if len(uu.hooks) == 0 {
+		if err = uu.check(); err != nil {
+			return 0, err
+		}
 		affected, err = uu.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 			mutation, ok := m.(*UserMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
+			}
+			if err = uu.check(); err != nil {
+				return 0, err
 			}
 			uu.mutation = mutation
 			affected, err = uu.sqlSave(ctx)
@@ -371,6 +399,26 @@ func (uu *UserUpdate) ExecX(ctx context.Context) {
 	if err := uu.Exec(ctx); err != nil {
 		panic(err)
 	}
+}
+
+// check runs all checks and user-defined validators on the builder.
+func (uu *UserUpdate) check() error {
+	if v, ok := uu.mutation.Name(); ok {
+		if err := user.NameValidator(v); err != nil {
+			return &ValidationError{Name: "name", err: fmt.Errorf("ent: validator failed for field \"name\": %w", err)}
+		}
+	}
+	if v, ok := uu.mutation.Email(); ok {
+		if err := user.EmailValidator(v); err != nil {
+			return &ValidationError{Name: "email", err: fmt.Errorf("ent: validator failed for field \"email\": %w", err)}
+		}
+	}
+	if v, ok := uu.mutation.PasswordHash(); ok {
+		if err := user.PasswordHashValidator(v); err != nil {
+			return &ValidationError{Name: "password_hash", err: fmt.Errorf("ent: validator failed for field \"password_hash\": %w", err)}
+		}
+	}
+	return nil
 }
 
 func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
@@ -524,7 +572,30 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: user.FieldAllianceRank,
 		})
 	}
-	if nodes := uu.mutation.RemovedCitiesIDs(); len(nodes) > 0 {
+	if value, ok := uu.mutation.LastUpdated(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: user.FieldLastUpdated,
+		})
+	}
+	if uu.mutation.CitiesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.CitiesTable,
+			Columns: []string{user.CitiesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: city.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.RemovedCitiesIDs(); len(nodes) > 0 && !uu.mutation.CitiesCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
@@ -562,7 +633,23 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if nodes := uu.mutation.RemovedQueueIDs(); len(nodes) > 0 {
+	if uu.mutation.QueueCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.QueueTable,
+			Columns: []string{user.QueueColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: queueitem.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.RemovedQueueIDs(); len(nodes) > 0 && !uu.mutation.QueueCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
@@ -600,7 +687,23 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if nodes := uu.mutation.RemovedConstructionsIDs(); len(nodes) > 0 {
+	if uu.mutation.ConstructionsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.ConstructionsTable,
+			Columns: []string{user.ConstructionsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: construction.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.RemovedConstructionsIDs(); len(nodes) > 0 && !uu.mutation.ConstructionsCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
@@ -842,6 +945,20 @@ func (uuo *UserUpdateOne) AddAllianceRank(i int) *UserUpdateOne {
 	return uuo
 }
 
+// SetLastUpdated sets the last_updated field.
+func (uuo *UserUpdateOne) SetLastUpdated(t time.Time) *UserUpdateOne {
+	uuo.mutation.SetLastUpdated(t)
+	return uuo
+}
+
+// SetNillableLastUpdated sets the last_updated field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableLastUpdated(t *time.Time) *UserUpdateOne {
+	if t != nil {
+		uuo.SetLastUpdated(*t)
+	}
+	return uuo
+}
+
 // AddCityIDs adds the cities edge to City by ids.
 func (uuo *UserUpdateOne) AddCityIDs(ids ...int) *UserUpdateOne {
 	uuo.mutation.AddCityIDs(ids...)
@@ -887,6 +1004,17 @@ func (uuo *UserUpdateOne) AddConstructions(c ...*Construction) *UserUpdateOne {
 	return uuo.AddConstructionIDs(ids...)
 }
 
+// Mutation returns the UserMutation object of the builder.
+func (uuo *UserUpdateOne) Mutation() *UserMutation {
+	return uuo.mutation
+}
+
+// ClearCities clears all "cities" edges to type City.
+func (uuo *UserUpdateOne) ClearCities() *UserUpdateOne {
+	uuo.mutation.ClearCities()
+	return uuo
+}
+
 // RemoveCityIDs removes the cities edge to City by ids.
 func (uuo *UserUpdateOne) RemoveCityIDs(ids ...int) *UserUpdateOne {
 	uuo.mutation.RemoveCityIDs(ids...)
@@ -902,6 +1030,12 @@ func (uuo *UserUpdateOne) RemoveCities(c ...*City) *UserUpdateOne {
 	return uuo.RemoveCityIDs(ids...)
 }
 
+// ClearQueue clears all "queue" edges to type QueueItem.
+func (uuo *UserUpdateOne) ClearQueue() *UserUpdateOne {
+	uuo.mutation.ClearQueue()
+	return uuo
+}
+
 // RemoveQueueIDs removes the queue edge to QueueItem by ids.
 func (uuo *UserUpdateOne) RemoveQueueIDs(ids ...int) *UserUpdateOne {
 	uuo.mutation.RemoveQueueIDs(ids...)
@@ -915,6 +1049,12 @@ func (uuo *UserUpdateOne) RemoveQueue(q ...*QueueItem) *UserUpdateOne {
 		ids[i] = q[i].ID
 	}
 	return uuo.RemoveQueueIDs(ids...)
+}
+
+// ClearConstructions clears all "constructions" edges to type Construction.
+func (uuo *UserUpdateOne) ClearConstructions() *UserUpdateOne {
+	uuo.mutation.ClearConstructions()
+	return uuo
 }
 
 // RemoveConstructionIDs removes the constructions edge to Construction by ids.
@@ -934,33 +1074,23 @@ func (uuo *UserUpdateOne) RemoveConstructions(c ...*Construction) *UserUpdateOne
 
 // Save executes the query and returns the updated entity.
 func (uuo *UserUpdateOne) Save(ctx context.Context) (*User, error) {
-	if v, ok := uuo.mutation.Name(); ok {
-		if err := user.NameValidator(v); err != nil {
-			return nil, fmt.Errorf("ent: validator failed for field \"name\": %w", err)
-		}
-	}
-	if v, ok := uuo.mutation.Email(); ok {
-		if err := user.EmailValidator(v); err != nil {
-			return nil, fmt.Errorf("ent: validator failed for field \"email\": %w", err)
-		}
-	}
-	if v, ok := uuo.mutation.PasswordHash(); ok {
-		if err := user.PasswordHashValidator(v); err != nil {
-			return nil, fmt.Errorf("ent: validator failed for field \"password_hash\": %w", err)
-		}
-	}
-
 	var (
 		err  error
 		node *User
 	)
 	if len(uuo.hooks) == 0 {
+		if err = uuo.check(); err != nil {
+			return nil, err
+		}
 		node, err = uuo.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 			mutation, ok := m.(*UserMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
+			}
+			if err = uuo.check(); err != nil {
+				return nil, err
 			}
 			uuo.mutation = mutation
 			node, err = uuo.sqlSave(ctx)
@@ -979,11 +1109,11 @@ func (uuo *UserUpdateOne) Save(ctx context.Context) (*User, error) {
 
 // SaveX is like Save, but panics if an error occurs.
 func (uuo *UserUpdateOne) SaveX(ctx context.Context) *User {
-	u, err := uuo.Save(ctx)
+	node, err := uuo.Save(ctx)
 	if err != nil {
 		panic(err)
 	}
-	return u
+	return node
 }
 
 // Exec executes the query on the entity.
@@ -999,7 +1129,27 @@ func (uuo *UserUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
-func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (u *User, err error) {
+// check runs all checks and user-defined validators on the builder.
+func (uuo *UserUpdateOne) check() error {
+	if v, ok := uuo.mutation.Name(); ok {
+		if err := user.NameValidator(v); err != nil {
+			return &ValidationError{Name: "name", err: fmt.Errorf("ent: validator failed for field \"name\": %w", err)}
+		}
+	}
+	if v, ok := uuo.mutation.Email(); ok {
+		if err := user.EmailValidator(v); err != nil {
+			return &ValidationError{Name: "email", err: fmt.Errorf("ent: validator failed for field \"email\": %w", err)}
+		}
+	}
+	if v, ok := uuo.mutation.PasswordHash(); ok {
+		if err := user.PasswordHashValidator(v); err != nil {
+			return &ValidationError{Name: "password_hash", err: fmt.Errorf("ent: validator failed for field \"password_hash\": %w", err)}
+		}
+	}
+	return nil
+}
+
+func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
 			Table:   user.Table,
@@ -1012,7 +1162,7 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (u *User, err error) {
 	}
 	id, ok := uuo.mutation.ID()
 	if !ok {
-		return nil, fmt.Errorf("missing User.ID for update")
+		return nil, &ValidationError{Name: "ID", err: fmt.Errorf("missing User.ID for update")}
 	}
 	_spec.Node.ID.Value = id
 	if value, ok := uuo.mutation.Name(); ok {
@@ -1148,7 +1298,30 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (u *User, err error) {
 			Column: user.FieldAllianceRank,
 		})
 	}
-	if nodes := uuo.mutation.RemovedCitiesIDs(); len(nodes) > 0 {
+	if value, ok := uuo.mutation.LastUpdated(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: user.FieldLastUpdated,
+		})
+	}
+	if uuo.mutation.CitiesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.CitiesTable,
+			Columns: []string{user.CitiesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: city.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.RemovedCitiesIDs(); len(nodes) > 0 && !uuo.mutation.CitiesCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
@@ -1186,7 +1359,23 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (u *User, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if nodes := uuo.mutation.RemovedQueueIDs(); len(nodes) > 0 {
+	if uuo.mutation.QueueCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.QueueTable,
+			Columns: []string{user.QueueColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: queueitem.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.RemovedQueueIDs(); len(nodes) > 0 && !uuo.mutation.QueueCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
@@ -1224,7 +1413,23 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (u *User, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if nodes := uuo.mutation.RemovedConstructionsIDs(); len(nodes) > 0 {
+	if uuo.mutation.ConstructionsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.ConstructionsTable,
+			Columns: []string{user.ConstructionsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: construction.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.RemovedConstructionsIDs(); len(nodes) > 0 && !uuo.mutation.ConstructionsCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
@@ -1262,9 +1467,9 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (u *User, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	u = &User{config: uuo.config}
-	_spec.Assign = u.assignValues
-	_spec.ScanValues = u.scanValues()
+	_node = &User{config: uuo.config}
+	_spec.Assign = _node.assignValues
+	_spec.ScanValues = _node.scanValues()
 	if err = sqlgraph.UpdateNode(ctx, uuo.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{user.Label}
@@ -1273,5 +1478,5 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (u *User, err error) {
 		}
 		return nil, err
 	}
-	return u, nil
+	return _node, nil
 }

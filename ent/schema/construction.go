@@ -1,10 +1,11 @@
 package schema
 
 import (
-	"github.com/facebookincubator/ent"
-	"github.com/facebookincubator/ent/schema/edge"
-	"github.com/facebookincubator/ent/schema/field"
-	"github.com/facebookincubator/ent/schema/index"
+	"github.com/facebook/ent"
+	"github.com/facebook/ent/schema/edge"
+	"github.com/facebook/ent/schema/field"
+	"github.com/facebook/ent/schema/index"
+	"time"
 )
 
 // Construction holds the schema definition for the Construction entity.
@@ -17,11 +18,12 @@ func (Construction) Fields() []ent.Field {
 	return []ent.Field{
 		field.Int("x"),
 		field.Int("y"),
-		field.Int("raw_production").Default(0),
-		field.Int("production").Default(0),
+		field.Float("raw_production").Default(0),
+		field.Float("production").Default(0),
 		field.Int("type").Default(0),
 		field.Int("level").Default(0),
-		field.Int("modifier").Default(1),
+		field.Float("modifier").Default(1),
+		field.Time("last_updated").Default(time.Now),
 		field.Bool("need_refresh").Default(true),
 	}
 }

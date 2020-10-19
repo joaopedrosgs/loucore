@@ -2,6 +2,10 @@
 
 package user
 
+import (
+	"time"
+)
+
 const (
 	// Label holds the string label denoting the user type in the database.
 	Label = "user"
@@ -29,6 +33,8 @@ const (
 	FieldRank = "rank"
 	// FieldAllianceRank holds the string denoting the alliance_rank field in the database.
 	FieldAllianceRank = "alliance_rank"
+	// FieldLastUpdated holds the string denoting the last_updated field in the database.
+	FieldLastUpdated = "last_updated"
 
 	// EdgeCities holds the string denoting the cities edge name in mutations.
 	EdgeCities = "cities"
@@ -76,6 +82,17 @@ var Columns = []string{
 	FieldTrueseed,
 	FieldRank,
 	FieldAllianceRank,
+	FieldLastUpdated,
+}
+
+// ValidColumn reports if the column name is valid (part of the table columns).
+func ValidColumn(column string) bool {
+	for i := range Columns {
+		if column == Columns[i] {
+			return true
+		}
+	}
+	return false
 }
 
 var (
@@ -101,4 +118,6 @@ var (
 	DefaultRank int
 	// DefaultAllianceRank holds the default value on creation for the alliance_rank field.
 	DefaultAllianceRank int
+	// DefaultLastUpdated holds the default value on creation for the last_updated field.
+	DefaultLastUpdated func() time.Time
 )

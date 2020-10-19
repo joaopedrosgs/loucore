@@ -6,9 +6,10 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"time"
 
-	"github.com/facebookincubator/ent/dialect/sql/sqlgraph"
-	"github.com/facebookincubator/ent/schema/field"
+	"github.com/facebook/ent/dialect/sql/sqlgraph"
+	"github.com/facebook/ent/schema/field"
 	"github.com/joaopedrosgs/loucore/ent/city"
 	"github.com/joaopedrosgs/loucore/ent/construction"
 	"github.com/joaopedrosgs/loucore/ent/queueitem"
@@ -152,6 +153,20 @@ func (uc *UserCreate) SetNillableAllianceRank(i *int) *UserCreate {
 	return uc
 }
 
+// SetLastUpdated sets the last_updated field.
+func (uc *UserCreate) SetLastUpdated(t time.Time) *UserCreate {
+	uc.mutation.SetLastUpdated(t)
+	return uc
+}
+
+// SetNillableLastUpdated sets the last_updated field if the given value is not nil.
+func (uc *UserCreate) SetNillableLastUpdated(t *time.Time) *UserCreate {
+	if t != nil {
+		uc.SetLastUpdated(*t)
+	}
+	return uc
+}
+
 // AddCityIDs adds the cities edge to City by ids.
 func (uc *UserCreate) AddCityIDs(ids ...int) *UserCreate {
 	uc.mutation.AddCityIDs(ids...)
@@ -197,32 +212,58 @@ func (uc *UserCreate) AddConstructions(c ...*Construction) *UserCreate {
 	return uc.AddConstructionIDs(ids...)
 }
 
+// Mutation returns the UserMutation object of the builder.
+func (uc *UserCreate) Mutation() *UserMutation {
+	return uc.mutation
+}
+
 // Save creates the User in the database.
 func (uc *UserCreate) Save(ctx context.Context) (*User, error) {
-	if _, ok := uc.mutation.Name(); !ok {
-		return nil, errors.New("ent: missing required field \"name\"")
-	}
-	if v, ok := uc.mutation.Name(); ok {
-		if err := user.NameValidator(v); err != nil {
-			return nil, fmt.Errorf("ent: validator failed for field \"name\": %w", err)
+	var (
+		err  error
+		node *User
+	)
+	uc.defaults()
+	if len(uc.hooks) == 0 {
+		if err = uc.check(); err != nil {
+			return nil, err
+		}
+		node, err = uc.sqlSave(ctx)
+	} else {
+		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
+			mutation, ok := m.(*UserMutation)
+			if !ok {
+				return nil, fmt.Errorf("unexpected mutation type %T", m)
+			}
+			if err = uc.check(); err != nil {
+				return nil, err
+			}
+			uc.mutation = mutation
+			node, err = uc.sqlSave(ctx)
+			mutation.done = true
+			return node, err
+		})
+		for i := len(uc.hooks) - 1; i >= 0; i-- {
+			mut = uc.hooks[i](mut)
+		}
+		if _, err := mut.Mutate(ctx, uc.mutation); err != nil {
+			return nil, err
 		}
 	}
-	if _, ok := uc.mutation.Email(); !ok {
-		return nil, errors.New("ent: missing required field \"email\"")
+	return node, err
+}
+
+// SaveX calls Save and panics if Save returns an error.
+func (uc *UserCreate) SaveX(ctx context.Context) *User {
+	v, err := uc.Save(ctx)
+	if err != nil {
+		panic(err)
 	}
-	if v, ok := uc.mutation.Email(); ok {
-		if err := user.EmailValidator(v); err != nil {
-			return nil, fmt.Errorf("ent: validator failed for field \"email\": %w", err)
-		}
-	}
-	if _, ok := uc.mutation.PasswordHash(); !ok {
-		return nil, errors.New("ent: missing required field \"password_hash\"")
-	}
-	if v, ok := uc.mutation.PasswordHash(); ok {
-		if err := user.PasswordHashValidator(v); err != nil {
-			return nil, fmt.Errorf("ent: validator failed for field \"password_hash\": %w", err)
-		}
-	}
+	return v
+}
+
+// defaults sets the default values of the builder before save.
+func (uc *UserCreate) defaults() {
 	if _, ok := uc.mutation.Gold(); !ok {
 		v := user.DefaultGold
 		uc.mutation.SetGold(v)
@@ -255,45 +296,84 @@ func (uc *UserCreate) Save(ctx context.Context) (*User, error) {
 		v := user.DefaultAllianceRank
 		uc.mutation.SetAllianceRank(v)
 	}
-	var (
-		err  error
-		node *User
-	)
-	if len(uc.hooks) == 0 {
-		node, err = uc.sqlSave(ctx)
-	} else {
-		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
-			mutation, ok := m.(*UserMutation)
-			if !ok {
-				return nil, fmt.Errorf("unexpected mutation type %T", m)
-			}
-			uc.mutation = mutation
-			node, err = uc.sqlSave(ctx)
-			mutation.done = true
-			return node, err
-		})
-		for i := len(uc.hooks) - 1; i >= 0; i-- {
-			mut = uc.hooks[i](mut)
-		}
-		if _, err := mut.Mutate(ctx, uc.mutation); err != nil {
-			return nil, err
-		}
+	if _, ok := uc.mutation.LastUpdated(); !ok {
+		v := user.DefaultLastUpdated()
+		uc.mutation.SetLastUpdated(v)
 	}
-	return node, err
 }
 
-// SaveX calls Save and panics if Save returns an error.
-func (uc *UserCreate) SaveX(ctx context.Context) *User {
-	v, err := uc.Save(ctx)
-	if err != nil {
-		panic(err)
+// check runs all checks and user-defined validators on the builder.
+func (uc *UserCreate) check() error {
+	if _, ok := uc.mutation.Name(); !ok {
+		return &ValidationError{Name: "name", err: errors.New("ent: missing required field \"name\"")}
 	}
-	return v
+	if v, ok := uc.mutation.Name(); ok {
+		if err := user.NameValidator(v); err != nil {
+			return &ValidationError{Name: "name", err: fmt.Errorf("ent: validator failed for field \"name\": %w", err)}
+		}
+	}
+	if _, ok := uc.mutation.Email(); !ok {
+		return &ValidationError{Name: "email", err: errors.New("ent: missing required field \"email\"")}
+	}
+	if v, ok := uc.mutation.Email(); ok {
+		if err := user.EmailValidator(v); err != nil {
+			return &ValidationError{Name: "email", err: fmt.Errorf("ent: validator failed for field \"email\": %w", err)}
+		}
+	}
+	if _, ok := uc.mutation.PasswordHash(); !ok {
+		return &ValidationError{Name: "password_hash", err: errors.New("ent: missing required field \"password_hash\"")}
+	}
+	if v, ok := uc.mutation.PasswordHash(); ok {
+		if err := user.PasswordHashValidator(v); err != nil {
+			return &ValidationError{Name: "password_hash", err: fmt.Errorf("ent: validator failed for field \"password_hash\": %w", err)}
+		}
+	}
+	if _, ok := uc.mutation.Gold(); !ok {
+		return &ValidationError{Name: "gold", err: errors.New("ent: missing required field \"gold\"")}
+	}
+	if _, ok := uc.mutation.Diamonds(); !ok {
+		return &ValidationError{Name: "diamonds", err: errors.New("ent: missing required field \"diamonds\"")}
+	}
+	if _, ok := uc.mutation.Darkwood(); !ok {
+		return &ValidationError{Name: "darkwood", err: errors.New("ent: missing required field \"darkwood\"")}
+	}
+	if _, ok := uc.mutation.Runestone(); !ok {
+		return &ValidationError{Name: "runestone", err: errors.New("ent: missing required field \"runestone\"")}
+	}
+	if _, ok := uc.mutation.Veritium(); !ok {
+		return &ValidationError{Name: "veritium", err: errors.New("ent: missing required field \"veritium\"")}
+	}
+	if _, ok := uc.mutation.Trueseed(); !ok {
+		return &ValidationError{Name: "trueseed", err: errors.New("ent: missing required field \"trueseed\"")}
+	}
+	if _, ok := uc.mutation.Rank(); !ok {
+		return &ValidationError{Name: "rank", err: errors.New("ent: missing required field \"rank\"")}
+	}
+	if _, ok := uc.mutation.AllianceRank(); !ok {
+		return &ValidationError{Name: "alliance_rank", err: errors.New("ent: missing required field \"alliance_rank\"")}
+	}
+	if _, ok := uc.mutation.LastUpdated(); !ok {
+		return &ValidationError{Name: "last_updated", err: errors.New("ent: missing required field \"last_updated\"")}
+	}
+	return nil
 }
 
 func (uc *UserCreate) sqlSave(ctx context.Context) (*User, error) {
+	_node, _spec := uc.createSpec()
+	if err := sqlgraph.CreateNode(ctx, uc.driver, _spec); err != nil {
+		if cerr, ok := isSQLConstraintError(err); ok {
+			err = cerr
+		}
+		return nil, err
+	}
+	id := _spec.ID.Value.(int64)
+	_node.ID = int(id)
+	return _node, nil
+}
+
+func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 	var (
-		u     = &User{config: uc.config}
+		_node = &User{config: uc.config}
 		_spec = &sqlgraph.CreateSpec{
 			Table: user.Table,
 			ID: &sqlgraph.FieldSpec{
@@ -308,7 +388,7 @@ func (uc *UserCreate) sqlSave(ctx context.Context) (*User, error) {
 			Value:  value,
 			Column: user.FieldName,
 		})
-		u.Name = value
+		_node.Name = value
 	}
 	if value, ok := uc.mutation.Email(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -316,7 +396,7 @@ func (uc *UserCreate) sqlSave(ctx context.Context) (*User, error) {
 			Value:  value,
 			Column: user.FieldEmail,
 		})
-		u.Email = value
+		_node.Email = value
 	}
 	if value, ok := uc.mutation.PasswordHash(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -324,7 +404,7 @@ func (uc *UserCreate) sqlSave(ctx context.Context) (*User, error) {
 			Value:  value,
 			Column: user.FieldPasswordHash,
 		})
-		u.PasswordHash = value
+		_node.PasswordHash = value
 	}
 	if value, ok := uc.mutation.Gold(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -332,7 +412,7 @@ func (uc *UserCreate) sqlSave(ctx context.Context) (*User, error) {
 			Value:  value,
 			Column: user.FieldGold,
 		})
-		u.Gold = value
+		_node.Gold = value
 	}
 	if value, ok := uc.mutation.Diamonds(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -340,7 +420,7 @@ func (uc *UserCreate) sqlSave(ctx context.Context) (*User, error) {
 			Value:  value,
 			Column: user.FieldDiamonds,
 		})
-		u.Diamonds = value
+		_node.Diamonds = value
 	}
 	if value, ok := uc.mutation.Darkwood(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -348,7 +428,7 @@ func (uc *UserCreate) sqlSave(ctx context.Context) (*User, error) {
 			Value:  value,
 			Column: user.FieldDarkwood,
 		})
-		u.Darkwood = value
+		_node.Darkwood = value
 	}
 	if value, ok := uc.mutation.Runestone(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -356,7 +436,7 @@ func (uc *UserCreate) sqlSave(ctx context.Context) (*User, error) {
 			Value:  value,
 			Column: user.FieldRunestone,
 		})
-		u.Runestone = value
+		_node.Runestone = value
 	}
 	if value, ok := uc.mutation.Veritium(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -364,7 +444,7 @@ func (uc *UserCreate) sqlSave(ctx context.Context) (*User, error) {
 			Value:  value,
 			Column: user.FieldVeritium,
 		})
-		u.Veritium = value
+		_node.Veritium = value
 	}
 	if value, ok := uc.mutation.Trueseed(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -372,7 +452,7 @@ func (uc *UserCreate) sqlSave(ctx context.Context) (*User, error) {
 			Value:  value,
 			Column: user.FieldTrueseed,
 		})
-		u.Trueseed = value
+		_node.Trueseed = value
 	}
 	if value, ok := uc.mutation.Rank(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -380,7 +460,7 @@ func (uc *UserCreate) sqlSave(ctx context.Context) (*User, error) {
 			Value:  value,
 			Column: user.FieldRank,
 		})
-		u.Rank = value
+		_node.Rank = value
 	}
 	if value, ok := uc.mutation.AllianceRank(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -388,7 +468,15 @@ func (uc *UserCreate) sqlSave(ctx context.Context) (*User, error) {
 			Value:  value,
 			Column: user.FieldAllianceRank,
 		})
-		u.AllianceRank = value
+		_node.AllianceRank = value
+	}
+	if value, ok := uc.mutation.LastUpdated(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: user.FieldLastUpdated,
+		})
+		_node.LastUpdated = value
 	}
 	if nodes := uc.mutation.CitiesIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
@@ -447,13 +535,72 @@ func (uc *UserCreate) sqlSave(ctx context.Context) (*User, error) {
 		}
 		_spec.Edges = append(_spec.Edges, edge)
 	}
-	if err := sqlgraph.CreateNode(ctx, uc.driver, _spec); err != nil {
-		if cerr, ok := isSQLConstraintError(err); ok {
-			err = cerr
-		}
-		return nil, err
+	return _node, _spec
+}
+
+// UserCreateBulk is the builder for creating a bulk of User entities.
+type UserCreateBulk struct {
+	config
+	builders []*UserCreate
+}
+
+// Save creates the User entities in the database.
+func (ucb *UserCreateBulk) Save(ctx context.Context) ([]*User, error) {
+	specs := make([]*sqlgraph.CreateSpec, len(ucb.builders))
+	nodes := make([]*User, len(ucb.builders))
+	mutators := make([]Mutator, len(ucb.builders))
+	for i := range ucb.builders {
+		func(i int, root context.Context) {
+			builder := ucb.builders[i]
+			builder.defaults()
+			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
+				mutation, ok := m.(*UserMutation)
+				if !ok {
+					return nil, fmt.Errorf("unexpected mutation type %T", m)
+				}
+				if err := builder.check(); err != nil {
+					return nil, err
+				}
+				builder.mutation = mutation
+				nodes[i], specs[i] = builder.createSpec()
+				var err error
+				if i < len(mutators)-1 {
+					_, err = mutators[i+1].Mutate(root, ucb.builders[i+1].mutation)
+				} else {
+					// Invoke the actual operation on the latest mutation in the chain.
+					if err = sqlgraph.BatchCreate(ctx, ucb.driver, &sqlgraph.BatchCreateSpec{Nodes: specs}); err != nil {
+						if cerr, ok := isSQLConstraintError(err); ok {
+							err = cerr
+						}
+					}
+				}
+				mutation.done = true
+				if err != nil {
+					return nil, err
+				}
+				id := specs[i].ID.Value.(int64)
+				nodes[i].ID = int(id)
+				return nodes[i], nil
+			})
+			for i := len(builder.hooks) - 1; i >= 0; i-- {
+				mut = builder.hooks[i](mut)
+			}
+			mutators[i] = mut
+		}(i, ctx)
 	}
-	id := _spec.ID.Value.(int64)
-	u.ID = int(id)
-	return u, nil
+	if len(mutators) > 0 {
+		if _, err := mutators[0].Mutate(ctx, ucb.builders[0].mutation); err != nil {
+			return nil, err
+		}
+	}
+	return nodes, nil
+}
+
+// SaveX calls Save and panics if Save returns an error.
+func (ucb *UserCreateBulk) SaveX(ctx context.Context) []*User {
+	v, err := ucb.Save(ctx)
+	if err != nil {
+		panic(err)
+	}
+	return v
 }

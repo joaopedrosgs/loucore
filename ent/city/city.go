@@ -47,6 +47,8 @@ const (
 	FieldQueueTime = "queue_time"
 	// FieldConstructionSpeed holds the string denoting the construction_speed field in the database.
 	FieldConstructionSpeed = "construction_speed"
+	// FieldLastUpdated holds the string denoting the last_updated field in the database.
+	FieldLastUpdated = "last_updated"
 
 	// EdgeOwner holds the string denoting the owner edge name in mutations.
 	EdgeOwner = "owner"
@@ -101,11 +103,27 @@ var Columns = []string{
 	FieldFoodLimit,
 	FieldQueueTime,
 	FieldConstructionSpeed,
+	FieldLastUpdated,
 }
 
 // ForeignKeys holds the SQL foreign-keys that are owned by the City type.
 var ForeignKeys = []string{
 	"user_cities",
+}
+
+// ValidColumn reports if the column name is valid (part of the table columns).
+func ValidColumn(column string) bool {
+	for i := range Columns {
+		if column == Columns[i] {
+			return true
+		}
+	}
+	for i := range ForeignKeys {
+		if column == ForeignKeys[i] {
+			return true
+		}
+	}
+	return false
 }
 
 var (
@@ -120,31 +138,33 @@ var (
 	// DefaultPoints holds the default value on creation for the points field.
 	DefaultPoints int
 	// DefaultWoodProduction holds the default value on creation for the wood_production field.
-	DefaultWoodProduction int
+	DefaultWoodProduction float64
 	// DefaultStoneProduction holds the default value on creation for the stone_production field.
-	DefaultStoneProduction int
+	DefaultStoneProduction float64
 	// DefaultIronProduction holds the default value on creation for the iron_production field.
-	DefaultIronProduction int
+	DefaultIronProduction float64
 	// DefaultFoodProduction holds the default value on creation for the food_production field.
-	DefaultFoodProduction int
+	DefaultFoodProduction float64
 	// DefaultWoodStored holds the default value on creation for the wood_stored field.
-	DefaultWoodStored int
+	DefaultWoodStored float64
 	// DefaultStoneStored holds the default value on creation for the stone_stored field.
-	DefaultStoneStored int
+	DefaultStoneStored float64
 	// DefaultIronStored holds the default value on creation for the iron_stored field.
-	DefaultIronStored int
+	DefaultIronStored float64
 	// DefaultFoodStored holds the default value on creation for the food_stored field.
-	DefaultFoodStored int
+	DefaultFoodStored float64
 	// DefaultWoodLimit holds the default value on creation for the wood_limit field.
-	DefaultWoodLimit int
+	DefaultWoodLimit float64
 	// DefaultStoneLimit holds the default value on creation for the stone_limit field.
-	DefaultStoneLimit int
+	DefaultStoneLimit float64
 	// DefaultIronLimit holds the default value on creation for the iron_limit field.
-	DefaultIronLimit int
+	DefaultIronLimit float64
 	// DefaultFoodLimit holds the default value on creation for the food_limit field.
-	DefaultFoodLimit int
+	DefaultFoodLimit float64
 	// DefaultQueueTime holds the default value on creation for the queue_time field.
 	DefaultQueueTime func() time.Time
 	// DefaultConstructionSpeed holds the default value on creation for the construction_speed field.
 	DefaultConstructionSpeed int
+	// DefaultLastUpdated holds the default value on creation for the last_updated field.
+	DefaultLastUpdated func() time.Time
 )

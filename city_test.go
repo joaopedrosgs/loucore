@@ -56,3 +56,26 @@ func TestCreateCityWithOwnerRandom(t *testing.T) {
 	_ = DeleteAccount(user.ID)
 
 }
+
+func TestUpdateCityProduction(t *testing.T) {
+	city, err := CreateCity(5,5)
+	if err != nil {
+		t.Errorf("Failed to CreateCity: %v", err)
+		return
+	}
+	err=UpdateCityProduction(city.ID)
+	if err != nil {
+		t.Errorf("Failed to UpdateCityProduction: %v", err)
+		return
+	}
+	updatedCity,err:=GetCityById(city.ID)
+	if err != nil {
+		t.Errorf("Failed to updatedCity: %v", err)
+		return
+	}
+	if updatedCity.WoodProduction!=5 {
+		t.Errorf("Production not calculated correctly, woodProduction should be 5 and is %v", updatedCity.WoodProduction)
+	}
+
+
+}

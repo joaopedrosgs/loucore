@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/facebookincubator/ent/dialect/sql"
-	"github.com/facebookincubator/ent/dialect/sql/sqlgraph"
-	"github.com/facebookincubator/ent/schema/field"
+	"github.com/facebook/ent/dialect/sql"
+	"github.com/facebook/ent/dialect/sql/sqlgraph"
+	"github.com/facebook/ent/schema/field"
 	"github.com/joaopedrosgs/loucore/ent/city"
 	"github.com/joaopedrosgs/loucore/ent/construction"
 	"github.com/joaopedrosgs/loucore/ent/predicate"
@@ -109,254 +109,254 @@ func (cu *CityUpdate) AddPoints(i int) *CityUpdate {
 }
 
 // SetWoodProduction sets the wood_production field.
-func (cu *CityUpdate) SetWoodProduction(i int) *CityUpdate {
+func (cu *CityUpdate) SetWoodProduction(f float64) *CityUpdate {
 	cu.mutation.ResetWoodProduction()
-	cu.mutation.SetWoodProduction(i)
+	cu.mutation.SetWoodProduction(f)
 	return cu
 }
 
 // SetNillableWoodProduction sets the wood_production field if the given value is not nil.
-func (cu *CityUpdate) SetNillableWoodProduction(i *int) *CityUpdate {
-	if i != nil {
-		cu.SetWoodProduction(*i)
+func (cu *CityUpdate) SetNillableWoodProduction(f *float64) *CityUpdate {
+	if f != nil {
+		cu.SetWoodProduction(*f)
 	}
 	return cu
 }
 
-// AddWoodProduction adds i to wood_production.
-func (cu *CityUpdate) AddWoodProduction(i int) *CityUpdate {
-	cu.mutation.AddWoodProduction(i)
+// AddWoodProduction adds f to wood_production.
+func (cu *CityUpdate) AddWoodProduction(f float64) *CityUpdate {
+	cu.mutation.AddWoodProduction(f)
 	return cu
 }
 
 // SetStoneProduction sets the stone_production field.
-func (cu *CityUpdate) SetStoneProduction(i int) *CityUpdate {
+func (cu *CityUpdate) SetStoneProduction(f float64) *CityUpdate {
 	cu.mutation.ResetStoneProduction()
-	cu.mutation.SetStoneProduction(i)
+	cu.mutation.SetStoneProduction(f)
 	return cu
 }
 
 // SetNillableStoneProduction sets the stone_production field if the given value is not nil.
-func (cu *CityUpdate) SetNillableStoneProduction(i *int) *CityUpdate {
-	if i != nil {
-		cu.SetStoneProduction(*i)
+func (cu *CityUpdate) SetNillableStoneProduction(f *float64) *CityUpdate {
+	if f != nil {
+		cu.SetStoneProduction(*f)
 	}
 	return cu
 }
 
-// AddStoneProduction adds i to stone_production.
-func (cu *CityUpdate) AddStoneProduction(i int) *CityUpdate {
-	cu.mutation.AddStoneProduction(i)
+// AddStoneProduction adds f to stone_production.
+func (cu *CityUpdate) AddStoneProduction(f float64) *CityUpdate {
+	cu.mutation.AddStoneProduction(f)
 	return cu
 }
 
 // SetIronProduction sets the iron_production field.
-func (cu *CityUpdate) SetIronProduction(i int) *CityUpdate {
+func (cu *CityUpdate) SetIronProduction(f float64) *CityUpdate {
 	cu.mutation.ResetIronProduction()
-	cu.mutation.SetIronProduction(i)
+	cu.mutation.SetIronProduction(f)
 	return cu
 }
 
 // SetNillableIronProduction sets the iron_production field if the given value is not nil.
-func (cu *CityUpdate) SetNillableIronProduction(i *int) *CityUpdate {
-	if i != nil {
-		cu.SetIronProduction(*i)
+func (cu *CityUpdate) SetNillableIronProduction(f *float64) *CityUpdate {
+	if f != nil {
+		cu.SetIronProduction(*f)
 	}
 	return cu
 }
 
-// AddIronProduction adds i to iron_production.
-func (cu *CityUpdate) AddIronProduction(i int) *CityUpdate {
-	cu.mutation.AddIronProduction(i)
+// AddIronProduction adds f to iron_production.
+func (cu *CityUpdate) AddIronProduction(f float64) *CityUpdate {
+	cu.mutation.AddIronProduction(f)
 	return cu
 }
 
 // SetFoodProduction sets the food_production field.
-func (cu *CityUpdate) SetFoodProduction(i int) *CityUpdate {
+func (cu *CityUpdate) SetFoodProduction(f float64) *CityUpdate {
 	cu.mutation.ResetFoodProduction()
-	cu.mutation.SetFoodProduction(i)
+	cu.mutation.SetFoodProduction(f)
 	return cu
 }
 
 // SetNillableFoodProduction sets the food_production field if the given value is not nil.
-func (cu *CityUpdate) SetNillableFoodProduction(i *int) *CityUpdate {
-	if i != nil {
-		cu.SetFoodProduction(*i)
+func (cu *CityUpdate) SetNillableFoodProduction(f *float64) *CityUpdate {
+	if f != nil {
+		cu.SetFoodProduction(*f)
 	}
 	return cu
 }
 
-// AddFoodProduction adds i to food_production.
-func (cu *CityUpdate) AddFoodProduction(i int) *CityUpdate {
-	cu.mutation.AddFoodProduction(i)
+// AddFoodProduction adds f to food_production.
+func (cu *CityUpdate) AddFoodProduction(f float64) *CityUpdate {
+	cu.mutation.AddFoodProduction(f)
 	return cu
 }
 
 // SetWoodStored sets the wood_stored field.
-func (cu *CityUpdate) SetWoodStored(i int) *CityUpdate {
+func (cu *CityUpdate) SetWoodStored(f float64) *CityUpdate {
 	cu.mutation.ResetWoodStored()
-	cu.mutation.SetWoodStored(i)
+	cu.mutation.SetWoodStored(f)
 	return cu
 }
 
 // SetNillableWoodStored sets the wood_stored field if the given value is not nil.
-func (cu *CityUpdate) SetNillableWoodStored(i *int) *CityUpdate {
-	if i != nil {
-		cu.SetWoodStored(*i)
+func (cu *CityUpdate) SetNillableWoodStored(f *float64) *CityUpdate {
+	if f != nil {
+		cu.SetWoodStored(*f)
 	}
 	return cu
 }
 
-// AddWoodStored adds i to wood_stored.
-func (cu *CityUpdate) AddWoodStored(i int) *CityUpdate {
-	cu.mutation.AddWoodStored(i)
+// AddWoodStored adds f to wood_stored.
+func (cu *CityUpdate) AddWoodStored(f float64) *CityUpdate {
+	cu.mutation.AddWoodStored(f)
 	return cu
 }
 
 // SetStoneStored sets the stone_stored field.
-func (cu *CityUpdate) SetStoneStored(i int) *CityUpdate {
+func (cu *CityUpdate) SetStoneStored(f float64) *CityUpdate {
 	cu.mutation.ResetStoneStored()
-	cu.mutation.SetStoneStored(i)
+	cu.mutation.SetStoneStored(f)
 	return cu
 }
 
 // SetNillableStoneStored sets the stone_stored field if the given value is not nil.
-func (cu *CityUpdate) SetNillableStoneStored(i *int) *CityUpdate {
-	if i != nil {
-		cu.SetStoneStored(*i)
+func (cu *CityUpdate) SetNillableStoneStored(f *float64) *CityUpdate {
+	if f != nil {
+		cu.SetStoneStored(*f)
 	}
 	return cu
 }
 
-// AddStoneStored adds i to stone_stored.
-func (cu *CityUpdate) AddStoneStored(i int) *CityUpdate {
-	cu.mutation.AddStoneStored(i)
+// AddStoneStored adds f to stone_stored.
+func (cu *CityUpdate) AddStoneStored(f float64) *CityUpdate {
+	cu.mutation.AddStoneStored(f)
 	return cu
 }
 
 // SetIronStored sets the iron_stored field.
-func (cu *CityUpdate) SetIronStored(i int) *CityUpdate {
+func (cu *CityUpdate) SetIronStored(f float64) *CityUpdate {
 	cu.mutation.ResetIronStored()
-	cu.mutation.SetIronStored(i)
+	cu.mutation.SetIronStored(f)
 	return cu
 }
 
 // SetNillableIronStored sets the iron_stored field if the given value is not nil.
-func (cu *CityUpdate) SetNillableIronStored(i *int) *CityUpdate {
-	if i != nil {
-		cu.SetIronStored(*i)
+func (cu *CityUpdate) SetNillableIronStored(f *float64) *CityUpdate {
+	if f != nil {
+		cu.SetIronStored(*f)
 	}
 	return cu
 }
 
-// AddIronStored adds i to iron_stored.
-func (cu *CityUpdate) AddIronStored(i int) *CityUpdate {
-	cu.mutation.AddIronStored(i)
+// AddIronStored adds f to iron_stored.
+func (cu *CityUpdate) AddIronStored(f float64) *CityUpdate {
+	cu.mutation.AddIronStored(f)
 	return cu
 }
 
 // SetFoodStored sets the food_stored field.
-func (cu *CityUpdate) SetFoodStored(i int) *CityUpdate {
+func (cu *CityUpdate) SetFoodStored(f float64) *CityUpdate {
 	cu.mutation.ResetFoodStored()
-	cu.mutation.SetFoodStored(i)
+	cu.mutation.SetFoodStored(f)
 	return cu
 }
 
 // SetNillableFoodStored sets the food_stored field if the given value is not nil.
-func (cu *CityUpdate) SetNillableFoodStored(i *int) *CityUpdate {
-	if i != nil {
-		cu.SetFoodStored(*i)
+func (cu *CityUpdate) SetNillableFoodStored(f *float64) *CityUpdate {
+	if f != nil {
+		cu.SetFoodStored(*f)
 	}
 	return cu
 }
 
-// AddFoodStored adds i to food_stored.
-func (cu *CityUpdate) AddFoodStored(i int) *CityUpdate {
-	cu.mutation.AddFoodStored(i)
+// AddFoodStored adds f to food_stored.
+func (cu *CityUpdate) AddFoodStored(f float64) *CityUpdate {
+	cu.mutation.AddFoodStored(f)
 	return cu
 }
 
 // SetWoodLimit sets the wood_limit field.
-func (cu *CityUpdate) SetWoodLimit(i int) *CityUpdate {
+func (cu *CityUpdate) SetWoodLimit(f float64) *CityUpdate {
 	cu.mutation.ResetWoodLimit()
-	cu.mutation.SetWoodLimit(i)
+	cu.mutation.SetWoodLimit(f)
 	return cu
 }
 
 // SetNillableWoodLimit sets the wood_limit field if the given value is not nil.
-func (cu *CityUpdate) SetNillableWoodLimit(i *int) *CityUpdate {
-	if i != nil {
-		cu.SetWoodLimit(*i)
+func (cu *CityUpdate) SetNillableWoodLimit(f *float64) *CityUpdate {
+	if f != nil {
+		cu.SetWoodLimit(*f)
 	}
 	return cu
 }
 
-// AddWoodLimit adds i to wood_limit.
-func (cu *CityUpdate) AddWoodLimit(i int) *CityUpdate {
-	cu.mutation.AddWoodLimit(i)
+// AddWoodLimit adds f to wood_limit.
+func (cu *CityUpdate) AddWoodLimit(f float64) *CityUpdate {
+	cu.mutation.AddWoodLimit(f)
 	return cu
 }
 
 // SetStoneLimit sets the stone_limit field.
-func (cu *CityUpdate) SetStoneLimit(i int) *CityUpdate {
+func (cu *CityUpdate) SetStoneLimit(f float64) *CityUpdate {
 	cu.mutation.ResetStoneLimit()
-	cu.mutation.SetStoneLimit(i)
+	cu.mutation.SetStoneLimit(f)
 	return cu
 }
 
 // SetNillableStoneLimit sets the stone_limit field if the given value is not nil.
-func (cu *CityUpdate) SetNillableStoneLimit(i *int) *CityUpdate {
-	if i != nil {
-		cu.SetStoneLimit(*i)
+func (cu *CityUpdate) SetNillableStoneLimit(f *float64) *CityUpdate {
+	if f != nil {
+		cu.SetStoneLimit(*f)
 	}
 	return cu
 }
 
-// AddStoneLimit adds i to stone_limit.
-func (cu *CityUpdate) AddStoneLimit(i int) *CityUpdate {
-	cu.mutation.AddStoneLimit(i)
+// AddStoneLimit adds f to stone_limit.
+func (cu *CityUpdate) AddStoneLimit(f float64) *CityUpdate {
+	cu.mutation.AddStoneLimit(f)
 	return cu
 }
 
 // SetIronLimit sets the iron_limit field.
-func (cu *CityUpdate) SetIronLimit(i int) *CityUpdate {
+func (cu *CityUpdate) SetIronLimit(f float64) *CityUpdate {
 	cu.mutation.ResetIronLimit()
-	cu.mutation.SetIronLimit(i)
+	cu.mutation.SetIronLimit(f)
 	return cu
 }
 
 // SetNillableIronLimit sets the iron_limit field if the given value is not nil.
-func (cu *CityUpdate) SetNillableIronLimit(i *int) *CityUpdate {
-	if i != nil {
-		cu.SetIronLimit(*i)
+func (cu *CityUpdate) SetNillableIronLimit(f *float64) *CityUpdate {
+	if f != nil {
+		cu.SetIronLimit(*f)
 	}
 	return cu
 }
 
-// AddIronLimit adds i to iron_limit.
-func (cu *CityUpdate) AddIronLimit(i int) *CityUpdate {
-	cu.mutation.AddIronLimit(i)
+// AddIronLimit adds f to iron_limit.
+func (cu *CityUpdate) AddIronLimit(f float64) *CityUpdate {
+	cu.mutation.AddIronLimit(f)
 	return cu
 }
 
 // SetFoodLimit sets the food_limit field.
-func (cu *CityUpdate) SetFoodLimit(i int) *CityUpdate {
+func (cu *CityUpdate) SetFoodLimit(f float64) *CityUpdate {
 	cu.mutation.ResetFoodLimit()
-	cu.mutation.SetFoodLimit(i)
+	cu.mutation.SetFoodLimit(f)
 	return cu
 }
 
 // SetNillableFoodLimit sets the food_limit field if the given value is not nil.
-func (cu *CityUpdate) SetNillableFoodLimit(i *int) *CityUpdate {
-	if i != nil {
-		cu.SetFoodLimit(*i)
+func (cu *CityUpdate) SetNillableFoodLimit(f *float64) *CityUpdate {
+	if f != nil {
+		cu.SetFoodLimit(*f)
 	}
 	return cu
 }
 
-// AddFoodLimit adds i to food_limit.
-func (cu *CityUpdate) AddFoodLimit(i int) *CityUpdate {
-	cu.mutation.AddFoodLimit(i)
+// AddFoodLimit adds f to food_limit.
+func (cu *CityUpdate) AddFoodLimit(f float64) *CityUpdate {
+	cu.mutation.AddFoodLimit(f)
 	return cu
 }
 
@@ -392,6 +392,20 @@ func (cu *CityUpdate) SetNillableConstructionSpeed(i *int) *CityUpdate {
 // AddConstructionSpeed adds i to construction_speed.
 func (cu *CityUpdate) AddConstructionSpeed(i int) *CityUpdate {
 	cu.mutation.AddConstructionSpeed(i)
+	return cu
+}
+
+// SetLastUpdated sets the last_updated field.
+func (cu *CityUpdate) SetLastUpdated(t time.Time) *CityUpdate {
+	cu.mutation.SetLastUpdated(t)
+	return cu
+}
+
+// SetNillableLastUpdated sets the last_updated field if the given value is not nil.
+func (cu *CityUpdate) SetNillableLastUpdated(t *time.Time) *CityUpdate {
+	if t != nil {
+		cu.SetLastUpdated(*t)
+	}
 	return cu
 }
 
@@ -444,9 +458,20 @@ func (cu *CityUpdate) AddQueue(q ...*QueueItem) *CityUpdate {
 	return cu.AddQueueIDs(ids...)
 }
 
-// ClearOwner clears the owner edge to User.
+// Mutation returns the CityMutation object of the builder.
+func (cu *CityUpdate) Mutation() *CityMutation {
+	return cu.mutation
+}
+
+// ClearOwner clears the "owner" edge to type User.
 func (cu *CityUpdate) ClearOwner() *CityUpdate {
 	cu.mutation.ClearOwner()
+	return cu
+}
+
+// ClearConstructions clears all "constructions" edges to type Construction.
+func (cu *CityUpdate) ClearConstructions() *CityUpdate {
+	cu.mutation.ClearConstructions()
 	return cu
 }
 
@@ -463,6 +488,12 @@ func (cu *CityUpdate) RemoveConstructions(c ...*Construction) *CityUpdate {
 		ids[i] = c[i].ID
 	}
 	return cu.RemoveConstructionIDs(ids...)
+}
+
+// ClearQueue clears all "queue" edges to type QueueItem.
+func (cu *CityUpdate) ClearQueue() *CityUpdate {
+	cu.mutation.ClearQueue()
+	return cu
 }
 
 // RemoveQueueIDs removes the queue edge to QueueItem by ids.
@@ -482,23 +513,23 @@ func (cu *CityUpdate) RemoveQueue(q ...*QueueItem) *CityUpdate {
 
 // Save executes the query and returns the number of rows/vertices matched by this operation.
 func (cu *CityUpdate) Save(ctx context.Context) (int, error) {
-	if v, ok := cu.mutation.Name(); ok {
-		if err := city.NameValidator(v); err != nil {
-			return 0, fmt.Errorf("ent: validator failed for field \"name\": %w", err)
-		}
-	}
-
 	var (
 		err      error
 		affected int
 	)
 	if len(cu.hooks) == 0 {
+		if err = cu.check(); err != nil {
+			return 0, err
+		}
 		affected, err = cu.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 			mutation, ok := m.(*CityMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
+			}
+			if err = cu.check(); err != nil {
+				return 0, err
 			}
 			cu.mutation = mutation
 			affected, err = cu.sqlSave(ctx)
@@ -535,6 +566,16 @@ func (cu *CityUpdate) ExecX(ctx context.Context) {
 	if err := cu.Exec(ctx); err != nil {
 		panic(err)
 	}
+}
+
+// check runs all checks and user-defined validators on the builder.
+func (cu *CityUpdate) check() error {
+	if v, ok := cu.mutation.Name(); ok {
+		if err := city.NameValidator(v); err != nil {
+			return &ValidationError{Name: "name", err: fmt.Errorf("ent: validator failed for field \"name\": %w", err)}
+		}
+	}
+	return nil
 }
 
 func (cu *CityUpdate) sqlSave(ctx context.Context) (n int, err error) {
@@ -606,168 +647,168 @@ func (cu *CityUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := cu.mutation.WoodProduction(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldWoodProduction,
 		})
 	}
 	if value, ok := cu.mutation.AddedWoodProduction(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldWoodProduction,
 		})
 	}
 	if value, ok := cu.mutation.StoneProduction(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldStoneProduction,
 		})
 	}
 	if value, ok := cu.mutation.AddedStoneProduction(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldStoneProduction,
 		})
 	}
 	if value, ok := cu.mutation.IronProduction(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldIronProduction,
 		})
 	}
 	if value, ok := cu.mutation.AddedIronProduction(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldIronProduction,
 		})
 	}
 	if value, ok := cu.mutation.FoodProduction(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldFoodProduction,
 		})
 	}
 	if value, ok := cu.mutation.AddedFoodProduction(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldFoodProduction,
 		})
 	}
 	if value, ok := cu.mutation.WoodStored(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldWoodStored,
 		})
 	}
 	if value, ok := cu.mutation.AddedWoodStored(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldWoodStored,
 		})
 	}
 	if value, ok := cu.mutation.StoneStored(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldStoneStored,
 		})
 	}
 	if value, ok := cu.mutation.AddedStoneStored(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldStoneStored,
 		})
 	}
 	if value, ok := cu.mutation.IronStored(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldIronStored,
 		})
 	}
 	if value, ok := cu.mutation.AddedIronStored(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldIronStored,
 		})
 	}
 	if value, ok := cu.mutation.FoodStored(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldFoodStored,
 		})
 	}
 	if value, ok := cu.mutation.AddedFoodStored(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldFoodStored,
 		})
 	}
 	if value, ok := cu.mutation.WoodLimit(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldWoodLimit,
 		})
 	}
 	if value, ok := cu.mutation.AddedWoodLimit(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldWoodLimit,
 		})
 	}
 	if value, ok := cu.mutation.StoneLimit(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldStoneLimit,
 		})
 	}
 	if value, ok := cu.mutation.AddedStoneLimit(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldStoneLimit,
 		})
 	}
 	if value, ok := cu.mutation.IronLimit(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldIronLimit,
 		})
 	}
 	if value, ok := cu.mutation.AddedIronLimit(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldIronLimit,
 		})
 	}
 	if value, ok := cu.mutation.FoodLimit(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldFoodLimit,
 		})
 	}
 	if value, ok := cu.mutation.AddedFoodLimit(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldFoodLimit,
 		})
@@ -791,6 +832,13 @@ func (cu *CityUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Type:   field.TypeInt,
 			Value:  value,
 			Column: city.FieldConstructionSpeed,
+		})
+	}
+	if value, ok := cu.mutation.LastUpdated(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: city.FieldLastUpdated,
 		})
 	}
 	if cu.mutation.OwnerCleared() {
@@ -828,7 +876,23 @@ func (cu *CityUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if nodes := cu.mutation.RemovedConstructionsIDs(); len(nodes) > 0 {
+	if cu.mutation.ConstructionsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   city.ConstructionsTable,
+			Columns: []string{city.ConstructionsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: construction.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.RemovedConstructionsIDs(); len(nodes) > 0 && !cu.mutation.ConstructionsCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
@@ -866,7 +930,23 @@ func (cu *CityUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if nodes := cu.mutation.RemovedQueueIDs(); len(nodes) > 0 {
+	if cu.mutation.QueueCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   city.QueueTable,
+			Columns: []string{city.QueueColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: queueitem.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.RemovedQueueIDs(); len(nodes) > 0 && !cu.mutation.QueueCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
@@ -1000,254 +1080,254 @@ func (cuo *CityUpdateOne) AddPoints(i int) *CityUpdateOne {
 }
 
 // SetWoodProduction sets the wood_production field.
-func (cuo *CityUpdateOne) SetWoodProduction(i int) *CityUpdateOne {
+func (cuo *CityUpdateOne) SetWoodProduction(f float64) *CityUpdateOne {
 	cuo.mutation.ResetWoodProduction()
-	cuo.mutation.SetWoodProduction(i)
+	cuo.mutation.SetWoodProduction(f)
 	return cuo
 }
 
 // SetNillableWoodProduction sets the wood_production field if the given value is not nil.
-func (cuo *CityUpdateOne) SetNillableWoodProduction(i *int) *CityUpdateOne {
-	if i != nil {
-		cuo.SetWoodProduction(*i)
+func (cuo *CityUpdateOne) SetNillableWoodProduction(f *float64) *CityUpdateOne {
+	if f != nil {
+		cuo.SetWoodProduction(*f)
 	}
 	return cuo
 }
 
-// AddWoodProduction adds i to wood_production.
-func (cuo *CityUpdateOne) AddWoodProduction(i int) *CityUpdateOne {
-	cuo.mutation.AddWoodProduction(i)
+// AddWoodProduction adds f to wood_production.
+func (cuo *CityUpdateOne) AddWoodProduction(f float64) *CityUpdateOne {
+	cuo.mutation.AddWoodProduction(f)
 	return cuo
 }
 
 // SetStoneProduction sets the stone_production field.
-func (cuo *CityUpdateOne) SetStoneProduction(i int) *CityUpdateOne {
+func (cuo *CityUpdateOne) SetStoneProduction(f float64) *CityUpdateOne {
 	cuo.mutation.ResetStoneProduction()
-	cuo.mutation.SetStoneProduction(i)
+	cuo.mutation.SetStoneProduction(f)
 	return cuo
 }
 
 // SetNillableStoneProduction sets the stone_production field if the given value is not nil.
-func (cuo *CityUpdateOne) SetNillableStoneProduction(i *int) *CityUpdateOne {
-	if i != nil {
-		cuo.SetStoneProduction(*i)
+func (cuo *CityUpdateOne) SetNillableStoneProduction(f *float64) *CityUpdateOne {
+	if f != nil {
+		cuo.SetStoneProduction(*f)
 	}
 	return cuo
 }
 
-// AddStoneProduction adds i to stone_production.
-func (cuo *CityUpdateOne) AddStoneProduction(i int) *CityUpdateOne {
-	cuo.mutation.AddStoneProduction(i)
+// AddStoneProduction adds f to stone_production.
+func (cuo *CityUpdateOne) AddStoneProduction(f float64) *CityUpdateOne {
+	cuo.mutation.AddStoneProduction(f)
 	return cuo
 }
 
 // SetIronProduction sets the iron_production field.
-func (cuo *CityUpdateOne) SetIronProduction(i int) *CityUpdateOne {
+func (cuo *CityUpdateOne) SetIronProduction(f float64) *CityUpdateOne {
 	cuo.mutation.ResetIronProduction()
-	cuo.mutation.SetIronProduction(i)
+	cuo.mutation.SetIronProduction(f)
 	return cuo
 }
 
 // SetNillableIronProduction sets the iron_production field if the given value is not nil.
-func (cuo *CityUpdateOne) SetNillableIronProduction(i *int) *CityUpdateOne {
-	if i != nil {
-		cuo.SetIronProduction(*i)
+func (cuo *CityUpdateOne) SetNillableIronProduction(f *float64) *CityUpdateOne {
+	if f != nil {
+		cuo.SetIronProduction(*f)
 	}
 	return cuo
 }
 
-// AddIronProduction adds i to iron_production.
-func (cuo *CityUpdateOne) AddIronProduction(i int) *CityUpdateOne {
-	cuo.mutation.AddIronProduction(i)
+// AddIronProduction adds f to iron_production.
+func (cuo *CityUpdateOne) AddIronProduction(f float64) *CityUpdateOne {
+	cuo.mutation.AddIronProduction(f)
 	return cuo
 }
 
 // SetFoodProduction sets the food_production field.
-func (cuo *CityUpdateOne) SetFoodProduction(i int) *CityUpdateOne {
+func (cuo *CityUpdateOne) SetFoodProduction(f float64) *CityUpdateOne {
 	cuo.mutation.ResetFoodProduction()
-	cuo.mutation.SetFoodProduction(i)
+	cuo.mutation.SetFoodProduction(f)
 	return cuo
 }
 
 // SetNillableFoodProduction sets the food_production field if the given value is not nil.
-func (cuo *CityUpdateOne) SetNillableFoodProduction(i *int) *CityUpdateOne {
-	if i != nil {
-		cuo.SetFoodProduction(*i)
+func (cuo *CityUpdateOne) SetNillableFoodProduction(f *float64) *CityUpdateOne {
+	if f != nil {
+		cuo.SetFoodProduction(*f)
 	}
 	return cuo
 }
 
-// AddFoodProduction adds i to food_production.
-func (cuo *CityUpdateOne) AddFoodProduction(i int) *CityUpdateOne {
-	cuo.mutation.AddFoodProduction(i)
+// AddFoodProduction adds f to food_production.
+func (cuo *CityUpdateOne) AddFoodProduction(f float64) *CityUpdateOne {
+	cuo.mutation.AddFoodProduction(f)
 	return cuo
 }
 
 // SetWoodStored sets the wood_stored field.
-func (cuo *CityUpdateOne) SetWoodStored(i int) *CityUpdateOne {
+func (cuo *CityUpdateOne) SetWoodStored(f float64) *CityUpdateOne {
 	cuo.mutation.ResetWoodStored()
-	cuo.mutation.SetWoodStored(i)
+	cuo.mutation.SetWoodStored(f)
 	return cuo
 }
 
 // SetNillableWoodStored sets the wood_stored field if the given value is not nil.
-func (cuo *CityUpdateOne) SetNillableWoodStored(i *int) *CityUpdateOne {
-	if i != nil {
-		cuo.SetWoodStored(*i)
+func (cuo *CityUpdateOne) SetNillableWoodStored(f *float64) *CityUpdateOne {
+	if f != nil {
+		cuo.SetWoodStored(*f)
 	}
 	return cuo
 }
 
-// AddWoodStored adds i to wood_stored.
-func (cuo *CityUpdateOne) AddWoodStored(i int) *CityUpdateOne {
-	cuo.mutation.AddWoodStored(i)
+// AddWoodStored adds f to wood_stored.
+func (cuo *CityUpdateOne) AddWoodStored(f float64) *CityUpdateOne {
+	cuo.mutation.AddWoodStored(f)
 	return cuo
 }
 
 // SetStoneStored sets the stone_stored field.
-func (cuo *CityUpdateOne) SetStoneStored(i int) *CityUpdateOne {
+func (cuo *CityUpdateOne) SetStoneStored(f float64) *CityUpdateOne {
 	cuo.mutation.ResetStoneStored()
-	cuo.mutation.SetStoneStored(i)
+	cuo.mutation.SetStoneStored(f)
 	return cuo
 }
 
 // SetNillableStoneStored sets the stone_stored field if the given value is not nil.
-func (cuo *CityUpdateOne) SetNillableStoneStored(i *int) *CityUpdateOne {
-	if i != nil {
-		cuo.SetStoneStored(*i)
+func (cuo *CityUpdateOne) SetNillableStoneStored(f *float64) *CityUpdateOne {
+	if f != nil {
+		cuo.SetStoneStored(*f)
 	}
 	return cuo
 }
 
-// AddStoneStored adds i to stone_stored.
-func (cuo *CityUpdateOne) AddStoneStored(i int) *CityUpdateOne {
-	cuo.mutation.AddStoneStored(i)
+// AddStoneStored adds f to stone_stored.
+func (cuo *CityUpdateOne) AddStoneStored(f float64) *CityUpdateOne {
+	cuo.mutation.AddStoneStored(f)
 	return cuo
 }
 
 // SetIronStored sets the iron_stored field.
-func (cuo *CityUpdateOne) SetIronStored(i int) *CityUpdateOne {
+func (cuo *CityUpdateOne) SetIronStored(f float64) *CityUpdateOne {
 	cuo.mutation.ResetIronStored()
-	cuo.mutation.SetIronStored(i)
+	cuo.mutation.SetIronStored(f)
 	return cuo
 }
 
 // SetNillableIronStored sets the iron_stored field if the given value is not nil.
-func (cuo *CityUpdateOne) SetNillableIronStored(i *int) *CityUpdateOne {
-	if i != nil {
-		cuo.SetIronStored(*i)
+func (cuo *CityUpdateOne) SetNillableIronStored(f *float64) *CityUpdateOne {
+	if f != nil {
+		cuo.SetIronStored(*f)
 	}
 	return cuo
 }
 
-// AddIronStored adds i to iron_stored.
-func (cuo *CityUpdateOne) AddIronStored(i int) *CityUpdateOne {
-	cuo.mutation.AddIronStored(i)
+// AddIronStored adds f to iron_stored.
+func (cuo *CityUpdateOne) AddIronStored(f float64) *CityUpdateOne {
+	cuo.mutation.AddIronStored(f)
 	return cuo
 }
 
 // SetFoodStored sets the food_stored field.
-func (cuo *CityUpdateOne) SetFoodStored(i int) *CityUpdateOne {
+func (cuo *CityUpdateOne) SetFoodStored(f float64) *CityUpdateOne {
 	cuo.mutation.ResetFoodStored()
-	cuo.mutation.SetFoodStored(i)
+	cuo.mutation.SetFoodStored(f)
 	return cuo
 }
 
 // SetNillableFoodStored sets the food_stored field if the given value is not nil.
-func (cuo *CityUpdateOne) SetNillableFoodStored(i *int) *CityUpdateOne {
-	if i != nil {
-		cuo.SetFoodStored(*i)
+func (cuo *CityUpdateOne) SetNillableFoodStored(f *float64) *CityUpdateOne {
+	if f != nil {
+		cuo.SetFoodStored(*f)
 	}
 	return cuo
 }
 
-// AddFoodStored adds i to food_stored.
-func (cuo *CityUpdateOne) AddFoodStored(i int) *CityUpdateOne {
-	cuo.mutation.AddFoodStored(i)
+// AddFoodStored adds f to food_stored.
+func (cuo *CityUpdateOne) AddFoodStored(f float64) *CityUpdateOne {
+	cuo.mutation.AddFoodStored(f)
 	return cuo
 }
 
 // SetWoodLimit sets the wood_limit field.
-func (cuo *CityUpdateOne) SetWoodLimit(i int) *CityUpdateOne {
+func (cuo *CityUpdateOne) SetWoodLimit(f float64) *CityUpdateOne {
 	cuo.mutation.ResetWoodLimit()
-	cuo.mutation.SetWoodLimit(i)
+	cuo.mutation.SetWoodLimit(f)
 	return cuo
 }
 
 // SetNillableWoodLimit sets the wood_limit field if the given value is not nil.
-func (cuo *CityUpdateOne) SetNillableWoodLimit(i *int) *CityUpdateOne {
-	if i != nil {
-		cuo.SetWoodLimit(*i)
+func (cuo *CityUpdateOne) SetNillableWoodLimit(f *float64) *CityUpdateOne {
+	if f != nil {
+		cuo.SetWoodLimit(*f)
 	}
 	return cuo
 }
 
-// AddWoodLimit adds i to wood_limit.
-func (cuo *CityUpdateOne) AddWoodLimit(i int) *CityUpdateOne {
-	cuo.mutation.AddWoodLimit(i)
+// AddWoodLimit adds f to wood_limit.
+func (cuo *CityUpdateOne) AddWoodLimit(f float64) *CityUpdateOne {
+	cuo.mutation.AddWoodLimit(f)
 	return cuo
 }
 
 // SetStoneLimit sets the stone_limit field.
-func (cuo *CityUpdateOne) SetStoneLimit(i int) *CityUpdateOne {
+func (cuo *CityUpdateOne) SetStoneLimit(f float64) *CityUpdateOne {
 	cuo.mutation.ResetStoneLimit()
-	cuo.mutation.SetStoneLimit(i)
+	cuo.mutation.SetStoneLimit(f)
 	return cuo
 }
 
 // SetNillableStoneLimit sets the stone_limit field if the given value is not nil.
-func (cuo *CityUpdateOne) SetNillableStoneLimit(i *int) *CityUpdateOne {
-	if i != nil {
-		cuo.SetStoneLimit(*i)
+func (cuo *CityUpdateOne) SetNillableStoneLimit(f *float64) *CityUpdateOne {
+	if f != nil {
+		cuo.SetStoneLimit(*f)
 	}
 	return cuo
 }
 
-// AddStoneLimit adds i to stone_limit.
-func (cuo *CityUpdateOne) AddStoneLimit(i int) *CityUpdateOne {
-	cuo.mutation.AddStoneLimit(i)
+// AddStoneLimit adds f to stone_limit.
+func (cuo *CityUpdateOne) AddStoneLimit(f float64) *CityUpdateOne {
+	cuo.mutation.AddStoneLimit(f)
 	return cuo
 }
 
 // SetIronLimit sets the iron_limit field.
-func (cuo *CityUpdateOne) SetIronLimit(i int) *CityUpdateOne {
+func (cuo *CityUpdateOne) SetIronLimit(f float64) *CityUpdateOne {
 	cuo.mutation.ResetIronLimit()
-	cuo.mutation.SetIronLimit(i)
+	cuo.mutation.SetIronLimit(f)
 	return cuo
 }
 
 // SetNillableIronLimit sets the iron_limit field if the given value is not nil.
-func (cuo *CityUpdateOne) SetNillableIronLimit(i *int) *CityUpdateOne {
-	if i != nil {
-		cuo.SetIronLimit(*i)
+func (cuo *CityUpdateOne) SetNillableIronLimit(f *float64) *CityUpdateOne {
+	if f != nil {
+		cuo.SetIronLimit(*f)
 	}
 	return cuo
 }
 
-// AddIronLimit adds i to iron_limit.
-func (cuo *CityUpdateOne) AddIronLimit(i int) *CityUpdateOne {
-	cuo.mutation.AddIronLimit(i)
+// AddIronLimit adds f to iron_limit.
+func (cuo *CityUpdateOne) AddIronLimit(f float64) *CityUpdateOne {
+	cuo.mutation.AddIronLimit(f)
 	return cuo
 }
 
 // SetFoodLimit sets the food_limit field.
-func (cuo *CityUpdateOne) SetFoodLimit(i int) *CityUpdateOne {
+func (cuo *CityUpdateOne) SetFoodLimit(f float64) *CityUpdateOne {
 	cuo.mutation.ResetFoodLimit()
-	cuo.mutation.SetFoodLimit(i)
+	cuo.mutation.SetFoodLimit(f)
 	return cuo
 }
 
 // SetNillableFoodLimit sets the food_limit field if the given value is not nil.
-func (cuo *CityUpdateOne) SetNillableFoodLimit(i *int) *CityUpdateOne {
-	if i != nil {
-		cuo.SetFoodLimit(*i)
+func (cuo *CityUpdateOne) SetNillableFoodLimit(f *float64) *CityUpdateOne {
+	if f != nil {
+		cuo.SetFoodLimit(*f)
 	}
 	return cuo
 }
 
-// AddFoodLimit adds i to food_limit.
-func (cuo *CityUpdateOne) AddFoodLimit(i int) *CityUpdateOne {
-	cuo.mutation.AddFoodLimit(i)
+// AddFoodLimit adds f to food_limit.
+func (cuo *CityUpdateOne) AddFoodLimit(f float64) *CityUpdateOne {
+	cuo.mutation.AddFoodLimit(f)
 	return cuo
 }
 
@@ -1283,6 +1363,20 @@ func (cuo *CityUpdateOne) SetNillableConstructionSpeed(i *int) *CityUpdateOne {
 // AddConstructionSpeed adds i to construction_speed.
 func (cuo *CityUpdateOne) AddConstructionSpeed(i int) *CityUpdateOne {
 	cuo.mutation.AddConstructionSpeed(i)
+	return cuo
+}
+
+// SetLastUpdated sets the last_updated field.
+func (cuo *CityUpdateOne) SetLastUpdated(t time.Time) *CityUpdateOne {
+	cuo.mutation.SetLastUpdated(t)
+	return cuo
+}
+
+// SetNillableLastUpdated sets the last_updated field if the given value is not nil.
+func (cuo *CityUpdateOne) SetNillableLastUpdated(t *time.Time) *CityUpdateOne {
+	if t != nil {
+		cuo.SetLastUpdated(*t)
+	}
 	return cuo
 }
 
@@ -1335,9 +1429,20 @@ func (cuo *CityUpdateOne) AddQueue(q ...*QueueItem) *CityUpdateOne {
 	return cuo.AddQueueIDs(ids...)
 }
 
-// ClearOwner clears the owner edge to User.
+// Mutation returns the CityMutation object of the builder.
+func (cuo *CityUpdateOne) Mutation() *CityMutation {
+	return cuo.mutation
+}
+
+// ClearOwner clears the "owner" edge to type User.
 func (cuo *CityUpdateOne) ClearOwner() *CityUpdateOne {
 	cuo.mutation.ClearOwner()
+	return cuo
+}
+
+// ClearConstructions clears all "constructions" edges to type Construction.
+func (cuo *CityUpdateOne) ClearConstructions() *CityUpdateOne {
+	cuo.mutation.ClearConstructions()
 	return cuo
 }
 
@@ -1354,6 +1459,12 @@ func (cuo *CityUpdateOne) RemoveConstructions(c ...*Construction) *CityUpdateOne
 		ids[i] = c[i].ID
 	}
 	return cuo.RemoveConstructionIDs(ids...)
+}
+
+// ClearQueue clears all "queue" edges to type QueueItem.
+func (cuo *CityUpdateOne) ClearQueue() *CityUpdateOne {
+	cuo.mutation.ClearQueue()
+	return cuo
 }
 
 // RemoveQueueIDs removes the queue edge to QueueItem by ids.
@@ -1373,23 +1484,23 @@ func (cuo *CityUpdateOne) RemoveQueue(q ...*QueueItem) *CityUpdateOne {
 
 // Save executes the query and returns the updated entity.
 func (cuo *CityUpdateOne) Save(ctx context.Context) (*City, error) {
-	if v, ok := cuo.mutation.Name(); ok {
-		if err := city.NameValidator(v); err != nil {
-			return nil, fmt.Errorf("ent: validator failed for field \"name\": %w", err)
-		}
-	}
-
 	var (
 		err  error
 		node *City
 	)
 	if len(cuo.hooks) == 0 {
+		if err = cuo.check(); err != nil {
+			return nil, err
+		}
 		node, err = cuo.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 			mutation, ok := m.(*CityMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
+			}
+			if err = cuo.check(); err != nil {
+				return nil, err
 			}
 			cuo.mutation = mutation
 			node, err = cuo.sqlSave(ctx)
@@ -1408,11 +1519,11 @@ func (cuo *CityUpdateOne) Save(ctx context.Context) (*City, error) {
 
 // SaveX is like Save, but panics if an error occurs.
 func (cuo *CityUpdateOne) SaveX(ctx context.Context) *City {
-	c, err := cuo.Save(ctx)
+	node, err := cuo.Save(ctx)
 	if err != nil {
 		panic(err)
 	}
-	return c
+	return node
 }
 
 // Exec executes the query on the entity.
@@ -1428,7 +1539,17 @@ func (cuo *CityUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
-func (cuo *CityUpdateOne) sqlSave(ctx context.Context) (c *City, err error) {
+// check runs all checks and user-defined validators on the builder.
+func (cuo *CityUpdateOne) check() error {
+	if v, ok := cuo.mutation.Name(); ok {
+		if err := city.NameValidator(v); err != nil {
+			return &ValidationError{Name: "name", err: fmt.Errorf("ent: validator failed for field \"name\": %w", err)}
+		}
+	}
+	return nil
+}
+
+func (cuo *CityUpdateOne) sqlSave(ctx context.Context) (_node *City, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
 			Table:   city.Table,
@@ -1441,7 +1562,7 @@ func (cuo *CityUpdateOne) sqlSave(ctx context.Context) (c *City, err error) {
 	}
 	id, ok := cuo.mutation.ID()
 	if !ok {
-		return nil, fmt.Errorf("missing City.ID for update")
+		return nil, &ValidationError{Name: "ID", err: fmt.Errorf("missing City.ID for update")}
 	}
 	_spec.Node.ID.Value = id
 	if value, ok := cuo.mutation.X(); ok {
@@ -1495,168 +1616,168 @@ func (cuo *CityUpdateOne) sqlSave(ctx context.Context) (c *City, err error) {
 	}
 	if value, ok := cuo.mutation.WoodProduction(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldWoodProduction,
 		})
 	}
 	if value, ok := cuo.mutation.AddedWoodProduction(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldWoodProduction,
 		})
 	}
 	if value, ok := cuo.mutation.StoneProduction(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldStoneProduction,
 		})
 	}
 	if value, ok := cuo.mutation.AddedStoneProduction(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldStoneProduction,
 		})
 	}
 	if value, ok := cuo.mutation.IronProduction(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldIronProduction,
 		})
 	}
 	if value, ok := cuo.mutation.AddedIronProduction(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldIronProduction,
 		})
 	}
 	if value, ok := cuo.mutation.FoodProduction(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldFoodProduction,
 		})
 	}
 	if value, ok := cuo.mutation.AddedFoodProduction(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldFoodProduction,
 		})
 	}
 	if value, ok := cuo.mutation.WoodStored(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldWoodStored,
 		})
 	}
 	if value, ok := cuo.mutation.AddedWoodStored(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldWoodStored,
 		})
 	}
 	if value, ok := cuo.mutation.StoneStored(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldStoneStored,
 		})
 	}
 	if value, ok := cuo.mutation.AddedStoneStored(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldStoneStored,
 		})
 	}
 	if value, ok := cuo.mutation.IronStored(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldIronStored,
 		})
 	}
 	if value, ok := cuo.mutation.AddedIronStored(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldIronStored,
 		})
 	}
 	if value, ok := cuo.mutation.FoodStored(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldFoodStored,
 		})
 	}
 	if value, ok := cuo.mutation.AddedFoodStored(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldFoodStored,
 		})
 	}
 	if value, ok := cuo.mutation.WoodLimit(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldWoodLimit,
 		})
 	}
 	if value, ok := cuo.mutation.AddedWoodLimit(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldWoodLimit,
 		})
 	}
 	if value, ok := cuo.mutation.StoneLimit(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldStoneLimit,
 		})
 	}
 	if value, ok := cuo.mutation.AddedStoneLimit(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldStoneLimit,
 		})
 	}
 	if value, ok := cuo.mutation.IronLimit(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldIronLimit,
 		})
 	}
 	if value, ok := cuo.mutation.AddedIronLimit(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldIronLimit,
 		})
 	}
 	if value, ok := cuo.mutation.FoodLimit(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldFoodLimit,
 		})
 	}
 	if value, ok := cuo.mutation.AddedFoodLimit(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldFoodLimit,
 		})
@@ -1680,6 +1801,13 @@ func (cuo *CityUpdateOne) sqlSave(ctx context.Context) (c *City, err error) {
 			Type:   field.TypeInt,
 			Value:  value,
 			Column: city.FieldConstructionSpeed,
+		})
+	}
+	if value, ok := cuo.mutation.LastUpdated(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: city.FieldLastUpdated,
 		})
 	}
 	if cuo.mutation.OwnerCleared() {
@@ -1717,7 +1845,23 @@ func (cuo *CityUpdateOne) sqlSave(ctx context.Context) (c *City, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if nodes := cuo.mutation.RemovedConstructionsIDs(); len(nodes) > 0 {
+	if cuo.mutation.ConstructionsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   city.ConstructionsTable,
+			Columns: []string{city.ConstructionsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: construction.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.RemovedConstructionsIDs(); len(nodes) > 0 && !cuo.mutation.ConstructionsCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
@@ -1755,7 +1899,23 @@ func (cuo *CityUpdateOne) sqlSave(ctx context.Context) (c *City, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if nodes := cuo.mutation.RemovedQueueIDs(); len(nodes) > 0 {
+	if cuo.mutation.QueueCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   city.QueueTable,
+			Columns: []string{city.QueueColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: queueitem.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.RemovedQueueIDs(); len(nodes) > 0 && !cuo.mutation.QueueCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
@@ -1793,9 +1953,9 @@ func (cuo *CityUpdateOne) sqlSave(ctx context.Context) (c *City, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	c = &City{config: cuo.config}
-	_spec.Assign = c.assignValues
-	_spec.ScanValues = c.scanValues()
+	_node = &City{config: cuo.config}
+	_spec.Assign = _node.assignValues
+	_spec.ScanValues = _node.scanValues()
 	if err = sqlgraph.UpdateNode(ctx, cuo.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{city.Label}
@@ -1804,5 +1964,5 @@ func (cuo *CityUpdateOne) sqlSave(ctx context.Context) (c *City, err error) {
 		}
 		return nil, err
 	}
-	return c, nil
+	return _node, nil
 }

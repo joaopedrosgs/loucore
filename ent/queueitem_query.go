@@ -8,9 +8,9 @@ import (
 	"fmt"
 	"math"
 
-	"github.com/facebookincubator/ent/dialect/sql"
-	"github.com/facebookincubator/ent/dialect/sql/sqlgraph"
-	"github.com/facebookincubator/ent/schema/field"
+	"github.com/facebook/ent/dialect/sql"
+	"github.com/facebook/ent/dialect/sql/sqlgraph"
+	"github.com/facebook/ent/schema/field"
 	"github.com/joaopedrosgs/loucore/ent/city"
 	"github.com/joaopedrosgs/loucore/ent/construction"
 	"github.com/joaopedrosgs/loucore/ent/predicate"
@@ -67,8 +67,12 @@ func (qiq *QueueItemQuery) QueryOwner() *UserQuery {
 		if err := qiq.prepareQuery(ctx); err != nil {
 			return nil, err
 		}
+		selector := qiq.sqlQuery()
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
 		step := sqlgraph.NewStep(
-			sqlgraph.From(queueitem.Table, queueitem.FieldID, qiq.sqlQuery()),
+			sqlgraph.From(queueitem.Table, queueitem.FieldID, selector),
 			sqlgraph.To(user.Table, user.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, queueitem.OwnerTable, queueitem.OwnerColumn),
 		)
@@ -85,8 +89,12 @@ func (qiq *QueueItemQuery) QueryCity() *CityQuery {
 		if err := qiq.prepareQuery(ctx); err != nil {
 			return nil, err
 		}
+		selector := qiq.sqlQuery()
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
 		step := sqlgraph.NewStep(
-			sqlgraph.From(queueitem.Table, queueitem.FieldID, qiq.sqlQuery()),
+			sqlgraph.From(queueitem.Table, queueitem.FieldID, selector),
 			sqlgraph.To(city.Table, city.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, queueitem.CityTable, queueitem.CityColumn),
 		)
@@ -103,8 +111,12 @@ func (qiq *QueueItemQuery) QueryConstruction() *ConstructionQuery {
 		if err := qiq.prepareQuery(ctx); err != nil {
 			return nil, err
 		}
+		selector := qiq.sqlQuery()
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
 		step := sqlgraph.NewStep(
-			sqlgraph.From(queueitem.Table, queueitem.FieldID, qiq.sqlQuery()),
+			sqlgraph.From(queueitem.Table, queueitem.FieldID, selector),
 			sqlgraph.To(construction.Table, construction.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, queueitem.ConstructionTable, queueitem.ConstructionColumn),
 		)
@@ -116,23 +128,23 @@ func (qiq *QueueItemQuery) QueryConstruction() *ConstructionQuery {
 
 // First returns the first QueueItem entity in the query. Returns *NotFoundError when no queueitem was found.
 func (qiq *QueueItemQuery) First(ctx context.Context) (*QueueItem, error) {
-	qis, err := qiq.Limit(1).All(ctx)
+	nodes, err := qiq.Limit(1).All(ctx)
 	if err != nil {
 		return nil, err
 	}
-	if len(qis) == 0 {
+	if len(nodes) == 0 {
 		return nil, &NotFoundError{queueitem.Label}
 	}
-	return qis[0], nil
+	return nodes[0], nil
 }
 
 // FirstX is like First, but panics if an error occurs.
 func (qiq *QueueItemQuery) FirstX(ctx context.Context) *QueueItem {
-	qi, err := qiq.First(ctx)
+	node, err := qiq.First(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
 	}
-	return qi
+	return node
 }
 
 // FirstID returns the first QueueItem id in the query. Returns *NotFoundError when no id was found.
@@ -159,13 +171,13 @@ func (qiq *QueueItemQuery) FirstXID(ctx context.Context) int {
 
 // Only returns the only QueueItem entity in the query, returns an error if not exactly one entity was returned.
 func (qiq *QueueItemQuery) Only(ctx context.Context) (*QueueItem, error) {
-	qis, err := qiq.Limit(2).All(ctx)
+	nodes, err := qiq.Limit(2).All(ctx)
 	if err != nil {
 		return nil, err
 	}
-	switch len(qis) {
+	switch len(nodes) {
 	case 1:
-		return qis[0], nil
+		return nodes[0], nil
 	case 0:
 		return nil, &NotFoundError{queueitem.Label}
 	default:
@@ -175,11 +187,11 @@ func (qiq *QueueItemQuery) Only(ctx context.Context) (*QueueItem, error) {
 
 // OnlyX is like Only, but panics if an error occurs.
 func (qiq *QueueItemQuery) OnlyX(ctx context.Context) *QueueItem {
-	qi, err := qiq.Only(ctx)
+	node, err := qiq.Only(ctx)
 	if err != nil {
 		panic(err)
 	}
-	return qi
+	return node
 }
 
 // OnlyID returns the only QueueItem id in the query, returns an error if not exactly one id was returned.
@@ -199,8 +211,8 @@ func (qiq *QueueItemQuery) OnlyID(ctx context.Context) (id int, err error) {
 	return
 }
 
-// OnlyXID is like OnlyID, but panics if an error occurs.
-func (qiq *QueueItemQuery) OnlyXID(ctx context.Context) int {
+// OnlyIDX is like OnlyID, but panics if an error occurs.
+func (qiq *QueueItemQuery) OnlyIDX(ctx context.Context) int {
 	id, err := qiq.OnlyID(ctx)
 	if err != nil {
 		panic(err)
@@ -218,11 +230,11 @@ func (qiq *QueueItemQuery) All(ctx context.Context) ([]*QueueItem, error) {
 
 // AllX is like All, but panics if an error occurs.
 func (qiq *QueueItemQuery) AllX(ctx context.Context) []*QueueItem {
-	qis, err := qiq.All(ctx)
+	nodes, err := qiq.All(ctx)
 	if err != nil {
 		panic(err)
 	}
-	return qis
+	return nodes
 }
 
 // IDs executes the query and returns a list of QueueItem ids.
@@ -549,7 +561,7 @@ func (qiq *QueueItemQuery) querySpec() *sqlgraph.QuerySpec {
 	if ps := qiq.order; len(ps) > 0 {
 		_spec.Order = func(selector *sql.Selector) {
 			for i := range ps {
-				ps[i](selector)
+				ps[i](selector, queueitem.ValidColumn)
 			}
 		}
 	}
@@ -568,7 +580,7 @@ func (qiq *QueueItemQuery) sqlQuery() *sql.Selector {
 		p(selector)
 	}
 	for _, p := range qiq.order {
-		p(selector)
+		p(selector, queueitem.ValidColumn)
 	}
 	if offset := qiq.offset; offset != nil {
 		// limit is mandatory for offset clause. We start
@@ -635,6 +647,32 @@ func (qigb *QueueItemGroupBy) StringsX(ctx context.Context) []string {
 	return v
 }
 
+// String returns a single string from group-by. It is only allowed when querying group-by with one field.
+func (qigb *QueueItemGroupBy) String(ctx context.Context) (_ string, err error) {
+	var v []string
+	if v, err = qigb.Strings(ctx); err != nil {
+		return
+	}
+	switch len(v) {
+	case 1:
+		return v[0], nil
+	case 0:
+		err = &NotFoundError{queueitem.Label}
+	default:
+		err = fmt.Errorf("ent: QueueItemGroupBy.Strings returned %d results when one was expected", len(v))
+	}
+	return
+}
+
+// StringX is like String, but panics if an error occurs.
+func (qigb *QueueItemGroupBy) StringX(ctx context.Context) string {
+	v, err := qigb.String(ctx)
+	if err != nil {
+		panic(err)
+	}
+	return v
+}
+
 // Ints returns list of ints from group-by. It is only allowed when querying group-by with one field.
 func (qigb *QueueItemGroupBy) Ints(ctx context.Context) ([]int, error) {
 	if len(qigb.fields) > 1 {
@@ -650,6 +688,32 @@ func (qigb *QueueItemGroupBy) Ints(ctx context.Context) ([]int, error) {
 // IntsX is like Ints, but panics if an error occurs.
 func (qigb *QueueItemGroupBy) IntsX(ctx context.Context) []int {
 	v, err := qigb.Ints(ctx)
+	if err != nil {
+		panic(err)
+	}
+	return v
+}
+
+// Int returns a single int from group-by. It is only allowed when querying group-by with one field.
+func (qigb *QueueItemGroupBy) Int(ctx context.Context) (_ int, err error) {
+	var v []int
+	if v, err = qigb.Ints(ctx); err != nil {
+		return
+	}
+	switch len(v) {
+	case 1:
+		return v[0], nil
+	case 0:
+		err = &NotFoundError{queueitem.Label}
+	default:
+		err = fmt.Errorf("ent: QueueItemGroupBy.Ints returned %d results when one was expected", len(v))
+	}
+	return
+}
+
+// IntX is like Int, but panics if an error occurs.
+func (qigb *QueueItemGroupBy) IntX(ctx context.Context) int {
+	v, err := qigb.Int(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -677,6 +741,32 @@ func (qigb *QueueItemGroupBy) Float64sX(ctx context.Context) []float64 {
 	return v
 }
 
+// Float64 returns a single float64 from group-by. It is only allowed when querying group-by with one field.
+func (qigb *QueueItemGroupBy) Float64(ctx context.Context) (_ float64, err error) {
+	var v []float64
+	if v, err = qigb.Float64s(ctx); err != nil {
+		return
+	}
+	switch len(v) {
+	case 1:
+		return v[0], nil
+	case 0:
+		err = &NotFoundError{queueitem.Label}
+	default:
+		err = fmt.Errorf("ent: QueueItemGroupBy.Float64s returned %d results when one was expected", len(v))
+	}
+	return
+}
+
+// Float64X is like Float64, but panics if an error occurs.
+func (qigb *QueueItemGroupBy) Float64X(ctx context.Context) float64 {
+	v, err := qigb.Float64(ctx)
+	if err != nil {
+		panic(err)
+	}
+	return v
+}
+
 // Bools returns list of bools from group-by. It is only allowed when querying group-by with one field.
 func (qigb *QueueItemGroupBy) Bools(ctx context.Context) ([]bool, error) {
 	if len(qigb.fields) > 1 {
@@ -698,9 +788,44 @@ func (qigb *QueueItemGroupBy) BoolsX(ctx context.Context) []bool {
 	return v
 }
 
+// Bool returns a single bool from group-by. It is only allowed when querying group-by with one field.
+func (qigb *QueueItemGroupBy) Bool(ctx context.Context) (_ bool, err error) {
+	var v []bool
+	if v, err = qigb.Bools(ctx); err != nil {
+		return
+	}
+	switch len(v) {
+	case 1:
+		return v[0], nil
+	case 0:
+		err = &NotFoundError{queueitem.Label}
+	default:
+		err = fmt.Errorf("ent: QueueItemGroupBy.Bools returned %d results when one was expected", len(v))
+	}
+	return
+}
+
+// BoolX is like Bool, but panics if an error occurs.
+func (qigb *QueueItemGroupBy) BoolX(ctx context.Context) bool {
+	v, err := qigb.Bool(ctx)
+	if err != nil {
+		panic(err)
+	}
+	return v
+}
+
 func (qigb *QueueItemGroupBy) sqlScan(ctx context.Context, v interface{}) error {
+	for _, f := range qigb.fields {
+		if !queueitem.ValidColumn(f) {
+			return &ValidationError{Name: f, err: fmt.Errorf("invalid field %q for group-by", f)}
+		}
+	}
+	selector := qigb.sqlQuery()
+	if err := selector.Err(); err != nil {
+		return err
+	}
 	rows := &sql.Rows{}
-	query, args := qigb.sqlQuery().Query()
+	query, args := selector.Query()
 	if err := qigb.driver.Query(ctx, query, args, rows); err != nil {
 		return err
 	}
@@ -713,7 +838,7 @@ func (qigb *QueueItemGroupBy) sqlQuery() *sql.Selector {
 	columns := make([]string, 0, len(qigb.fields)+len(qigb.fns))
 	columns = append(columns, qigb.fields...)
 	for _, fn := range qigb.fns {
-		columns = append(columns, fn(selector))
+		columns = append(columns, fn(selector, queueitem.ValidColumn))
 	}
 	return selector.Select(columns...).GroupBy(qigb.fields...)
 }
@@ -765,6 +890,32 @@ func (qis *QueueItemSelect) StringsX(ctx context.Context) []string {
 	return v
 }
 
+// String returns a single string from selector. It is only allowed when selecting one field.
+func (qis *QueueItemSelect) String(ctx context.Context) (_ string, err error) {
+	var v []string
+	if v, err = qis.Strings(ctx); err != nil {
+		return
+	}
+	switch len(v) {
+	case 1:
+		return v[0], nil
+	case 0:
+		err = &NotFoundError{queueitem.Label}
+	default:
+		err = fmt.Errorf("ent: QueueItemSelect.Strings returned %d results when one was expected", len(v))
+	}
+	return
+}
+
+// StringX is like String, but panics if an error occurs.
+func (qis *QueueItemSelect) StringX(ctx context.Context) string {
+	v, err := qis.String(ctx)
+	if err != nil {
+		panic(err)
+	}
+	return v
+}
+
 // Ints returns list of ints from selector. It is only allowed when selecting one field.
 func (qis *QueueItemSelect) Ints(ctx context.Context) ([]int, error) {
 	if len(qis.fields) > 1 {
@@ -780,6 +931,32 @@ func (qis *QueueItemSelect) Ints(ctx context.Context) ([]int, error) {
 // IntsX is like Ints, but panics if an error occurs.
 func (qis *QueueItemSelect) IntsX(ctx context.Context) []int {
 	v, err := qis.Ints(ctx)
+	if err != nil {
+		panic(err)
+	}
+	return v
+}
+
+// Int returns a single int from selector. It is only allowed when selecting one field.
+func (qis *QueueItemSelect) Int(ctx context.Context) (_ int, err error) {
+	var v []int
+	if v, err = qis.Ints(ctx); err != nil {
+		return
+	}
+	switch len(v) {
+	case 1:
+		return v[0], nil
+	case 0:
+		err = &NotFoundError{queueitem.Label}
+	default:
+		err = fmt.Errorf("ent: QueueItemSelect.Ints returned %d results when one was expected", len(v))
+	}
+	return
+}
+
+// IntX is like Int, but panics if an error occurs.
+func (qis *QueueItemSelect) IntX(ctx context.Context) int {
+	v, err := qis.Int(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -807,6 +984,32 @@ func (qis *QueueItemSelect) Float64sX(ctx context.Context) []float64 {
 	return v
 }
 
+// Float64 returns a single float64 from selector. It is only allowed when selecting one field.
+func (qis *QueueItemSelect) Float64(ctx context.Context) (_ float64, err error) {
+	var v []float64
+	if v, err = qis.Float64s(ctx); err != nil {
+		return
+	}
+	switch len(v) {
+	case 1:
+		return v[0], nil
+	case 0:
+		err = &NotFoundError{queueitem.Label}
+	default:
+		err = fmt.Errorf("ent: QueueItemSelect.Float64s returned %d results when one was expected", len(v))
+	}
+	return
+}
+
+// Float64X is like Float64, but panics if an error occurs.
+func (qis *QueueItemSelect) Float64X(ctx context.Context) float64 {
+	v, err := qis.Float64(ctx)
+	if err != nil {
+		panic(err)
+	}
+	return v
+}
+
 // Bools returns list of bools from selector. It is only allowed when selecting one field.
 func (qis *QueueItemSelect) Bools(ctx context.Context) ([]bool, error) {
 	if len(qis.fields) > 1 {
@@ -828,7 +1031,38 @@ func (qis *QueueItemSelect) BoolsX(ctx context.Context) []bool {
 	return v
 }
 
+// Bool returns a single bool from selector. It is only allowed when selecting one field.
+func (qis *QueueItemSelect) Bool(ctx context.Context) (_ bool, err error) {
+	var v []bool
+	if v, err = qis.Bools(ctx); err != nil {
+		return
+	}
+	switch len(v) {
+	case 1:
+		return v[0], nil
+	case 0:
+		err = &NotFoundError{queueitem.Label}
+	default:
+		err = fmt.Errorf("ent: QueueItemSelect.Bools returned %d results when one was expected", len(v))
+	}
+	return
+}
+
+// BoolX is like Bool, but panics if an error occurs.
+func (qis *QueueItemSelect) BoolX(ctx context.Context) bool {
+	v, err := qis.Bool(ctx)
+	if err != nil {
+		panic(err)
+	}
+	return v
+}
+
 func (qis *QueueItemSelect) sqlScan(ctx context.Context, v interface{}) error {
+	for _, f := range qis.fields {
+		if !queueitem.ValidColumn(f) {
+			return &ValidationError{Name: f, err: fmt.Errorf("invalid field %q for selection", f)}
+		}
+	}
 	rows := &sql.Rows{}
 	query, args := qis.sqlQuery().Query()
 	if err := qis.driver.Query(ctx, query, args, rows); err != nil {

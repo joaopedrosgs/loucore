@@ -3,8 +3,10 @@
 package construction
 
 import (
-	"github.com/facebookincubator/ent/dialect/sql"
-	"github.com/facebookincubator/ent/dialect/sql/sqlgraph"
+	"time"
+
+	"github.com/facebook/ent/dialect/sql"
+	"github.com/facebook/ent/dialect/sql/sqlgraph"
 	"github.com/joaopedrosgs/loucore/ent/predicate"
 )
 
@@ -106,14 +108,14 @@ func Y(v int) predicate.Construction {
 }
 
 // RawProduction applies equality check predicate on the "raw_production" field. It's identical to RawProductionEQ.
-func RawProduction(v int) predicate.Construction {
+func RawProduction(v float64) predicate.Construction {
 	return predicate.Construction(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldRawProduction), v))
 	})
 }
 
 // Production applies equality check predicate on the "production" field. It's identical to ProductionEQ.
-func Production(v int) predicate.Construction {
+func Production(v float64) predicate.Construction {
 	return predicate.Construction(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldProduction), v))
 	})
@@ -134,9 +136,16 @@ func Level(v int) predicate.Construction {
 }
 
 // Modifier applies equality check predicate on the "modifier" field. It's identical to ModifierEQ.
-func Modifier(v int) predicate.Construction {
+func Modifier(v float64) predicate.Construction {
 	return predicate.Construction(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldModifier), v))
+	})
+}
+
+// LastUpdated applies equality check predicate on the "last_updated" field. It's identical to LastUpdatedEQ.
+func LastUpdated(v time.Time) predicate.Construction {
+	return predicate.Construction(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldLastUpdated), v))
 	})
 }
 
@@ -300,21 +309,21 @@ func YLTE(v int) predicate.Construction {
 }
 
 // RawProductionEQ applies the EQ predicate on the "raw_production" field.
-func RawProductionEQ(v int) predicate.Construction {
+func RawProductionEQ(v float64) predicate.Construction {
 	return predicate.Construction(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldRawProduction), v))
 	})
 }
 
 // RawProductionNEQ applies the NEQ predicate on the "raw_production" field.
-func RawProductionNEQ(v int) predicate.Construction {
+func RawProductionNEQ(v float64) predicate.Construction {
 	return predicate.Construction(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldRawProduction), v))
 	})
 }
 
 // RawProductionIn applies the In predicate on the "raw_production" field.
-func RawProductionIn(vs ...int) predicate.Construction {
+func RawProductionIn(vs ...float64) predicate.Construction {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -331,7 +340,7 @@ func RawProductionIn(vs ...int) predicate.Construction {
 }
 
 // RawProductionNotIn applies the NotIn predicate on the "raw_production" field.
-func RawProductionNotIn(vs ...int) predicate.Construction {
+func RawProductionNotIn(vs ...float64) predicate.Construction {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -348,49 +357,49 @@ func RawProductionNotIn(vs ...int) predicate.Construction {
 }
 
 // RawProductionGT applies the GT predicate on the "raw_production" field.
-func RawProductionGT(v int) predicate.Construction {
+func RawProductionGT(v float64) predicate.Construction {
 	return predicate.Construction(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldRawProduction), v))
 	})
 }
 
 // RawProductionGTE applies the GTE predicate on the "raw_production" field.
-func RawProductionGTE(v int) predicate.Construction {
+func RawProductionGTE(v float64) predicate.Construction {
 	return predicate.Construction(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldRawProduction), v))
 	})
 }
 
 // RawProductionLT applies the LT predicate on the "raw_production" field.
-func RawProductionLT(v int) predicate.Construction {
+func RawProductionLT(v float64) predicate.Construction {
 	return predicate.Construction(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldRawProduction), v))
 	})
 }
 
 // RawProductionLTE applies the LTE predicate on the "raw_production" field.
-func RawProductionLTE(v int) predicate.Construction {
+func RawProductionLTE(v float64) predicate.Construction {
 	return predicate.Construction(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldRawProduction), v))
 	})
 }
 
 // ProductionEQ applies the EQ predicate on the "production" field.
-func ProductionEQ(v int) predicate.Construction {
+func ProductionEQ(v float64) predicate.Construction {
 	return predicate.Construction(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldProduction), v))
 	})
 }
 
 // ProductionNEQ applies the NEQ predicate on the "production" field.
-func ProductionNEQ(v int) predicate.Construction {
+func ProductionNEQ(v float64) predicate.Construction {
 	return predicate.Construction(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldProduction), v))
 	})
 }
 
 // ProductionIn applies the In predicate on the "production" field.
-func ProductionIn(vs ...int) predicate.Construction {
+func ProductionIn(vs ...float64) predicate.Construction {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -407,7 +416,7 @@ func ProductionIn(vs ...int) predicate.Construction {
 }
 
 // ProductionNotIn applies the NotIn predicate on the "production" field.
-func ProductionNotIn(vs ...int) predicate.Construction {
+func ProductionNotIn(vs ...float64) predicate.Construction {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -424,28 +433,28 @@ func ProductionNotIn(vs ...int) predicate.Construction {
 }
 
 // ProductionGT applies the GT predicate on the "production" field.
-func ProductionGT(v int) predicate.Construction {
+func ProductionGT(v float64) predicate.Construction {
 	return predicate.Construction(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldProduction), v))
 	})
 }
 
 // ProductionGTE applies the GTE predicate on the "production" field.
-func ProductionGTE(v int) predicate.Construction {
+func ProductionGTE(v float64) predicate.Construction {
 	return predicate.Construction(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldProduction), v))
 	})
 }
 
 // ProductionLT applies the LT predicate on the "production" field.
-func ProductionLT(v int) predicate.Construction {
+func ProductionLT(v float64) predicate.Construction {
 	return predicate.Construction(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldProduction), v))
 	})
 }
 
 // ProductionLTE applies the LTE predicate on the "production" field.
-func ProductionLTE(v int) predicate.Construction {
+func ProductionLTE(v float64) predicate.Construction {
 	return predicate.Construction(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldProduction), v))
 	})
@@ -604,21 +613,21 @@ func LevelLTE(v int) predicate.Construction {
 }
 
 // ModifierEQ applies the EQ predicate on the "modifier" field.
-func ModifierEQ(v int) predicate.Construction {
+func ModifierEQ(v float64) predicate.Construction {
 	return predicate.Construction(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldModifier), v))
 	})
 }
 
 // ModifierNEQ applies the NEQ predicate on the "modifier" field.
-func ModifierNEQ(v int) predicate.Construction {
+func ModifierNEQ(v float64) predicate.Construction {
 	return predicate.Construction(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldModifier), v))
 	})
 }
 
 // ModifierIn applies the In predicate on the "modifier" field.
-func ModifierIn(vs ...int) predicate.Construction {
+func ModifierIn(vs ...float64) predicate.Construction {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -635,7 +644,7 @@ func ModifierIn(vs ...int) predicate.Construction {
 }
 
 // ModifierNotIn applies the NotIn predicate on the "modifier" field.
-func ModifierNotIn(vs ...int) predicate.Construction {
+func ModifierNotIn(vs ...float64) predicate.Construction {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -652,30 +661,106 @@ func ModifierNotIn(vs ...int) predicate.Construction {
 }
 
 // ModifierGT applies the GT predicate on the "modifier" field.
-func ModifierGT(v int) predicate.Construction {
+func ModifierGT(v float64) predicate.Construction {
 	return predicate.Construction(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldModifier), v))
 	})
 }
 
 // ModifierGTE applies the GTE predicate on the "modifier" field.
-func ModifierGTE(v int) predicate.Construction {
+func ModifierGTE(v float64) predicate.Construction {
 	return predicate.Construction(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldModifier), v))
 	})
 }
 
 // ModifierLT applies the LT predicate on the "modifier" field.
-func ModifierLT(v int) predicate.Construction {
+func ModifierLT(v float64) predicate.Construction {
 	return predicate.Construction(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldModifier), v))
 	})
 }
 
 // ModifierLTE applies the LTE predicate on the "modifier" field.
-func ModifierLTE(v int) predicate.Construction {
+func ModifierLTE(v float64) predicate.Construction {
 	return predicate.Construction(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldModifier), v))
+	})
+}
+
+// LastUpdatedEQ applies the EQ predicate on the "last_updated" field.
+func LastUpdatedEQ(v time.Time) predicate.Construction {
+	return predicate.Construction(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldLastUpdated), v))
+	})
+}
+
+// LastUpdatedNEQ applies the NEQ predicate on the "last_updated" field.
+func LastUpdatedNEQ(v time.Time) predicate.Construction {
+	return predicate.Construction(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldLastUpdated), v))
+	})
+}
+
+// LastUpdatedIn applies the In predicate on the "last_updated" field.
+func LastUpdatedIn(vs ...time.Time) predicate.Construction {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Construction(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldLastUpdated), v...))
+	})
+}
+
+// LastUpdatedNotIn applies the NotIn predicate on the "last_updated" field.
+func LastUpdatedNotIn(vs ...time.Time) predicate.Construction {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Construction(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldLastUpdated), v...))
+	})
+}
+
+// LastUpdatedGT applies the GT predicate on the "last_updated" field.
+func LastUpdatedGT(v time.Time) predicate.Construction {
+	return predicate.Construction(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldLastUpdated), v))
+	})
+}
+
+// LastUpdatedGTE applies the GTE predicate on the "last_updated" field.
+func LastUpdatedGTE(v time.Time) predicate.Construction {
+	return predicate.Construction(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldLastUpdated), v))
+	})
+}
+
+// LastUpdatedLT applies the LT predicate on the "last_updated" field.
+func LastUpdatedLT(v time.Time) predicate.Construction {
+	return predicate.Construction(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldLastUpdated), v))
+	})
+}
+
+// LastUpdatedLTE applies the LTE predicate on the "last_updated" field.
+func LastUpdatedLTE(v time.Time) predicate.Construction {
+	return predicate.Construction(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldLastUpdated), v))
 	})
 }
 

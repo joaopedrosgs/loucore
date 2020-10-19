@@ -8,8 +8,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/facebookincubator/ent/dialect/sql/sqlgraph"
-	"github.com/facebookincubator/ent/schema/field"
+	"github.com/facebook/ent/dialect/sql/sqlgraph"
+	"github.com/facebook/ent/schema/field"
 	"github.com/joaopedrosgs/loucore/ent/city"
 	"github.com/joaopedrosgs/loucore/ent/construction"
 	"github.com/joaopedrosgs/loucore/ent/queueitem"
@@ -110,34 +110,30 @@ func (qic *QueueItemCreate) SetConstruction(c *Construction) *QueueItemCreate {
 	return qic.SetConstructionID(c.ID)
 }
 
+// Mutation returns the QueueItemMutation object of the builder.
+func (qic *QueueItemCreate) Mutation() *QueueItemMutation {
+	return qic.mutation
+}
+
 // Save creates the QueueItem in the database.
 func (qic *QueueItemCreate) Save(ctx context.Context) (*QueueItem, error) {
-	if _, ok := qic.mutation.StartAt(); !ok {
-		return nil, errors.New("ent: missing required field \"start_at\"")
-	}
-	if _, ok := qic.mutation.Duration(); !ok {
-		return nil, errors.New("ent: missing required field \"duration\"")
-	}
-	if _, ok := qic.mutation.Completion(); !ok {
-		return nil, errors.New("ent: missing required field \"completion\"")
-	}
-	if _, ok := qic.mutation.Action(); !ok {
-		return nil, errors.New("ent: missing required field \"action\"")
-	}
-	if _, ok := qic.mutation.Order(); !ok {
-		return nil, errors.New("ent: missing required field \"order\"")
-	}
 	var (
 		err  error
 		node *QueueItem
 	)
 	if len(qic.hooks) == 0 {
+		if err = qic.check(); err != nil {
+			return nil, err
+		}
 		node, err = qic.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 			mutation, ok := m.(*QueueItemMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
+			}
+			if err = qic.check(); err != nil {
+				return nil, err
 			}
 			qic.mutation = mutation
 			node, err = qic.sqlSave(ctx)
@@ -163,9 +159,42 @@ func (qic *QueueItemCreate) SaveX(ctx context.Context) *QueueItem {
 	return v
 }
 
+// check runs all checks and user-defined validators on the builder.
+func (qic *QueueItemCreate) check() error {
+	if _, ok := qic.mutation.StartAt(); !ok {
+		return &ValidationError{Name: "start_at", err: errors.New("ent: missing required field \"start_at\"")}
+	}
+	if _, ok := qic.mutation.Duration(); !ok {
+		return &ValidationError{Name: "duration", err: errors.New("ent: missing required field \"duration\"")}
+	}
+	if _, ok := qic.mutation.Completion(); !ok {
+		return &ValidationError{Name: "completion", err: errors.New("ent: missing required field \"completion\"")}
+	}
+	if _, ok := qic.mutation.Action(); !ok {
+		return &ValidationError{Name: "action", err: errors.New("ent: missing required field \"action\"")}
+	}
+	if _, ok := qic.mutation.Order(); !ok {
+		return &ValidationError{Name: "order", err: errors.New("ent: missing required field \"order\"")}
+	}
+	return nil
+}
+
 func (qic *QueueItemCreate) sqlSave(ctx context.Context) (*QueueItem, error) {
+	_node, _spec := qic.createSpec()
+	if err := sqlgraph.CreateNode(ctx, qic.driver, _spec); err != nil {
+		if cerr, ok := isSQLConstraintError(err); ok {
+			err = cerr
+		}
+		return nil, err
+	}
+	id := _spec.ID.Value.(int64)
+	_node.ID = int(id)
+	return _node, nil
+}
+
+func (qic *QueueItemCreate) createSpec() (*QueueItem, *sqlgraph.CreateSpec) {
 	var (
-		qi    = &QueueItem{config: qic.config}
+		_node = &QueueItem{config: qic.config}
 		_spec = &sqlgraph.CreateSpec{
 			Table: queueitem.Table,
 			ID: &sqlgraph.FieldSpec{
@@ -180,7 +209,7 @@ func (qic *QueueItemCreate) sqlSave(ctx context.Context) (*QueueItem, error) {
 			Value:  value,
 			Column: queueitem.FieldStartAt,
 		})
-		qi.StartAt = value
+		_node.StartAt = value
 	}
 	if value, ok := qic.mutation.Duration(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -188,7 +217,7 @@ func (qic *QueueItemCreate) sqlSave(ctx context.Context) (*QueueItem, error) {
 			Value:  value,
 			Column: queueitem.FieldDuration,
 		})
-		qi.Duration = value
+		_node.Duration = value
 	}
 	if value, ok := qic.mutation.Completion(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -196,7 +225,7 @@ func (qic *QueueItemCreate) sqlSave(ctx context.Context) (*QueueItem, error) {
 			Value:  value,
 			Column: queueitem.FieldCompletion,
 		})
-		qi.Completion = value
+		_node.Completion = value
 	}
 	if value, ok := qic.mutation.Action(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -204,7 +233,7 @@ func (qic *QueueItemCreate) sqlSave(ctx context.Context) (*QueueItem, error) {
 			Value:  value,
 			Column: queueitem.FieldAction,
 		})
-		qi.Action = value
+		_node.Action = value
 	}
 	if value, ok := qic.mutation.Order(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -212,7 +241,7 @@ func (qic *QueueItemCreate) sqlSave(ctx context.Context) (*QueueItem, error) {
 			Value:  value,
 			Column: queueitem.FieldOrder,
 		})
-		qi.Order = value
+		_node.Order = value
 	}
 	if nodes := qic.mutation.OwnerIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
@@ -271,13 +300,71 @@ func (qic *QueueItemCreate) sqlSave(ctx context.Context) (*QueueItem, error) {
 		}
 		_spec.Edges = append(_spec.Edges, edge)
 	}
-	if err := sqlgraph.CreateNode(ctx, qic.driver, _spec); err != nil {
-		if cerr, ok := isSQLConstraintError(err); ok {
-			err = cerr
-		}
-		return nil, err
+	return _node, _spec
+}
+
+// QueueItemCreateBulk is the builder for creating a bulk of QueueItem entities.
+type QueueItemCreateBulk struct {
+	config
+	builders []*QueueItemCreate
+}
+
+// Save creates the QueueItem entities in the database.
+func (qicb *QueueItemCreateBulk) Save(ctx context.Context) ([]*QueueItem, error) {
+	specs := make([]*sqlgraph.CreateSpec, len(qicb.builders))
+	nodes := make([]*QueueItem, len(qicb.builders))
+	mutators := make([]Mutator, len(qicb.builders))
+	for i := range qicb.builders {
+		func(i int, root context.Context) {
+			builder := qicb.builders[i]
+			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
+				mutation, ok := m.(*QueueItemMutation)
+				if !ok {
+					return nil, fmt.Errorf("unexpected mutation type %T", m)
+				}
+				if err := builder.check(); err != nil {
+					return nil, err
+				}
+				builder.mutation = mutation
+				nodes[i], specs[i] = builder.createSpec()
+				var err error
+				if i < len(mutators)-1 {
+					_, err = mutators[i+1].Mutate(root, qicb.builders[i+1].mutation)
+				} else {
+					// Invoke the actual operation on the latest mutation in the chain.
+					if err = sqlgraph.BatchCreate(ctx, qicb.driver, &sqlgraph.BatchCreateSpec{Nodes: specs}); err != nil {
+						if cerr, ok := isSQLConstraintError(err); ok {
+							err = cerr
+						}
+					}
+				}
+				mutation.done = true
+				if err != nil {
+					return nil, err
+				}
+				id := specs[i].ID.Value.(int64)
+				nodes[i].ID = int(id)
+				return nodes[i], nil
+			})
+			for i := len(builder.hooks) - 1; i >= 0; i-- {
+				mut = builder.hooks[i](mut)
+			}
+			mutators[i] = mut
+		}(i, ctx)
 	}
-	id := _spec.ID.Value.(int64)
-	qi.ID = int(id)
-	return qi, nil
+	if len(mutators) > 0 {
+		if _, err := mutators[0].Mutate(ctx, qicb.builders[0].mutation); err != nil {
+			return nil, err
+		}
+	}
+	return nodes, nil
+}
+
+// SaveX calls Save and panics if Save returns an error.
+func (qicb *QueueItemCreateBulk) SaveX(ctx context.Context) []*QueueItem {
+	v, err := qicb.Save(ctx)
+	if err != nil {
+		panic(err)
+	}
+	return v
 }

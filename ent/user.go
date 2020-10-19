@@ -5,8 +5,9 @@ package ent
 import (
 	"fmt"
 	"strings"
+	"time"
 
-	"github.com/facebookincubator/ent/dialect/sql"
+	"github.com/facebook/ent/dialect/sql"
 	"github.com/joaopedrosgs/loucore/ent/user"
 )
 
@@ -37,6 +38,8 @@ type User struct {
 	Rank int `json:"rank,omitempty"`
 	// AllianceRank holds the value of the "alliance_rank" field.
 	AllianceRank int `json:"alliance_rank,omitempty"`
+	// LastUpdated holds the value of the "last_updated" field.
+	LastUpdated time.Time `json:"last_updated,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the UserQuery when eager-loading is set.
 	Edges UserEdges `json:"edges"`
@@ -97,6 +100,7 @@ func (*User) scanValues() []interface{} {
 		&sql.NullInt64{},  // trueseed
 		&sql.NullInt64{},  // rank
 		&sql.NullInt64{},  // alliance_rank
+		&sql.NullTime{},   // last_updated
 	}
 }
 
@@ -167,6 +171,11 @@ func (u *User) assignValues(values ...interface{}) error {
 	} else if value.Valid {
 		u.AllianceRank = int(value.Int64)
 	}
+	if value, ok := values[11].(*sql.NullTime); !ok {
+		return fmt.Errorf("unexpected type %T for field last_updated", values[11])
+	} else if value.Valid {
+		u.LastUpdated = value.Time
+	}
 	return nil
 }
 
@@ -230,6 +239,8 @@ func (u *User) String() string {
 	builder.WriteString(fmt.Sprintf("%v", u.Rank))
 	builder.WriteString(", alliance_rank=")
 	builder.WriteString(fmt.Sprintf("%v", u.AllianceRank))
+	builder.WriteString(", last_updated=")
+	builder.WriteString(u.LastUpdated.Format(time.ANSIC))
 	builder.WriteByte(')')
 	return builder.String()
 }

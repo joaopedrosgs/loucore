@@ -5,8 +5,9 @@ package ent
 import (
 	"fmt"
 	"strings"
+	"time"
 
-	"github.com/facebookincubator/ent/dialect/sql"
+	"github.com/facebook/ent/dialect/sql"
 	"github.com/joaopedrosgs/loucore/ent/city"
 	"github.com/joaopedrosgs/loucore/ent/construction"
 	"github.com/joaopedrosgs/loucore/ent/user"
@@ -22,15 +23,17 @@ type Construction struct {
 	// Y holds the value of the "y" field.
 	Y int `json:"y,omitempty"`
 	// RawProduction holds the value of the "raw_production" field.
-	RawProduction int `json:"raw_production,omitempty"`
+	RawProduction float64 `json:"raw_production,omitempty"`
 	// Production holds the value of the "production" field.
-	Production int `json:"production,omitempty"`
+	Production float64 `json:"production,omitempty"`
 	// Type holds the value of the "type" field.
 	Type int `json:"type,omitempty"`
 	// Level holds the value of the "level" field.
 	Level int `json:"level,omitempty"`
 	// Modifier holds the value of the "modifier" field.
-	Modifier int `json:"modifier,omitempty"`
+	Modifier float64 `json:"modifier,omitempty"`
+	// LastUpdated holds the value of the "last_updated" field.
+	LastUpdated time.Time `json:"last_updated,omitempty"`
 	// NeedRefresh holds the value of the "need_refresh" field.
 	NeedRefresh bool `json:"need_refresh,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
@@ -115,15 +118,16 @@ func (e ConstructionEdges) AffectedByOrErr() ([]*Construction, error) {
 // scanValues returns the types for scanning values from sql.Rows.
 func (*Construction) scanValues() []interface{} {
 	return []interface{}{
-		&sql.NullInt64{}, // id
-		&sql.NullInt64{}, // x
-		&sql.NullInt64{}, // y
-		&sql.NullInt64{}, // raw_production
-		&sql.NullInt64{}, // production
-		&sql.NullInt64{}, // type
-		&sql.NullInt64{}, // level
-		&sql.NullInt64{}, // modifier
-		&sql.NullBool{},  // need_refresh
+		&sql.NullInt64{},   // id
+		&sql.NullInt64{},   // x
+		&sql.NullInt64{},   // y
+		&sql.NullFloat64{}, // raw_production
+		&sql.NullFloat64{}, // production
+		&sql.NullInt64{},   // type
+		&sql.NullInt64{},   // level
+		&sql.NullFloat64{}, // modifier
+		&sql.NullTime{},    // last_updated
+		&sql.NullBool{},    // need_refresh
 	}
 }
 
@@ -157,15 +161,15 @@ func (c *Construction) assignValues(values ...interface{}) error {
 	} else if value.Valid {
 		c.Y = int(value.Int64)
 	}
-	if value, ok := values[2].(*sql.NullInt64); !ok {
+	if value, ok := values[2].(*sql.NullFloat64); !ok {
 		return fmt.Errorf("unexpected type %T for field raw_production", values[2])
 	} else if value.Valid {
-		c.RawProduction = int(value.Int64)
+		c.RawProduction = value.Float64
 	}
-	if value, ok := values[3].(*sql.NullInt64); !ok {
+	if value, ok := values[3].(*sql.NullFloat64); !ok {
 		return fmt.Errorf("unexpected type %T for field production", values[3])
 	} else if value.Valid {
-		c.Production = int(value.Int64)
+		c.Production = value.Float64
 	}
 	if value, ok := values[4].(*sql.NullInt64); !ok {
 		return fmt.Errorf("unexpected type %T for field type", values[4])
@@ -177,17 +181,22 @@ func (c *Construction) assignValues(values ...interface{}) error {
 	} else if value.Valid {
 		c.Level = int(value.Int64)
 	}
-	if value, ok := values[6].(*sql.NullInt64); !ok {
+	if value, ok := values[6].(*sql.NullFloat64); !ok {
 		return fmt.Errorf("unexpected type %T for field modifier", values[6])
 	} else if value.Valid {
-		c.Modifier = int(value.Int64)
+		c.Modifier = value.Float64
 	}
-	if value, ok := values[7].(*sql.NullBool); !ok {
-		return fmt.Errorf("unexpected type %T for field need_refresh", values[7])
+	if value, ok := values[7].(*sql.NullTime); !ok {
+		return fmt.Errorf("unexpected type %T for field last_updated", values[7])
+	} else if value.Valid {
+		c.LastUpdated = value.Time
+	}
+	if value, ok := values[8].(*sql.NullBool); !ok {
+		return fmt.Errorf("unexpected type %T for field need_refresh", values[8])
 	} else if value.Valid {
 		c.NeedRefresh = value.Bool
 	}
-	values = values[8:]
+	values = values[9:]
 	if len(values) == len(construction.ForeignKeys) {
 		if value, ok := values[0].(*sql.NullInt64); !ok {
 			return fmt.Errorf("unexpected type %T for edge-field city_constructions", value)
@@ -267,6 +276,8 @@ func (c *Construction) String() string {
 	builder.WriteString(fmt.Sprintf("%v", c.Level))
 	builder.WriteString(", modifier=")
 	builder.WriteString(fmt.Sprintf("%v", c.Modifier))
+	builder.WriteString(", last_updated=")
+	builder.WriteString(c.LastUpdated.Format(time.ANSIC))
 	builder.WriteString(", need_refresh=")
 	builder.WriteString(fmt.Sprintf("%v", c.NeedRefresh))
 	builder.WriteByte(')')
