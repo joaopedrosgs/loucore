@@ -8,6 +8,20 @@ import (
 	"path/filepath"
 )
 
+const (
+	WOOD = iota
+	LAKE
+	STONE
+	IRON
+	TOWNHALL
+	WOODCUTTERS_HUT
+	QUARRY
+	FARM
+	IRON_MINE
+	COTTAGE
+	WAREHOUSE
+)
+
 type StructureBlueprint struct {
 	ID           int        `json:"id"`
 	Name         string     `json:"name"`

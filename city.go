@@ -19,6 +19,10 @@ func CreateCity(x, y int) (*ent.City, error) {
 	return c, err
 }
 
+func DeleteCity(cityId int) error {
+	return client.City.DeleteOneID(cityId).Exec(context.Background())
+}
+
 func CreateCityWithOwner(x, y, ownerId int) (*ent.City, error) {
 	c, err := client.City.Create().SetX(x).SetY(y).SetWoodProduction(5).SetOwnerID(ownerId).Save(context.Background())
 	if err != nil {
@@ -71,7 +75,7 @@ func UpdateCityResources(cityId int) error {
 		return err
 	}
 
-	secondsSinceLastUpdate := time.Now().Sub(city.LastUpdated).Round(time.Second).Seconds()
+	secondsSinceLastUpdate := time.Now().Sub(city.LastUpdated).Round(time.Second).Hours()
 
 	newFoodStored := math.Min(city.FoodStored+city.FoodProduction*secondsSinceLastUpdate, city.FoodLimit)
 	newStoneStored:= math.Min(city.StoneStored+city.StoneProduction*secondsSinceLastUpdate, city.StoneLimit)
