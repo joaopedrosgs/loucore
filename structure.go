@@ -3,6 +3,7 @@ package loucore
 import (
 	"context"
 	"errors"
+
 	"github.com/joaopedrosgs/loucore/ent"
 	"github.com/joaopedrosgs/loucore/ent/city"
 	"github.com/joaopedrosgs/loucore/ent/construction"
@@ -19,7 +20,7 @@ func CreateConstructionWithOwner(ownerId, cityId, x, y, cType int) (*ent.Constru
 		Save(context.Background())
 
 }
-func CreateConstruction( cityId, x, y, cType int) (*ent.Construction, error) {
+func CreateConstruction(cityId, x, y, cType int) (*ent.Construction, error) {
 	return client.Construction.
 		Create().
 		SetCityID(cityId).
@@ -42,12 +43,12 @@ func UpdateAffectedBy(structureId int) error {
 	if err != nil {
 		return err
 	}
-	if structure==nil {
+	if structure == nil {
 		return errors.New("Structure not found")
 	}
 	neighbors, err := structure.Edges.City.QueryConstructions().Where(
-		construction.XIn(structure.X-1,structure.X, structure.X+1),
-		construction.YIn(structure.Y-1,structure.Y, structure.Y+1),
+		construction.XIn(structure.X-1, structure.X, structure.X+1),
+		construction.YIn(structure.Y-1, structure.Y, structure.Y+1),
 		construction.TypeIn(Modules.Structures[structure.Type].AffectedBy...)).
 		Limit(8).All(context.Background())
 	if err != nil {
@@ -67,7 +68,7 @@ func CalculateProduction(structureId int) (float64, error) {
 	for _, affectingStructure := range structure.Edges.AffectedBy {
 		modifier += Modules.Structures[affectingStructure.Type].Bonus[affectingStructure.Level]
 	}
-	production:= Modules.Structures[structure.Type].Bonus[structure.Level]*modifier/100.0
+	production := Modules.Structures[structure.Type].Bonus[structure.Level] * modifier / 100.0
 
 	return production, client.Construction.UpdateOne(structure).SetModifier(modifier).SetProduction(production).Exec(context.Background())
 }

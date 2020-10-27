@@ -13,7 +13,7 @@ func TestMain(m *testing.M) {
 	}
 	err = LoadModules("./modules/")
 	if err != nil {
-		log.Fatal("Failed to LoadModules because: "+err.Error())
+		log.Fatal("Failed to LoadModules because: " + err.Error())
 	}
 	if len(Modules.Structures) == 0 {
 		log.Fatal("Silent error when loading modules")

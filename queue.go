@@ -32,7 +32,13 @@ func CreateQueueItem(ownerId, cityId, constructionId, action int) (*ent.QueueIte
 }
 func CompleteQueueItem(queueItemId int) error {
 
-	_, err := client.Construction.Update().Where(construction.HasQueueWith(queueitem.IDEQ(queueItemId), queueitem.CompletionLTE(time.Now()))).AddLevel(1).Save(context.Background())
+	_, err := client.Construction.Update().Where(
+		construction.HasQueueWith(
+			queueitem.IDEQ(queueItemId),
+			queueitem.CompletionLTE(
+				time.Now()))).
+		AddLevel(1).
+		Save(context.Background())
 	if err != nil {
 		return fmt.Errorf("(CompleteQueueItem) Failed to add level: %v", err)
 	}
@@ -53,4 +59,29 @@ func GetCityQueue(cityId int) ([]*ent.QueueItem, error) {
 func GetStructureQueue(structureId int) ([]*ent.QueueItem, error) {
 	return client.QueueItem.
 		Query().Where(queueitem.HasConstructionWith(construction.IDEQ(structureId))).All(context.Background())
+}
+func UpdateQueue(cityId int) error {
+	city, err := client.City.Query().WithQueue(func(query *ent.QueueItemQuery) {
+		query.Order(ent.Asc(queueitem.FieldOrder)).Limit(10)
+
+	}).Where(city.ID(cityId)).First(context.Background())
+	if err != nil {
+		return err
+	}
+	startTime := MinTime(city.Edges.Queue[0].StartAt, time.Now())
+	lastDuration := 0
+	var lastCompletion = MinTime(city.Edges.Queue[0].StartAt, time.Now())
+	for _, qi := range city.Edges.Queue {
+		startTime = lastCompletion.Add(time.Duration(lastDuration) * time.Second)
+		qi.Update().SetStartAt(startTime)
+		lastDuration = qi.Duration
+		lastCompletion = lastCompletion.Add(time.Duration(lastDuration) * time.Second)
+	}
+	return nil
+}
+func MinTime(t1, t2 time.Time) time.Time {
+	if t1.After(t2) {
+		return t2
+	}
+	return t1
 }

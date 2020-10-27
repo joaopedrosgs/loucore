@@ -23,28 +23,27 @@ const (
 )
 
 type StructureBlueprint struct {
-	ID           int        `json:"id"`
-	Name         string     `json:"name"`
-	Buildable    bool       `json:"buildable"`
-	Media        string     `json:"media"`
-	Info         string     `json:"info"`
+	ID           int            `json:"id"`
+	Name         string         `json:"name"`
+	Buildable    bool           `json:"buildable"`
+	Media        string         `json:"media"`
+	Info         string         `json:"info"`
 	Bonus        [10]float64    `json:"bonus"`
-	BonusType    string     `json:"bonus_type"`
+	BonusType    string         `json:"bonus_type"`
 	ResourceCost [10][2]float64 `json:"resource_cost"`
-	Score        [10]int    `json:"score"`
-	Affects []int `json:"affects"`
-	AffectedBy []int `json:"affectedBy"`
-
+	Score        [10]int        `json:"score"`
+	Affects      []int          `json:"affects"`
+	AffectedBy   []int          `json:"affectedBy"`
 }
+
 func (s *StructureBlueprint) DoesAffect(i int) bool {
-	for v:= range s.Affects {
-		if v==i {
+	for v := range s.Affects {
+		if v == i {
 			return true
 		}
 	}
 	return false
 }
-
 
 var Modules struct {
 	Structures []StructureBlueprint

@@ -27,7 +27,6 @@ func (User) Fields() []ent.Field {
 		field.Int("rank").Default(0),
 		field.Int("alliance_rank").Default(0),
 		field.Time("last_updated").Default(time.Now),
-
 	}
 }
 

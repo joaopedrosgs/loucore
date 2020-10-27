@@ -2,12 +2,14 @@ package loucore
 
 import (
 	"context"
+	"math"
+	"time"
+
 	"github.com/joaopedrosgs/loucore/ent"
 	"github.com/joaopedrosgs/loucore/ent/city"
 	"github.com/joaopedrosgs/loucore/ent/construction"
+	"github.com/joaopedrosgs/loucore/ent/queueitem"
 	"github.com/joaopedrosgs/loucore/ent/user"
-	"math"
-	"time"
 )
 
 func CreateCity(x, y int) (*ent.City, error) {
@@ -55,7 +57,7 @@ func GetCitiesUserByID(userId int) ([]*ent.City, error) {
 }
 func GetCityById(cityId int) (*ent.City, error) {
 
-	return client.City.Get(context.Background(),cityId)
+	return client.City.Get(context.Background(), cityId)
 
 }
 func GetCitiesUserWithStructuresByID(userId int) ([]*ent.City, error) {
@@ -78,11 +80,33 @@ func UpdateCityResources(cityId int) error {
 	secondsSinceLastUpdate := time.Now().Sub(city.LastUpdated).Round(time.Second).Hours()
 
 	newFoodStored := math.Min(city.FoodStored+city.FoodProduction*secondsSinceLastUpdate, city.FoodLimit)
-	newStoneStored:= math.Min(city.StoneStored+city.StoneProduction*secondsSinceLastUpdate, city.StoneLimit)
+	newStoneStored := math.Min(city.StoneStored+city.StoneProduction*secondsSinceLastUpdate, city.StoneLimit)
 	newWoodStored := math.Min(city.WoodStored+city.WoodProduction*secondsSinceLastUpdate, city.WoodLimit)
 	newIronStored := math.Min(city.IronStored+city.IronProduction*secondsSinceLastUpdate, city.IronLimit)
 
-	_,err=city.Update().
+	_, err = city.Update().
+		SetWoodStored(newWoodStored).
+		SetStoneStored(newStoneStored).
+		SetFoodStored(newFoodStored).
+		SetIronStored(newIronStored).
+		Save(context.Background())
+
+	return err
+}
+func UpdateCityResourcesUntil(cityId int, t time.Time) error {
+	city, err := client.City.Get(context.Background(), cityId)
+	if err != nil {
+		return err
+	}
+
+	secondsSinceLastUpdate := t.Sub(city.LastUpdated).Round(time.Second).Hours()
+
+	newFoodStored := math.Min(city.FoodStored+city.FoodProduction*secondsSinceLastUpdate, city.FoodLimit)
+	newStoneStored := math.Min(city.StoneStored+city.StoneProduction*secondsSinceLastUpdate, city.StoneLimit)
+	newWoodStored := math.Min(city.WoodStored+city.WoodProduction*secondsSinceLastUpdate, city.WoodLimit)
+	newIronStored := math.Min(city.IronStored+city.IronProduction*secondsSinceLastUpdate, city.IronLimit)
+
+	_, err = city.Update().
 		SetWoodStored(newWoodStored).
 		SetStoneStored(newStoneStored).
 		SetFoodStored(newFoodStored).
@@ -94,8 +118,8 @@ func UpdateCityResources(cityId int) error {
 
 func UpdateCityProduction(cityId int) error {
 	var production []struct {
-		Type string `json:"type"`
-		Sum  float64    `json:"sum"`
+		Type string  `json:"type"`
+		Sum  float64 `json:"sum"`
 	}
 	client.Construction.
 		Query().
@@ -134,4 +158,32 @@ func UpdateCityProduction(cityId int) error {
 		SetIronProduction(iron).
 		SetFoodProduction(food).
 		Exec(context.Background())
+}
+func AdvanceInTime(cityId int, until time.Time) (*ent.City, error) {
+	city, err := client.City.Query().WithQueue(func(query *ent.QueueItemQuery) {
+		query.Order(ent.Asc(queueitem.FieldOrder)).Limit(10)
+
+	}).Where(city.ID(cityId)).First(context.Background())
+	if err != nil {
+		return nil, err
+	}
+
+	for _, q := range city.Edges.Queue {
+		if q.StartAt.IsZero() {
+			q.StartAt = time.Now()
+		}
+		if q.StartAt.Add(time.Second * time.Duration(q.Duration)).After(time.Now()) {
+
+		}
+		err = UpdateCityResourcesUntil(cityId, q.Completion)
+		if err != nil {
+			return nil, err
+		}
+		err = CompleteQueueItem(q.ID)
+		if err != nil {
+			return nil, err
+		}
+
+	}
+
 }

@@ -2,9 +2,10 @@ package loucore
 
 import (
 	"context"
-	"github.com/joaopedrosgs/loucore/ent/city"
 	"math/rand"
 	"time"
+
+	"github.com/joaopedrosgs/loucore/ent/city"
 )
 
 var randomGenerator = rand.New(rand.NewSource(time.Now().UnixNano()))

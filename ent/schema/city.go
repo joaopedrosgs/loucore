@@ -40,7 +40,6 @@ func (City) Fields() []ent.Field {
 		field.Int("construction_speed").Default(1),
 
 		field.Time("last_updated").Default(time.Now),
-
 	}
 }
 func (City) Indexes() []ent.Index {
