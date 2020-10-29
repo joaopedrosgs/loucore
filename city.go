@@ -161,7 +161,7 @@ func UpdateCityProduction(cityId int) error {
 }
 func AdvanceInTime(cityId int, until time.Time) (*ent.City, error) {
 	city, err := client.City.Query().WithQueue(func(query *ent.QueueItemQuery) {
-		query.Order(ent.Asc(queueitem.FieldOrder)).Limit(10)
+		query.Order(ent.Asc(queueitem.FieldCompletion)).Limit(10)
 
 	}).Where(city.ID(cityId)).First(context.Background())
 	if err != nil {
@@ -185,5 +185,6 @@ func AdvanceInTime(cityId int, until time.Time) (*ent.City, error) {
 		}
 
 	}
+	return nil, nil
 
 }

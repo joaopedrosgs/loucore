@@ -69,7 +69,7 @@ type CityMutation struct {
 	addiron_limit         *float64
 	food_limit            *float64
 	addfood_limit         *float64
-	queue_time            *time.Time
+	queue_ends_at         *time.Time
 	construction_speed    *int
 	addconstruction_speed *int
 	last_updated          *time.Time
@@ -1057,41 +1057,41 @@ func (m *CityMutation) ResetFoodLimit() {
 	m.addfood_limit = nil
 }
 
-// SetQueueTime sets the queue_time field.
-func (m *CityMutation) SetQueueTime(t time.Time) {
-	m.queue_time = &t
+// SetQueueEndsAt sets the queue_ends_at field.
+func (m *CityMutation) SetQueueEndsAt(t time.Time) {
+	m.queue_ends_at = &t
 }
 
-// QueueTime returns the queue_time value in the mutation.
-func (m *CityMutation) QueueTime() (r time.Time, exists bool) {
-	v := m.queue_time
+// QueueEndsAt returns the queue_ends_at value in the mutation.
+func (m *CityMutation) QueueEndsAt() (r time.Time, exists bool) {
+	v := m.queue_ends_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldQueueTime returns the old queue_time value of the City.
+// OldQueueEndsAt returns the old queue_ends_at value of the City.
 // If the City object wasn't provided to the builder, the object is fetched
 // from the database.
 // An error is returned if the mutation operation is not UpdateOne, or database query fails.
-func (m *CityMutation) OldQueueTime(ctx context.Context) (v time.Time, err error) {
+func (m *CityMutation) OldQueueEndsAt(ctx context.Context) (v time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldQueueTime is allowed only on UpdateOne operations")
+		return v, fmt.Errorf("OldQueueEndsAt is allowed only on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldQueueTime requires an ID field in the mutation")
+		return v, fmt.Errorf("OldQueueEndsAt requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldQueueTime: %w", err)
+		return v, fmt.Errorf("querying old value for OldQueueEndsAt: %w", err)
 	}
-	return oldValue.QueueTime, nil
+	return oldValue.QueueEndsAt, nil
 }
 
-// ResetQueueTime reset all changes of the "queue_time" field.
-func (m *CityMutation) ResetQueueTime() {
-	m.queue_time = nil
+// ResetQueueEndsAt reset all changes of the "queue_ends_at" field.
+func (m *CityMutation) ResetQueueEndsAt() {
+	m.queue_ends_at = nil
 }
 
 // SetConstructionSpeed sets the construction_speed field.
@@ -1396,8 +1396,8 @@ func (m *CityMutation) Fields() []string {
 	if m.food_limit != nil {
 		fields = append(fields, city.FieldFoodLimit)
 	}
-	if m.queue_time != nil {
-		fields = append(fields, city.FieldQueueTime)
+	if m.queue_ends_at != nil {
+		fields = append(fields, city.FieldQueueEndsAt)
 	}
 	if m.construction_speed != nil {
 		fields = append(fields, city.FieldConstructionSpeed)
@@ -1445,8 +1445,8 @@ func (m *CityMutation) Field(name string) (ent.Value, bool) {
 		return m.IronLimit()
 	case city.FieldFoodLimit:
 		return m.FoodLimit()
-	case city.FieldQueueTime:
-		return m.QueueTime()
+	case city.FieldQueueEndsAt:
+		return m.QueueEndsAt()
 	case city.FieldConstructionSpeed:
 		return m.ConstructionSpeed()
 	case city.FieldLastUpdated:
@@ -1492,8 +1492,8 @@ func (m *CityMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldIronLimit(ctx)
 	case city.FieldFoodLimit:
 		return m.OldFoodLimit(ctx)
-	case city.FieldQueueTime:
-		return m.OldQueueTime(ctx)
+	case city.FieldQueueEndsAt:
+		return m.OldQueueEndsAt(ctx)
 	case city.FieldConstructionSpeed:
 		return m.OldConstructionSpeed(ctx)
 	case city.FieldLastUpdated:
@@ -1619,12 +1619,12 @@ func (m *CityMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetFoodLimit(v)
 		return nil
-	case city.FieldQueueTime:
+	case city.FieldQueueEndsAt:
 		v, ok := value.(time.Time)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetQueueTime(v)
+		m.SetQueueEndsAt(v)
 		return nil
 	case city.FieldConstructionSpeed:
 		v, ok := value.(int)
@@ -1933,8 +1933,8 @@ func (m *CityMutation) ResetField(name string) error {
 	case city.FieldFoodLimit:
 		m.ResetFoodLimit()
 		return nil
-	case city.FieldQueueTime:
-		m.ResetQueueTime()
+	case city.FieldQueueEndsAt:
+		m.ResetQueueEndsAt()
 		return nil
 	case city.FieldConstructionSpeed:
 		m.ResetConstructionSpeed()
@@ -3432,8 +3432,6 @@ type QueueItemMutation struct {
 	completion          *time.Time
 	action              *int
 	addaction           *int
-	_order              *int
-	add_order           *int
 	clearedFields       map[string]struct{}
 	owner               *int
 	clearedowner        bool
@@ -3712,63 +3710,6 @@ func (m *QueueItemMutation) ResetAction() {
 	m.addaction = nil
 }
 
-// SetOrder sets the order field.
-func (m *QueueItemMutation) SetOrder(i int) {
-	m._order = &i
-	m.add_order = nil
-}
-
-// Order returns the order value in the mutation.
-func (m *QueueItemMutation) Order() (r int, exists bool) {
-	v := m._order
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldOrder returns the old order value of the QueueItem.
-// If the QueueItem object wasn't provided to the builder, the object is fetched
-// from the database.
-// An error is returned if the mutation operation is not UpdateOne, or database query fails.
-func (m *QueueItemMutation) OldOrder(ctx context.Context) (v int, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldOrder is allowed only on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldOrder requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldOrder: %w", err)
-	}
-	return oldValue.Order, nil
-}
-
-// AddOrder adds i to order.
-func (m *QueueItemMutation) AddOrder(i int) {
-	if m.add_order != nil {
-		*m.add_order += i
-	} else {
-		m.add_order = &i
-	}
-}
-
-// AddedOrder returns the value that was added to the order field in this mutation.
-func (m *QueueItemMutation) AddedOrder() (r int, exists bool) {
-	v := m.add_order
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ResetOrder reset all changes of the "order" field.
-func (m *QueueItemMutation) ResetOrder() {
-	m._order = nil
-	m.add_order = nil
-}
-
 // SetOwnerID sets the owner edge to User by id.
 func (m *QueueItemMutation) SetOwnerID(id int) {
 	m.owner = &id
@@ -3900,7 +3841,7 @@ func (m *QueueItemMutation) Type() string {
 // this mutation. Note that, in order to get all numeric
 // fields that were in/decremented, call AddedFields().
 func (m *QueueItemMutation) Fields() []string {
-	fields := make([]string, 0, 5)
+	fields := make([]string, 0, 4)
 	if m.start_at != nil {
 		fields = append(fields, queueitem.FieldStartAt)
 	}
@@ -3912,9 +3853,6 @@ func (m *QueueItemMutation) Fields() []string {
 	}
 	if m.action != nil {
 		fields = append(fields, queueitem.FieldAction)
-	}
-	if m._order != nil {
-		fields = append(fields, queueitem.FieldOrder)
 	}
 	return fields
 }
@@ -3932,8 +3870,6 @@ func (m *QueueItemMutation) Field(name string) (ent.Value, bool) {
 		return m.Completion()
 	case queueitem.FieldAction:
 		return m.Action()
-	case queueitem.FieldOrder:
-		return m.Order()
 	}
 	return nil, false
 }
@@ -3951,8 +3887,6 @@ func (m *QueueItemMutation) OldField(ctx context.Context, name string) (ent.Valu
 		return m.OldCompletion(ctx)
 	case queueitem.FieldAction:
 		return m.OldAction(ctx)
-	case queueitem.FieldOrder:
-		return m.OldOrder(ctx)
 	}
 	return nil, fmt.Errorf("unknown QueueItem field %s", name)
 }
@@ -3990,13 +3924,6 @@ func (m *QueueItemMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetAction(v)
 		return nil
-	case queueitem.FieldOrder:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetOrder(v)
-		return nil
 	}
 	return fmt.Errorf("unknown QueueItem field %s", name)
 }
@@ -4011,9 +3938,6 @@ func (m *QueueItemMutation) AddedFields() []string {
 	if m.addaction != nil {
 		fields = append(fields, queueitem.FieldAction)
 	}
-	if m.add_order != nil {
-		fields = append(fields, queueitem.FieldOrder)
-	}
 	return fields
 }
 
@@ -4026,8 +3950,6 @@ func (m *QueueItemMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedDuration()
 	case queueitem.FieldAction:
 		return m.AddedAction()
-	case queueitem.FieldOrder:
-		return m.AddedOrder()
 	}
 	return nil, false
 }
@@ -4050,13 +3972,6 @@ func (m *QueueItemMutation) AddField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddAction(v)
-		return nil
-	case queueitem.FieldOrder:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddOrder(v)
 		return nil
 	}
 	return fmt.Errorf("unknown QueueItem numeric field %s", name)
@@ -4097,9 +4012,6 @@ func (m *QueueItemMutation) ResetField(name string) error {
 		return nil
 	case queueitem.FieldAction:
 		m.ResetAction()
-		return nil
-	case queueitem.FieldOrder:
-		m.ResetOrder()
 		return nil
 	}
 	return fmt.Errorf("unknown QueueItem field %s", name)

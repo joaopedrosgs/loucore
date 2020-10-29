@@ -27,7 +27,7 @@ var (
 		{Name: "stone_limit", Type: field.TypeFloat64},
 		{Name: "iron_limit", Type: field.TypeFloat64},
 		{Name: "food_limit", Type: field.TypeFloat64},
-		{Name: "queue_time", Type: field.TypeTime},
+		{Name: "queue_ends_at", Type: field.TypeTime},
 		{Name: "construction_speed", Type: field.TypeInt, Default: 1},
 		{Name: "last_updated", Type: field.TypeTime},
 		{Name: "user_cities", Type: field.TypeInt, Nullable: true},
@@ -105,7 +105,6 @@ var (
 		{Name: "duration", Type: field.TypeInt},
 		{Name: "completion", Type: field.TypeTime},
 		{Name: "action", Type: field.TypeInt},
-		{Name: "order", Type: field.TypeInt},
 		{Name: "city_queue", Type: field.TypeInt, Nullable: true},
 		{Name: "construction_queue", Type: field.TypeInt, Nullable: true},
 		{Name: "user_queue", Type: field.TypeInt, Nullable: true},
@@ -118,31 +117,24 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:  "queue_items_cities_queue",
-				Columns: []*schema.Column{QueueItemsColumns[6]},
+				Columns: []*schema.Column{QueueItemsColumns[5]},
 
 				RefColumns: []*schema.Column{CitiesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "queue_items_constructions_queue",
-				Columns: []*schema.Column{QueueItemsColumns[7]},
+				Columns: []*schema.Column{QueueItemsColumns[6]},
 
 				RefColumns: []*schema.Column{ConstructionsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "queue_items_users_queue",
-				Columns: []*schema.Column{QueueItemsColumns[8]},
+				Columns: []*schema.Column{QueueItemsColumns[7]},
 
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
-			},
-		},
-		Indexes: []*schema.Index{
-			{
-				Name:    "queueitem_order_city_queue",
-				Unique:  true,
-				Columns: []*schema.Column{QueueItemsColumns[5], QueueItemsColumns[6]},
 			},
 		},
 	}

@@ -3,7 +3,7 @@ package loucore
 import "testing"
 
 func TestCreateCity(t *testing.T) {
-	city, err := CreateCity(1, 1)
+	city, err := CreateCity(99, 99)
 	if err != nil {
 		t.Errorf("Failed to CreateCity: %v", err)
 		return
@@ -23,7 +23,7 @@ func TestCreateCity(t *testing.T) {
 
 }
 func TestDeleteCity(t *testing.T) {
-	city, err := CreateCity(1, 1)
+	city, err := CreateCity(88, 88)
 	if err != nil {
 		t.Errorf("Failed to CreateCity: %v", err)
 		return
@@ -38,8 +38,8 @@ func TestDeleteCity(t *testing.T) {
 	}
 }
 func TestCreateCityWithOwner(t *testing.T) {
-	user, _ := CreateAccount("test", "email@test.com", "pass")
-	city, err := CreateCityWithOwner(1, 2, user.ID)
+	user, _ := CreateAccount("test2", "email2@test.com", "pass")
+	city, err := CreateCityWithOwner(20, 32, user.ID)
 	if err != nil {
 		t.Errorf("Failed to CreateCity: %v", err)
 		return

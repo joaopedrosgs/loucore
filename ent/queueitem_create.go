@@ -47,12 +47,6 @@ func (qic *QueueItemCreate) SetAction(i int) *QueueItemCreate {
 	return qic
 }
 
-// SetOrder sets the order field.
-func (qic *QueueItemCreate) SetOrder(i int) *QueueItemCreate {
-	qic.mutation.SetOrder(i)
-	return qic
-}
-
 // SetOwnerID sets the owner edge to User by id.
 func (qic *QueueItemCreate) SetOwnerID(id int) *QueueItemCreate {
 	qic.mutation.SetOwnerID(id)
@@ -173,9 +167,6 @@ func (qic *QueueItemCreate) check() error {
 	if _, ok := qic.mutation.Action(); !ok {
 		return &ValidationError{Name: "action", err: errors.New("ent: missing required field \"action\"")}
 	}
-	if _, ok := qic.mutation.Order(); !ok {
-		return &ValidationError{Name: "order", err: errors.New("ent: missing required field \"order\"")}
-	}
 	return nil
 }
 
@@ -234,14 +225,6 @@ func (qic *QueueItemCreate) createSpec() (*QueueItem, *sqlgraph.CreateSpec) {
 			Column: queueitem.FieldAction,
 		})
 		_node.Action = value
-	}
-	if value, ok := qic.mutation.Order(); ok {
-		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
-			Value:  value,
-			Column: queueitem.FieldOrder,
-		})
-		_node.Order = value
 	}
 	if nodes := qic.mutation.OwnerIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

@@ -69,19 +69,6 @@ func (qiu *QueueItemUpdate) AddAction(i int) *QueueItemUpdate {
 	return qiu
 }
 
-// SetOrder sets the order field.
-func (qiu *QueueItemUpdate) SetOrder(i int) *QueueItemUpdate {
-	qiu.mutation.ResetOrder()
-	qiu.mutation.SetOrder(i)
-	return qiu
-}
-
-// AddOrder adds i to order.
-func (qiu *QueueItemUpdate) AddOrder(i int) *QueueItemUpdate {
-	qiu.mutation.AddOrder(i)
-	return qiu
-}
-
 // SetOwnerID sets the owner edge to User by id.
 func (qiu *QueueItemUpdate) SetOwnerID(id int) *QueueItemUpdate {
 	qiu.mutation.SetOwnerID(id)
@@ -273,20 +260,6 @@ func (qiu *QueueItemUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: queueitem.FieldAction,
 		})
 	}
-	if value, ok := qiu.mutation.Order(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
-			Value:  value,
-			Column: queueitem.FieldOrder,
-		})
-	}
-	if value, ok := qiu.mutation.AddedOrder(); ok {
-		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
-			Value:  value,
-			Column: queueitem.FieldOrder,
-		})
-	}
 	if qiu.mutation.OwnerCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
@@ -445,19 +418,6 @@ func (qiuo *QueueItemUpdateOne) SetAction(i int) *QueueItemUpdateOne {
 // AddAction adds i to action.
 func (qiuo *QueueItemUpdateOne) AddAction(i int) *QueueItemUpdateOne {
 	qiuo.mutation.AddAction(i)
-	return qiuo
-}
-
-// SetOrder sets the order field.
-func (qiuo *QueueItemUpdateOne) SetOrder(i int) *QueueItemUpdateOne {
-	qiuo.mutation.ResetOrder()
-	qiuo.mutation.SetOrder(i)
-	return qiuo
-}
-
-// AddOrder adds i to order.
-func (qiuo *QueueItemUpdateOne) AddOrder(i int) *QueueItemUpdateOne {
-	qiuo.mutation.AddOrder(i)
 	return qiuo
 }
 
@@ -648,20 +608,6 @@ func (qiuo *QueueItemUpdateOne) sqlSave(ctx context.Context) (_node *QueueItem, 
 			Type:   field.TypeInt,
 			Value:  value,
 			Column: queueitem.FieldAction,
-		})
-	}
-	if value, ok := qiuo.mutation.Order(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
-			Value:  value,
-			Column: queueitem.FieldOrder,
-		})
-	}
-	if value, ok := qiuo.mutation.AddedOrder(); ok {
-		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
-			Value:  value,
-			Column: queueitem.FieldOrder,
 		})
 	}
 	if qiuo.mutation.OwnerCleared() {

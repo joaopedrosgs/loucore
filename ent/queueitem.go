@@ -27,8 +27,6 @@ type QueueItem struct {
 	Completion time.Time `json:"completion,omitempty"`
 	// Action holds the value of the "action" field.
 	Action int `json:"action,omitempty"`
-	// Order holds the value of the "order" field.
-	Order int `json:"order,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the QueueItemQuery when eager-loading is set.
 	Edges              QueueItemEdges `json:"edges"`
@@ -100,7 +98,6 @@ func (*QueueItem) scanValues() []interface{} {
 		&sql.NullInt64{}, // duration
 		&sql.NullTime{},  // completion
 		&sql.NullInt64{}, // action
-		&sql.NullInt64{}, // order
 	}
 }
 
@@ -145,12 +142,7 @@ func (qi *QueueItem) assignValues(values ...interface{}) error {
 	} else if value.Valid {
 		qi.Action = int(value.Int64)
 	}
-	if value, ok := values[4].(*sql.NullInt64); !ok {
-		return fmt.Errorf("unexpected type %T for field order", values[4])
-	} else if value.Valid {
-		qi.Order = int(value.Int64)
-	}
-	values = values[5:]
+	values = values[4:]
 	if len(values) == len(queueitem.ForeignKeys) {
 		if value, ok := values[0].(*sql.NullInt64); !ok {
 			return fmt.Errorf("unexpected type %T for edge-field city_queue", value)
@@ -220,8 +212,6 @@ func (qi *QueueItem) String() string {
 	builder.WriteString(qi.Completion.Format(time.ANSIC))
 	builder.WriteString(", action=")
 	builder.WriteString(fmt.Sprintf("%v", qi.Action))
-	builder.WriteString(", order=")
-	builder.WriteString(fmt.Sprintf("%v", qi.Order))
 	builder.WriteByte(')')
 	return builder.String()
 }

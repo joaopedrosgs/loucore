@@ -205,10 +205,10 @@ func FoodLimit(v float64) predicate.City {
 	})
 }
 
-// QueueTime applies equality check predicate on the "queue_time" field. It's identical to QueueTimeEQ.
-func QueueTime(v time.Time) predicate.City {
+// QueueEndsAt applies equality check predicate on the "queue_ends_at" field. It's identical to QueueEndsAtEQ.
+func QueueEndsAt(v time.Time) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldQueueTime), v))
+		s.Where(sql.EQ(s.C(FieldQueueEndsAt), v))
 	})
 }
 
@@ -1477,22 +1477,22 @@ func FoodLimitLTE(v float64) predicate.City {
 	})
 }
 
-// QueueTimeEQ applies the EQ predicate on the "queue_time" field.
-func QueueTimeEQ(v time.Time) predicate.City {
+// QueueEndsAtEQ applies the EQ predicate on the "queue_ends_at" field.
+func QueueEndsAtEQ(v time.Time) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldQueueTime), v))
+		s.Where(sql.EQ(s.C(FieldQueueEndsAt), v))
 	})
 }
 
-// QueueTimeNEQ applies the NEQ predicate on the "queue_time" field.
-func QueueTimeNEQ(v time.Time) predicate.City {
+// QueueEndsAtNEQ applies the NEQ predicate on the "queue_ends_at" field.
+func QueueEndsAtNEQ(v time.Time) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldQueueTime), v))
+		s.Where(sql.NEQ(s.C(FieldQueueEndsAt), v))
 	})
 }
 
-// QueueTimeIn applies the In predicate on the "queue_time" field.
-func QueueTimeIn(vs ...time.Time) predicate.City {
+// QueueEndsAtIn applies the In predicate on the "queue_ends_at" field.
+func QueueEndsAtIn(vs ...time.Time) predicate.City {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -1504,12 +1504,12 @@ func QueueTimeIn(vs ...time.Time) predicate.City {
 			s.Where(sql.False())
 			return
 		}
-		s.Where(sql.In(s.C(FieldQueueTime), v...))
+		s.Where(sql.In(s.C(FieldQueueEndsAt), v...))
 	})
 }
 
-// QueueTimeNotIn applies the NotIn predicate on the "queue_time" field.
-func QueueTimeNotIn(vs ...time.Time) predicate.City {
+// QueueEndsAtNotIn applies the NotIn predicate on the "queue_ends_at" field.
+func QueueEndsAtNotIn(vs ...time.Time) predicate.City {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -1521,35 +1521,35 @@ func QueueTimeNotIn(vs ...time.Time) predicate.City {
 			s.Where(sql.False())
 			return
 		}
-		s.Where(sql.NotIn(s.C(FieldQueueTime), v...))
+		s.Where(sql.NotIn(s.C(FieldQueueEndsAt), v...))
 	})
 }
 
-// QueueTimeGT applies the GT predicate on the "queue_time" field.
-func QueueTimeGT(v time.Time) predicate.City {
+// QueueEndsAtGT applies the GT predicate on the "queue_ends_at" field.
+func QueueEndsAtGT(v time.Time) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldQueueTime), v))
+		s.Where(sql.GT(s.C(FieldQueueEndsAt), v))
 	})
 }
 
-// QueueTimeGTE applies the GTE predicate on the "queue_time" field.
-func QueueTimeGTE(v time.Time) predicate.City {
+// QueueEndsAtGTE applies the GTE predicate on the "queue_ends_at" field.
+func QueueEndsAtGTE(v time.Time) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldQueueTime), v))
+		s.Where(sql.GTE(s.C(FieldQueueEndsAt), v))
 	})
 }
 
-// QueueTimeLT applies the LT predicate on the "queue_time" field.
-func QueueTimeLT(v time.Time) predicate.City {
+// QueueEndsAtLT applies the LT predicate on the "queue_ends_at" field.
+func QueueEndsAtLT(v time.Time) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldQueueTime), v))
+		s.Where(sql.LT(s.C(FieldQueueEndsAt), v))
 	})
 }
 
-// QueueTimeLTE applies the LTE predicate on the "queue_time" field.
-func QueueTimeLTE(v time.Time) predicate.City {
+// QueueEndsAtLTE applies the LTE predicate on the "queue_ends_at" field.
+func QueueEndsAtLTE(v time.Time) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldQueueTime), v))
+		s.Where(sql.LTE(s.C(FieldQueueEndsAt), v))
 	})
 }
 

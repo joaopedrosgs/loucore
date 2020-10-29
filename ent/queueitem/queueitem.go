@@ -15,8 +15,6 @@ const (
 	FieldCompletion = "completion"
 	// FieldAction holds the string denoting the action field in the database.
 	FieldAction = "action"
-	// FieldOrder holds the string denoting the order field in the database.
-	FieldOrder = "order"
 
 	// EdgeOwner holds the string denoting the owner edge name in mutations.
 	EdgeOwner = "owner"
@@ -57,7 +55,6 @@ var Columns = []string{
 	FieldDuration,
 	FieldCompletion,
 	FieldAction,
-	FieldOrder,
 }
 
 // ForeignKeys holds the SQL foreign-keys that are owned by the QueueItem type.

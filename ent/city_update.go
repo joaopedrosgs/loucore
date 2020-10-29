@@ -360,16 +360,16 @@ func (cu *CityUpdate) AddFoodLimit(f float64) *CityUpdate {
 	return cu
 }
 
-// SetQueueTime sets the queue_time field.
-func (cu *CityUpdate) SetQueueTime(t time.Time) *CityUpdate {
-	cu.mutation.SetQueueTime(t)
+// SetQueueEndsAt sets the queue_ends_at field.
+func (cu *CityUpdate) SetQueueEndsAt(t time.Time) *CityUpdate {
+	cu.mutation.SetQueueEndsAt(t)
 	return cu
 }
 
-// SetNillableQueueTime sets the queue_time field if the given value is not nil.
-func (cu *CityUpdate) SetNillableQueueTime(t *time.Time) *CityUpdate {
+// SetNillableQueueEndsAt sets the queue_ends_at field if the given value is not nil.
+func (cu *CityUpdate) SetNillableQueueEndsAt(t *time.Time) *CityUpdate {
 	if t != nil {
-		cu.SetQueueTime(*t)
+		cu.SetQueueEndsAt(*t)
 	}
 	return cu
 }
@@ -813,11 +813,11 @@ func (cu *CityUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: city.FieldFoodLimit,
 		})
 	}
-	if value, ok := cu.mutation.QueueTime(); ok {
+	if value, ok := cu.mutation.QueueEndsAt(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,
 			Value:  value,
-			Column: city.FieldQueueTime,
+			Column: city.FieldQueueEndsAt,
 		})
 	}
 	if value, ok := cu.mutation.ConstructionSpeed(); ok {
@@ -1331,16 +1331,16 @@ func (cuo *CityUpdateOne) AddFoodLimit(f float64) *CityUpdateOne {
 	return cuo
 }
 
-// SetQueueTime sets the queue_time field.
-func (cuo *CityUpdateOne) SetQueueTime(t time.Time) *CityUpdateOne {
-	cuo.mutation.SetQueueTime(t)
+// SetQueueEndsAt sets the queue_ends_at field.
+func (cuo *CityUpdateOne) SetQueueEndsAt(t time.Time) *CityUpdateOne {
+	cuo.mutation.SetQueueEndsAt(t)
 	return cuo
 }
 
-// SetNillableQueueTime sets the queue_time field if the given value is not nil.
-func (cuo *CityUpdateOne) SetNillableQueueTime(t *time.Time) *CityUpdateOne {
+// SetNillableQueueEndsAt sets the queue_ends_at field if the given value is not nil.
+func (cuo *CityUpdateOne) SetNillableQueueEndsAt(t *time.Time) *CityUpdateOne {
 	if t != nil {
-		cuo.SetQueueTime(*t)
+		cuo.SetQueueEndsAt(*t)
 	}
 	return cuo
 }
@@ -1782,11 +1782,11 @@ func (cuo *CityUpdateOne) sqlSave(ctx context.Context) (_node *City, err error) 
 			Column: city.FieldFoodLimit,
 		})
 	}
-	if value, ok := cuo.mutation.QueueTime(); ok {
+	if value, ok := cuo.mutation.QueueEndsAt(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,
 			Value:  value,
-			Column: city.FieldQueueTime,
+			Column: city.FieldQueueEndsAt,
 		})
 	}
 	if value, ok := cuo.mutation.ConstructionSpeed(); ok {

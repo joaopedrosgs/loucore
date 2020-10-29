@@ -83,10 +83,10 @@ func init() {
 	cityDescFoodLimit := cityFields[15].Descriptor()
 	// city.DefaultFoodLimit holds the default value on creation for the food_limit field.
 	city.DefaultFoodLimit = cityDescFoodLimit.Default.(float64)
-	// cityDescQueueTime is the schema descriptor for queue_time field.
-	cityDescQueueTime := cityFields[16].Descriptor()
-	// city.DefaultQueueTime holds the default value on creation for the queue_time field.
-	city.DefaultQueueTime = cityDescQueueTime.Default.(func() time.Time)
+	// cityDescQueueEndsAt is the schema descriptor for queue_ends_at field.
+	cityDescQueueEndsAt := cityFields[16].Descriptor()
+	// city.DefaultQueueEndsAt holds the default value on creation for the queue_ends_at field.
+	city.DefaultQueueEndsAt = cityDescQueueEndsAt.Default.(func() time.Time)
 	// cityDescConstructionSpeed is the schema descriptor for construction_speed field.
 	cityDescConstructionSpeed := cityFields[17].Descriptor()
 	// city.DefaultConstructionSpeed holds the default value on creation for the construction_speed field.

@@ -49,8 +49,8 @@ type City struct {
 	IronLimit float64 `json:"iron_limit,omitempty"`
 	// FoodLimit holds the value of the "food_limit" field.
 	FoodLimit float64 `json:"food_limit,omitempty"`
-	// QueueTime holds the value of the "queue_time" field.
-	QueueTime time.Time `json:"queue_time,omitempty"`
+	// QueueEndsAt holds the value of the "queue_ends_at" field.
+	QueueEndsAt time.Time `json:"queue_ends_at,omitempty"`
 	// ConstructionSpeed holds the value of the "construction_speed" field.
 	ConstructionSpeed int `json:"construction_speed,omitempty"`
 	// LastUpdated holds the value of the "last_updated" field.
@@ -126,7 +126,7 @@ func (*City) scanValues() []interface{} {
 		&sql.NullFloat64{}, // stone_limit
 		&sql.NullFloat64{}, // iron_limit
 		&sql.NullFloat64{}, // food_limit
-		&sql.NullTime{},    // queue_time
+		&sql.NullTime{},    // queue_ends_at
 		&sql.NullInt64{},   // construction_speed
 		&sql.NullTime{},    // last_updated
 	}
@@ -232,9 +232,9 @@ func (c *City) assignValues(values ...interface{}) error {
 		c.FoodLimit = value.Float64
 	}
 	if value, ok := values[16].(*sql.NullTime); !ok {
-		return fmt.Errorf("unexpected type %T for field queue_time", values[16])
+		return fmt.Errorf("unexpected type %T for field queue_ends_at", values[16])
 	} else if value.Valid {
-		c.QueueTime = value.Time
+		c.QueueEndsAt = value.Time
 	}
 	if value, ok := values[17].(*sql.NullInt64); !ok {
 		return fmt.Errorf("unexpected type %T for field construction_speed", values[17])
@@ -328,8 +328,8 @@ func (c *City) String() string {
 	builder.WriteString(fmt.Sprintf("%v", c.IronLimit))
 	builder.WriteString(", food_limit=")
 	builder.WriteString(fmt.Sprintf("%v", c.FoodLimit))
-	builder.WriteString(", queue_time=")
-	builder.WriteString(c.QueueTime.Format(time.ANSIC))
+	builder.WriteString(", queue_ends_at=")
+	builder.WriteString(c.QueueEndsAt.Format(time.ANSIC))
 	builder.WriteString(", construction_speed=")
 	builder.WriteString(fmt.Sprintf("%v", c.ConstructionSpeed))
 	builder.WriteString(", last_updated=")

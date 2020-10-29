@@ -247,16 +247,16 @@ func (cc *CityCreate) SetNillableFoodLimit(f *float64) *CityCreate {
 	return cc
 }
 
-// SetQueueTime sets the queue_time field.
-func (cc *CityCreate) SetQueueTime(t time.Time) *CityCreate {
-	cc.mutation.SetQueueTime(t)
+// SetQueueEndsAt sets the queue_ends_at field.
+func (cc *CityCreate) SetQueueEndsAt(t time.Time) *CityCreate {
+	cc.mutation.SetQueueEndsAt(t)
 	return cc
 }
 
-// SetNillableQueueTime sets the queue_time field if the given value is not nil.
-func (cc *CityCreate) SetNillableQueueTime(t *time.Time) *CityCreate {
+// SetNillableQueueEndsAt sets the queue_ends_at field if the given value is not nil.
+func (cc *CityCreate) SetNillableQueueEndsAt(t *time.Time) *CityCreate {
 	if t != nil {
-		cc.SetQueueTime(*t)
+		cc.SetQueueEndsAt(*t)
 	}
 	return cc
 }
@@ -454,9 +454,9 @@ func (cc *CityCreate) defaults() {
 		v := city.DefaultFoodLimit
 		cc.mutation.SetFoodLimit(v)
 	}
-	if _, ok := cc.mutation.QueueTime(); !ok {
-		v := city.DefaultQueueTime()
-		cc.mutation.SetQueueTime(v)
+	if _, ok := cc.mutation.QueueEndsAt(); !ok {
+		v := city.DefaultQueueEndsAt()
+		cc.mutation.SetQueueEndsAt(v)
 	}
 	if _, ok := cc.mutation.ConstructionSpeed(); !ok {
 		v := city.DefaultConstructionSpeed
@@ -523,8 +523,8 @@ func (cc *CityCreate) check() error {
 	if _, ok := cc.mutation.FoodLimit(); !ok {
 		return &ValidationError{Name: "food_limit", err: errors.New("ent: missing required field \"food_limit\"")}
 	}
-	if _, ok := cc.mutation.QueueTime(); !ok {
-		return &ValidationError{Name: "queue_time", err: errors.New("ent: missing required field \"queue_time\"")}
+	if _, ok := cc.mutation.QueueEndsAt(); !ok {
+		return &ValidationError{Name: "queue_ends_at", err: errors.New("ent: missing required field \"queue_ends_at\"")}
 	}
 	if _, ok := cc.mutation.ConstructionSpeed(); !ok {
 		return &ValidationError{Name: "construction_speed", err: errors.New("ent: missing required field \"construction_speed\"")}
@@ -687,13 +687,13 @@ func (cc *CityCreate) createSpec() (*City, *sqlgraph.CreateSpec) {
 		})
 		_node.FoodLimit = value
 	}
-	if value, ok := cc.mutation.QueueTime(); ok {
+	if value, ok := cc.mutation.QueueEndsAt(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,
 			Value:  value,
-			Column: city.FieldQueueTime,
+			Column: city.FieldQueueEndsAt,
 		})
-		_node.QueueTime = value
+		_node.QueueEndsAt = value
 	}
 	if value, ok := cc.mutation.ConstructionSpeed(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
