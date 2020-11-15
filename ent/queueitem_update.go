@@ -5,7 +5,6 @@ package ent
 import (
 	"context"
 	"fmt"
-	"time"
 
 	"github.com/facebook/ent/dialect/sql"
 	"github.com/facebook/ent/dialect/sql/sqlgraph"
@@ -20,20 +19,13 @@ import (
 // QueueItemUpdate is the builder for updating QueueItem entities.
 type QueueItemUpdate struct {
 	config
-	hooks      []Hook
-	mutation   *QueueItemMutation
-	predicates []predicate.QueueItem
+	hooks    []Hook
+	mutation *QueueItemMutation
 }
 
 // Where adds a new predicate for the builder.
 func (qiu *QueueItemUpdate) Where(ps ...predicate.QueueItem) *QueueItemUpdate {
-	qiu.predicates = append(qiu.predicates, ps...)
-	return qiu
-}
-
-// SetStartAt sets the start_at field.
-func (qiu *QueueItemUpdate) SetStartAt(t time.Time) *QueueItemUpdate {
-	qiu.mutation.SetStartAt(t)
+	qiu.mutation.predicates = append(qiu.mutation.predicates, ps...)
 	return qiu
 }
 
@@ -50,12 +42,6 @@ func (qiu *QueueItemUpdate) AddDuration(i int) *QueueItemUpdate {
 	return qiu
 }
 
-// SetCompletion sets the completion field.
-func (qiu *QueueItemUpdate) SetCompletion(t time.Time) *QueueItemUpdate {
-	qiu.mutation.SetCompletion(t)
-	return qiu
-}
-
 // SetAction sets the action field.
 func (qiu *QueueItemUpdate) SetAction(i int) *QueueItemUpdate {
 	qiu.mutation.ResetAction()
@@ -66,6 +52,19 @@ func (qiu *QueueItemUpdate) SetAction(i int) *QueueItemUpdate {
 // AddAction adds i to action.
 func (qiu *QueueItemUpdate) AddAction(i int) *QueueItemUpdate {
 	qiu.mutation.AddAction(i)
+	return qiu
+}
+
+// SetPosition sets the position field.
+func (qiu *QueueItemUpdate) SetPosition(i int) *QueueItemUpdate {
+	qiu.mutation.ResetPosition()
+	qiu.mutation.SetPosition(i)
+	return qiu
+}
+
+// AddPosition adds i to position.
+func (qiu *QueueItemUpdate) AddPosition(i int) *QueueItemUpdate {
+	qiu.mutation.AddPosition(i)
 	return qiu
 }
 
@@ -211,19 +210,12 @@ func (qiu *QueueItemUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			},
 		},
 	}
-	if ps := qiu.predicates; len(ps) > 0 {
+	if ps := qiu.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
 				ps[i](selector)
 			}
 		}
-	}
-	if value, ok := qiu.mutation.StartAt(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeTime,
-			Value:  value,
-			Column: queueitem.FieldStartAt,
-		})
 	}
 	if value, ok := qiu.mutation.Duration(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
@@ -239,13 +231,6 @@ func (qiu *QueueItemUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: queueitem.FieldDuration,
 		})
 	}
-	if value, ok := qiu.mutation.Completion(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeTime,
-			Value:  value,
-			Column: queueitem.FieldCompletion,
-		})
-	}
 	if value, ok := qiu.mutation.Action(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeInt,
@@ -258,6 +243,20 @@ func (qiu *QueueItemUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Type:   field.TypeInt,
 			Value:  value,
 			Column: queueitem.FieldAction,
+		})
+	}
+	if value, ok := qiu.mutation.Position(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: queueitem.FieldPosition,
+		})
+	}
+	if value, ok := qiu.mutation.AddedPosition(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: queueitem.FieldPosition,
 		})
 	}
 	if qiu.mutation.OwnerCleared() {
@@ -383,12 +382,6 @@ type QueueItemUpdateOne struct {
 	mutation *QueueItemMutation
 }
 
-// SetStartAt sets the start_at field.
-func (qiuo *QueueItemUpdateOne) SetStartAt(t time.Time) *QueueItemUpdateOne {
-	qiuo.mutation.SetStartAt(t)
-	return qiuo
-}
-
 // SetDuration sets the duration field.
 func (qiuo *QueueItemUpdateOne) SetDuration(i int) *QueueItemUpdateOne {
 	qiuo.mutation.ResetDuration()
@@ -402,12 +395,6 @@ func (qiuo *QueueItemUpdateOne) AddDuration(i int) *QueueItemUpdateOne {
 	return qiuo
 }
 
-// SetCompletion sets the completion field.
-func (qiuo *QueueItemUpdateOne) SetCompletion(t time.Time) *QueueItemUpdateOne {
-	qiuo.mutation.SetCompletion(t)
-	return qiuo
-}
-
 // SetAction sets the action field.
 func (qiuo *QueueItemUpdateOne) SetAction(i int) *QueueItemUpdateOne {
 	qiuo.mutation.ResetAction()
@@ -418,6 +405,19 @@ func (qiuo *QueueItemUpdateOne) SetAction(i int) *QueueItemUpdateOne {
 // AddAction adds i to action.
 func (qiuo *QueueItemUpdateOne) AddAction(i int) *QueueItemUpdateOne {
 	qiuo.mutation.AddAction(i)
+	return qiuo
+}
+
+// SetPosition sets the position field.
+func (qiuo *QueueItemUpdateOne) SetPosition(i int) *QueueItemUpdateOne {
+	qiuo.mutation.ResetPosition()
+	qiuo.mutation.SetPosition(i)
+	return qiuo
+}
+
+// AddPosition adds i to position.
+func (qiuo *QueueItemUpdateOne) AddPosition(i int) *QueueItemUpdateOne {
+	qiuo.mutation.AddPosition(i)
 	return qiuo
 }
 
@@ -568,13 +568,6 @@ func (qiuo *QueueItemUpdateOne) sqlSave(ctx context.Context) (_node *QueueItem, 
 		return nil, &ValidationError{Name: "ID", err: fmt.Errorf("missing QueueItem.ID for update")}
 	}
 	_spec.Node.ID.Value = id
-	if value, ok := qiuo.mutation.StartAt(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeTime,
-			Value:  value,
-			Column: queueitem.FieldStartAt,
-		})
-	}
 	if value, ok := qiuo.mutation.Duration(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeInt,
@@ -589,13 +582,6 @@ func (qiuo *QueueItemUpdateOne) sqlSave(ctx context.Context) (_node *QueueItem, 
 			Column: queueitem.FieldDuration,
 		})
 	}
-	if value, ok := qiuo.mutation.Completion(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeTime,
-			Value:  value,
-			Column: queueitem.FieldCompletion,
-		})
-	}
 	if value, ok := qiuo.mutation.Action(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeInt,
@@ -608,6 +594,20 @@ func (qiuo *QueueItemUpdateOne) sqlSave(ctx context.Context) (_node *QueueItem, 
 			Type:   field.TypeInt,
 			Value:  value,
 			Column: queueitem.FieldAction,
+		})
+	}
+	if value, ok := qiuo.mutation.Position(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: queueitem.FieldPosition,
+		})
+	}
+	if value, ok := qiuo.mutation.AddedPosition(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: queueitem.FieldPosition,
 		})
 	}
 	if qiuo.mutation.OwnerCleared() {

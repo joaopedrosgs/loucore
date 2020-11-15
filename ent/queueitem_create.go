@@ -6,7 +6,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"time"
 
 	"github.com/facebook/ent/dialect/sql/sqlgraph"
 	"github.com/facebook/ent/schema/field"
@@ -23,27 +22,21 @@ type QueueItemCreate struct {
 	hooks    []Hook
 }
 
-// SetStartAt sets the start_at field.
-func (qic *QueueItemCreate) SetStartAt(t time.Time) *QueueItemCreate {
-	qic.mutation.SetStartAt(t)
-	return qic
-}
-
 // SetDuration sets the duration field.
 func (qic *QueueItemCreate) SetDuration(i int) *QueueItemCreate {
 	qic.mutation.SetDuration(i)
 	return qic
 }
 
-// SetCompletion sets the completion field.
-func (qic *QueueItemCreate) SetCompletion(t time.Time) *QueueItemCreate {
-	qic.mutation.SetCompletion(t)
-	return qic
-}
-
 // SetAction sets the action field.
 func (qic *QueueItemCreate) SetAction(i int) *QueueItemCreate {
 	qic.mutation.SetAction(i)
+	return qic
+}
+
+// SetPosition sets the position field.
+func (qic *QueueItemCreate) SetPosition(i int) *QueueItemCreate {
+	qic.mutation.SetPosition(i)
 	return qic
 }
 
@@ -155,17 +148,14 @@ func (qic *QueueItemCreate) SaveX(ctx context.Context) *QueueItem {
 
 // check runs all checks and user-defined validators on the builder.
 func (qic *QueueItemCreate) check() error {
-	if _, ok := qic.mutation.StartAt(); !ok {
-		return &ValidationError{Name: "start_at", err: errors.New("ent: missing required field \"start_at\"")}
-	}
 	if _, ok := qic.mutation.Duration(); !ok {
 		return &ValidationError{Name: "duration", err: errors.New("ent: missing required field \"duration\"")}
 	}
-	if _, ok := qic.mutation.Completion(); !ok {
-		return &ValidationError{Name: "completion", err: errors.New("ent: missing required field \"completion\"")}
-	}
 	if _, ok := qic.mutation.Action(); !ok {
 		return &ValidationError{Name: "action", err: errors.New("ent: missing required field \"action\"")}
+	}
+	if _, ok := qic.mutation.Position(); !ok {
+		return &ValidationError{Name: "position", err: errors.New("ent: missing required field \"position\"")}
 	}
 	return nil
 }
@@ -194,14 +184,6 @@ func (qic *QueueItemCreate) createSpec() (*QueueItem, *sqlgraph.CreateSpec) {
 			},
 		}
 	)
-	if value, ok := qic.mutation.StartAt(); ok {
-		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeTime,
-			Value:  value,
-			Column: queueitem.FieldStartAt,
-		})
-		_node.StartAt = value
-	}
 	if value, ok := qic.mutation.Duration(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeInt,
@@ -210,14 +192,6 @@ func (qic *QueueItemCreate) createSpec() (*QueueItem, *sqlgraph.CreateSpec) {
 		})
 		_node.Duration = value
 	}
-	if value, ok := qic.mutation.Completion(); ok {
-		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeTime,
-			Value:  value,
-			Column: queueitem.FieldCompletion,
-		})
-		_node.Completion = value
-	}
 	if value, ok := qic.mutation.Action(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeInt,
@@ -225,6 +199,14 @@ func (qic *QueueItemCreate) createSpec() (*QueueItem, *sqlgraph.CreateSpec) {
 			Column: queueitem.FieldAction,
 		})
 		_node.Action = value
+	}
+	if value, ok := qic.mutation.Position(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: queueitem.FieldPosition,
+		})
+		_node.Position = value
 	}
 	if nodes := qic.mutation.OwnerIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

@@ -160,8 +160,8 @@ func (uq *UserQuery) FirstID(ctx context.Context) (id int, err error) {
 	return ids[0], nil
 }
 
-// FirstXID is like FirstID, but panics if an error occurs.
-func (uq *UserQuery) FirstXID(ctx context.Context) int {
+// FirstIDX is like FirstID, but panics if an error occurs.
+func (uq *UserQuery) FirstIDX(ctx context.Context) int {
 	id, err := uq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -292,13 +292,19 @@ func (uq *UserQuery) ExistX(ctx context.Context) bool {
 // Clone returns a duplicate of the query builder, including all associated steps. It can be
 // used to prepare common query builders and use them differently after the clone is made.
 func (uq *UserQuery) Clone() *UserQuery {
+	if uq == nil {
+		return nil
+	}
 	return &UserQuery{
-		config:     uq.config,
-		limit:      uq.limit,
-		offset:     uq.offset,
-		order:      append([]OrderFunc{}, uq.order...),
-		unique:     append([]string{}, uq.unique...),
-		predicates: append([]predicate.User{}, uq.predicates...),
+		config:            uq.config,
+		limit:             uq.limit,
+		offset:            uq.offset,
+		order:             append([]OrderFunc{}, uq.order...),
+		unique:            append([]string{}, uq.unique...),
+		predicates:        append([]predicate.User{}, uq.predicates...),
+		withCities:        uq.withCities.Clone(),
+		withQueue:         uq.withQueue.Clone(),
+		withConstructions: uq.withConstructions.Clone(),
 		// clone intermediate query.
 		sql:  uq.sql.Clone(),
 		path: uq.path,
@@ -437,6 +443,7 @@ func (uq *UserQuery) sqlAll(ctx context.Context) ([]*User, error) {
 		for i := range nodes {
 			fks = append(fks, nodes[i].ID)
 			nodeids[nodes[i].ID] = nodes[i]
+			nodes[i].Edges.Cities = []*City{}
 		}
 		query.withFKs = true
 		query.Where(predicate.City(func(s *sql.Selector) {
@@ -465,6 +472,7 @@ func (uq *UserQuery) sqlAll(ctx context.Context) ([]*User, error) {
 		for i := range nodes {
 			fks = append(fks, nodes[i].ID)
 			nodeids[nodes[i].ID] = nodes[i]
+			nodes[i].Edges.Queue = []*QueueItem{}
 		}
 		query.withFKs = true
 		query.Where(predicate.QueueItem(func(s *sql.Selector) {
@@ -493,6 +501,7 @@ func (uq *UserQuery) sqlAll(ctx context.Context) ([]*User, error) {
 		for i := range nodes {
 			fks = append(fks, nodes[i].ID)
 			nodeids[nodes[i].ID] = nodes[i]
+			nodes[i].Edges.Constructions = []*Construction{}
 		}
 		query.withFKs = true
 		query.Where(predicate.Construction(func(s *sql.Selector) {

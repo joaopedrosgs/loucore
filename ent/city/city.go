@@ -43,6 +43,8 @@ const (
 	FieldIronLimit = "iron_limit"
 	// FieldFoodLimit holds the string denoting the food_limit field in the database.
 	FieldFoodLimit = "food_limit"
+	// FieldQueueStartedAt holds the string denoting the queue_started_at field in the database.
+	FieldQueueStartedAt = "queue_started_at"
 	// FieldQueueEndsAt holds the string denoting the queue_ends_at field in the database.
 	FieldQueueEndsAt = "queue_ends_at"
 	// FieldConstructionSpeed holds the string denoting the construction_speed field in the database.
@@ -101,6 +103,7 @@ var Columns = []string{
 	FieldStoneLimit,
 	FieldIronLimit,
 	FieldFoodLimit,
+	FieldQueueStartedAt,
 	FieldQueueEndsAt,
 	FieldConstructionSpeed,
 	FieldLastUpdated,
@@ -161,6 +164,8 @@ var (
 	DefaultIronLimit float64
 	// DefaultFoodLimit holds the default value on creation for the food_limit field.
 	DefaultFoodLimit float64
+	// DefaultQueueStartedAt holds the default value on creation for the queue_started_at field.
+	DefaultQueueStartedAt func() time.Time
 	// DefaultQueueEndsAt holds the default value on creation for the queue_ends_at field.
 	DefaultQueueEndsAt func() time.Time
 	// DefaultConstructionSpeed holds the default value on creation for the construction_speed field.

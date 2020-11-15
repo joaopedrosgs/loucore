@@ -16,14 +16,13 @@ import (
 // ConstructionDelete is the builder for deleting a Construction entity.
 type ConstructionDelete struct {
 	config
-	hooks      []Hook
-	mutation   *ConstructionMutation
-	predicates []predicate.Construction
+	hooks    []Hook
+	mutation *ConstructionMutation
 }
 
 // Where adds a new predicate to the delete builder.
 func (cd *ConstructionDelete) Where(ps ...predicate.Construction) *ConstructionDelete {
-	cd.predicates = append(cd.predicates, ps...)
+	cd.mutation.predicates = append(cd.mutation.predicates, ps...)
 	return cd
 }
 
@@ -75,7 +74,7 @@ func (cd *ConstructionDelete) sqlExec(ctx context.Context) (int, error) {
 			},
 		},
 	}
-	if ps := cd.predicates; len(ps) > 0 {
+	if ps := cd.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
 				ps[i](selector)

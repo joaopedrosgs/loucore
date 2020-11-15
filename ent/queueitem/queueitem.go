@@ -7,14 +7,12 @@ const (
 	Label = "queue_item"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
-	// FieldStartAt holds the string denoting the start_at field in the database.
-	FieldStartAt = "start_at"
 	// FieldDuration holds the string denoting the duration field in the database.
 	FieldDuration = "duration"
-	// FieldCompletion holds the string denoting the completion field in the database.
-	FieldCompletion = "completion"
 	// FieldAction holds the string denoting the action field in the database.
 	FieldAction = "action"
+	// FieldPosition holds the string denoting the position field in the database.
+	FieldPosition = "position"
 
 	// EdgeOwner holds the string denoting the owner edge name in mutations.
 	EdgeOwner = "owner"
@@ -51,10 +49,9 @@ const (
 // Columns holds all SQL columns for queueitem fields.
 var Columns = []string{
 	FieldID,
-	FieldStartAt,
 	FieldDuration,
-	FieldCompletion,
 	FieldAction,
+	FieldPosition,
 }
 
 // ForeignKeys holds the SQL foreign-keys that are owned by the QueueItem type.

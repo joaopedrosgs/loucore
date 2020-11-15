@@ -207,8 +207,8 @@ func (cq *ConstructionQuery) FirstID(ctx context.Context) (id int, err error) {
 	return ids[0], nil
 }
 
-// FirstXID is like FirstID, but panics if an error occurs.
-func (cq *ConstructionQuery) FirstXID(ctx context.Context) int {
+// FirstIDX is like FirstID, but panics if an error occurs.
+func (cq *ConstructionQuery) FirstIDX(ctx context.Context) int {
 	id, err := cq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -339,13 +339,21 @@ func (cq *ConstructionQuery) ExistX(ctx context.Context) bool {
 // Clone returns a duplicate of the query builder, including all associated steps. It can be
 // used to prepare common query builders and use them differently after the clone is made.
 func (cq *ConstructionQuery) Clone() *ConstructionQuery {
+	if cq == nil {
+		return nil
+	}
 	return &ConstructionQuery{
-		config:     cq.config,
-		limit:      cq.limit,
-		offset:     cq.offset,
-		order:      append([]OrderFunc{}, cq.order...),
-		unique:     append([]string{}, cq.unique...),
-		predicates: append([]predicate.Construction{}, cq.predicates...),
+		config:         cq.config,
+		limit:          cq.limit,
+		offset:         cq.offset,
+		order:          append([]OrderFunc{}, cq.order...),
+		unique:         append([]string{}, cq.unique...),
+		predicates:     append([]predicate.Construction{}, cq.predicates...),
+		withCity:       cq.withCity.Clone(),
+		withOwner:      cq.withOwner.Clone(),
+		withQueue:      cq.withQueue.Clone(),
+		withAffects:    cq.withAffects.Clone(),
+		withAffectedBy: cq.withAffectedBy.Clone(),
 		// clone intermediate query.
 		sql:  cq.sql.Clone(),
 		path: cq.path,
@@ -568,6 +576,7 @@ func (cq *ConstructionQuery) sqlAll(ctx context.Context) ([]*Construction, error
 		for i := range nodes {
 			fks = append(fks, nodes[i].ID)
 			nodeids[nodes[i].ID] = nodes[i]
+			nodes[i].Edges.Queue = []*QueueItem{}
 		}
 		query.withFKs = true
 		query.Where(predicate.QueueItem(func(s *sql.Selector) {
@@ -596,6 +605,7 @@ func (cq *ConstructionQuery) sqlAll(ctx context.Context) ([]*Construction, error
 		for _, node := range nodes {
 			ids[node.ID] = node
 			fks = append(fks, node.ID)
+			node.Edges.Affects = []*Construction{}
 		}
 		var (
 			edgeids []int
@@ -659,6 +669,7 @@ func (cq *ConstructionQuery) sqlAll(ctx context.Context) ([]*Construction, error
 		for _, node := range nodes {
 			ids[node.ID] = node
 			fks = append(fks, node.ID)
+			node.Edges.AffectedBy = []*Construction{}
 		}
 		var (
 			edgeids []int

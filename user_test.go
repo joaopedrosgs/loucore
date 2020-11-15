@@ -18,12 +18,11 @@ func TestAuthenticationShouldFailBecauseWrongPassword(t *testing.T) {
 		t.Errorf("Failed to check password with user user=%v, email=%v and password=%v: %v", testEnv.accounts[0].Name, testEnv.accounts[0].Email, password, err)
 		return
 	}
-
 }
 
 func TestCreateAccount(t *testing.T) {
-	var userName = "user2"
-	var email = "email2@email.com"
+	var userName = "user3"
+	var email = "email3@email.com"
 	var password = "password"
 	user, err := CreateAccount(userName, email, password)
 	if err != nil {
@@ -33,16 +32,14 @@ func TestCreateAccount(t *testing.T) {
 	if user == nil {
 		t.Errorf("Failed silently creating user account")
 		return
-
 	}
 	_ = DeleteAccount(user.ID)
-
 }
 
 func TestDeleteAccount(t *testing.T) {
-	var userName = "user2"
-	var email = "email2@email.com"
-	var password = "password2"
+	var userName = "user4"
+	var email = "email4@email.com"
+	var password = "password"
 	user, _ := CreateAccount(userName, email, password)
 	err := DeleteAccount(user.ID)
 	if err != nil {

@@ -205,6 +205,13 @@ func FoodLimit(v float64) predicate.City {
 	})
 }
 
+// QueueStartedAt applies equality check predicate on the "queue_started_at" field. It's identical to QueueStartedAtEQ.
+func QueueStartedAt(v time.Time) predicate.City {
+	return predicate.City(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldQueueStartedAt), v))
+	})
+}
+
 // QueueEndsAt applies equality check predicate on the "queue_ends_at" field. It's identical to QueueEndsAtEQ.
 func QueueEndsAt(v time.Time) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
@@ -1474,6 +1481,82 @@ func FoodLimitLT(v float64) predicate.City {
 func FoodLimitLTE(v float64) predicate.City {
 	return predicate.City(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldFoodLimit), v))
+	})
+}
+
+// QueueStartedAtEQ applies the EQ predicate on the "queue_started_at" field.
+func QueueStartedAtEQ(v time.Time) predicate.City {
+	return predicate.City(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldQueueStartedAt), v))
+	})
+}
+
+// QueueStartedAtNEQ applies the NEQ predicate on the "queue_started_at" field.
+func QueueStartedAtNEQ(v time.Time) predicate.City {
+	return predicate.City(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldQueueStartedAt), v))
+	})
+}
+
+// QueueStartedAtIn applies the In predicate on the "queue_started_at" field.
+func QueueStartedAtIn(vs ...time.Time) predicate.City {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.City(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldQueueStartedAt), v...))
+	})
+}
+
+// QueueStartedAtNotIn applies the NotIn predicate on the "queue_started_at" field.
+func QueueStartedAtNotIn(vs ...time.Time) predicate.City {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.City(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldQueueStartedAt), v...))
+	})
+}
+
+// QueueStartedAtGT applies the GT predicate on the "queue_started_at" field.
+func QueueStartedAtGT(v time.Time) predicate.City {
+	return predicate.City(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldQueueStartedAt), v))
+	})
+}
+
+// QueueStartedAtGTE applies the GTE predicate on the "queue_started_at" field.
+func QueueStartedAtGTE(v time.Time) predicate.City {
+	return predicate.City(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldQueueStartedAt), v))
+	})
+}
+
+// QueueStartedAtLT applies the LT predicate on the "queue_started_at" field.
+func QueueStartedAtLT(v time.Time) predicate.City {
+	return predicate.City(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldQueueStartedAt), v))
+	})
+}
+
+// QueueStartedAtLTE applies the LTE predicate on the "queue_started_at" field.
+func QueueStartedAtLTE(v time.Time) predicate.City {
+	return predicate.City(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldQueueStartedAt), v))
 	})
 }
 

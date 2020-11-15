@@ -4,6 +4,7 @@ import (
 	"github.com/facebook/ent"
 	"github.com/facebook/ent/schema/edge"
 	"github.com/facebook/ent/schema/field"
+	"github.com/facebook/ent/schema/index"
 )
 
 // Queue holds the schema definition for the Queue entity.
@@ -14,10 +15,9 @@ type QueueItem struct {
 // Fields of the QueueItem.
 func (QueueItem) Fields() []ent.Field {
 	return []ent.Field{
-		field.Time("start_at"),
 		field.Int("duration"),
-		field.Time("completion"),
 		field.Int("action"),
+		field.Int("position"),
 	}
 }
 
@@ -27,5 +27,17 @@ func (QueueItem) Edges() []ent.Edge {
 		edge.From("owner", User.Type).Ref("queue").Unique(),
 		edge.From("city", City.Type).Ref("queue").Unique(),
 		edge.From("construction", Construction.Type).Ref("queue").Unique(),
+	}
+}
+
+// Index of the QueueItem.
+func (QueueItem) Index() []ent.Index {
+	return []ent.Index{
+		// non-unique index.
+		index.Fields("position"),
+		// unique index.
+		index.Fields("position").
+			Edges("city").
+			Unique(),
 	}
 }

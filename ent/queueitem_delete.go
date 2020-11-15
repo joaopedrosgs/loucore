@@ -16,14 +16,13 @@ import (
 // QueueItemDelete is the builder for deleting a QueueItem entity.
 type QueueItemDelete struct {
 	config
-	hooks      []Hook
-	mutation   *QueueItemMutation
-	predicates []predicate.QueueItem
+	hooks    []Hook
+	mutation *QueueItemMutation
 }
 
 // Where adds a new predicate to the delete builder.
 func (qid *QueueItemDelete) Where(ps ...predicate.QueueItem) *QueueItemDelete {
-	qid.predicates = append(qid.predicates, ps...)
+	qid.mutation.predicates = append(qid.mutation.predicates, ps...)
 	return qid
 }
 
@@ -75,7 +74,7 @@ func (qid *QueueItemDelete) sqlExec(ctx context.Context) (int, error) {
 			},
 		},
 	}
-	if ps := qid.predicates; len(ps) > 0 {
+	if ps := qid.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
 				ps[i](selector)

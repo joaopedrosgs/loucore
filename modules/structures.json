@@ -70,20 +70,21 @@
     "media": "townhall",
     "info": "Provides basic storage and wood production. Also determines the maximum number of buildings in a city. Only one can be built in each city. Cannot be totally demolished or destroyed.",
     "bonus": [
-      300,
-      300,
-      300,
-      300,
-      300,
-      300,
-      300,
-      300,
-      300,
-      300
+      5000,
+      7000,
+      10000,
+      15000,
+      24000,
+      35000,
+      50000,
+      80000,
+      125000,
+      175000,
+      175000
     ],
     "affects": [],
     "affectedBy": [],
-    "bonus_type": "wood_prod",
+    "bonus_type": "storage",
     "resource_cost": [
       [
         200,

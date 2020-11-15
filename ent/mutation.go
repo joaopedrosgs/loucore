@@ -10,6 +10,7 @@ import (
 
 	"github.com/joaopedrosgs/loucore/ent/city"
 	"github.com/joaopedrosgs/loucore/ent/construction"
+	"github.com/joaopedrosgs/loucore/ent/predicate"
 	"github.com/joaopedrosgs/loucore/ent/queueitem"
 	"github.com/joaopedrosgs/loucore/ent/user"
 
@@ -69,6 +70,7 @@ type CityMutation struct {
 	addiron_limit         *float64
 	food_limit            *float64
 	addfood_limit         *float64
+	queue_started_at      *time.Time
 	queue_ends_at         *time.Time
 	construction_speed    *int
 	addconstruction_speed *int
@@ -84,6 +86,7 @@ type CityMutation struct {
 	clearedqueue          bool
 	done                  bool
 	oldValue              func(context.Context) (*City, error)
+	predicates            []predicate.City
 }
 
 var _ ent.Mutation = (*CityMutation)(nil)
@@ -1057,6 +1060,43 @@ func (m *CityMutation) ResetFoodLimit() {
 	m.addfood_limit = nil
 }
 
+// SetQueueStartedAt sets the queue_started_at field.
+func (m *CityMutation) SetQueueStartedAt(t time.Time) {
+	m.queue_started_at = &t
+}
+
+// QueueStartedAt returns the queue_started_at value in the mutation.
+func (m *CityMutation) QueueStartedAt() (r time.Time, exists bool) {
+	v := m.queue_started_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldQueueStartedAt returns the old queue_started_at value of the City.
+// If the City object wasn't provided to the builder, the object is fetched
+// from the database.
+// An error is returned if the mutation operation is not UpdateOne, or database query fails.
+func (m *CityMutation) OldQueueStartedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldQueueStartedAt is allowed only on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldQueueStartedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldQueueStartedAt: %w", err)
+	}
+	return oldValue.QueueStartedAt, nil
+}
+
+// ResetQueueStartedAt reset all changes of the "queue_started_at" field.
+func (m *CityMutation) ResetQueueStartedAt() {
+	m.queue_started_at = nil
+}
+
 // SetQueueEndsAt sets the queue_ends_at field.
 func (m *CityMutation) SetQueueEndsAt(t time.Time) {
 	m.queue_ends_at = &t
@@ -1347,7 +1387,7 @@ func (m *CityMutation) Type() string {
 // this mutation. Note that, in order to get all numeric
 // fields that were in/decremented, call AddedFields().
 func (m *CityMutation) Fields() []string {
-	fields := make([]string, 0, 19)
+	fields := make([]string, 0, 20)
 	if m.x != nil {
 		fields = append(fields, city.FieldX)
 	}
@@ -1395,6 +1435,9 @@ func (m *CityMutation) Fields() []string {
 	}
 	if m.food_limit != nil {
 		fields = append(fields, city.FieldFoodLimit)
+	}
+	if m.queue_started_at != nil {
+		fields = append(fields, city.FieldQueueStartedAt)
 	}
 	if m.queue_ends_at != nil {
 		fields = append(fields, city.FieldQueueEndsAt)
@@ -1445,6 +1488,8 @@ func (m *CityMutation) Field(name string) (ent.Value, bool) {
 		return m.IronLimit()
 	case city.FieldFoodLimit:
 		return m.FoodLimit()
+	case city.FieldQueueStartedAt:
+		return m.QueueStartedAt()
 	case city.FieldQueueEndsAt:
 		return m.QueueEndsAt()
 	case city.FieldConstructionSpeed:
@@ -1492,6 +1537,8 @@ func (m *CityMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldIronLimit(ctx)
 	case city.FieldFoodLimit:
 		return m.OldFoodLimit(ctx)
+	case city.FieldQueueStartedAt:
+		return m.OldQueueStartedAt(ctx)
 	case city.FieldQueueEndsAt:
 		return m.OldQueueEndsAt(ctx)
 	case city.FieldConstructionSpeed:
@@ -1618,6 +1665,13 @@ func (m *CityMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetFoodLimit(v)
+		return nil
+	case city.FieldQueueStartedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetQueueStartedAt(v)
 		return nil
 	case city.FieldQueueEndsAt:
 		v, ok := value.(time.Time)
@@ -1933,6 +1987,9 @@ func (m *CityMutation) ResetField(name string) error {
 	case city.FieldFoodLimit:
 		m.ResetFoodLimit()
 		return nil
+	case city.FieldQueueStartedAt:
+		m.ResetQueueStartedAt()
+		return nil
 	case city.FieldQueueEndsAt:
 		m.ResetQueueEndsAt()
 		return nil
@@ -2117,6 +2174,7 @@ type ConstructionMutation struct {
 	clearedaffected_by bool
 	done               bool
 	oldValue           func(context.Context) (*Construction, error)
+	predicates         []predicate.Construction
 }
 
 var _ ent.Mutation = (*ConstructionMutation)(nil)
@@ -3426,12 +3484,12 @@ type QueueItemMutation struct {
 	op                  Op
 	typ                 string
 	id                  *int
-	start_at            *time.Time
 	duration            *int
 	addduration         *int
-	completion          *time.Time
 	action              *int
 	addaction           *int
+	position            *int
+	addposition         *int
 	clearedFields       map[string]struct{}
 	owner               *int
 	clearedowner        bool
@@ -3441,6 +3499,7 @@ type QueueItemMutation struct {
 	clearedconstruction bool
 	done                bool
 	oldValue            func(context.Context) (*QueueItem, error)
+	predicates          []predicate.QueueItem
 }
 
 var _ ent.Mutation = (*QueueItemMutation)(nil)
@@ -3522,43 +3581,6 @@ func (m *QueueItemMutation) ID() (id int, exists bool) {
 	return *m.id, true
 }
 
-// SetStartAt sets the start_at field.
-func (m *QueueItemMutation) SetStartAt(t time.Time) {
-	m.start_at = &t
-}
-
-// StartAt returns the start_at value in the mutation.
-func (m *QueueItemMutation) StartAt() (r time.Time, exists bool) {
-	v := m.start_at
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldStartAt returns the old start_at value of the QueueItem.
-// If the QueueItem object wasn't provided to the builder, the object is fetched
-// from the database.
-// An error is returned if the mutation operation is not UpdateOne, or database query fails.
-func (m *QueueItemMutation) OldStartAt(ctx context.Context) (v time.Time, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldStartAt is allowed only on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldStartAt requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldStartAt: %w", err)
-	}
-	return oldValue.StartAt, nil
-}
-
-// ResetStartAt reset all changes of the "start_at" field.
-func (m *QueueItemMutation) ResetStartAt() {
-	m.start_at = nil
-}
-
 // SetDuration sets the duration field.
 func (m *QueueItemMutation) SetDuration(i int) {
 	m.duration = &i
@@ -3616,43 +3638,6 @@ func (m *QueueItemMutation) ResetDuration() {
 	m.addduration = nil
 }
 
-// SetCompletion sets the completion field.
-func (m *QueueItemMutation) SetCompletion(t time.Time) {
-	m.completion = &t
-}
-
-// Completion returns the completion value in the mutation.
-func (m *QueueItemMutation) Completion() (r time.Time, exists bool) {
-	v := m.completion
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldCompletion returns the old completion value of the QueueItem.
-// If the QueueItem object wasn't provided to the builder, the object is fetched
-// from the database.
-// An error is returned if the mutation operation is not UpdateOne, or database query fails.
-func (m *QueueItemMutation) OldCompletion(ctx context.Context) (v time.Time, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldCompletion is allowed only on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldCompletion requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldCompletion: %w", err)
-	}
-	return oldValue.Completion, nil
-}
-
-// ResetCompletion reset all changes of the "completion" field.
-func (m *QueueItemMutation) ResetCompletion() {
-	m.completion = nil
-}
-
 // SetAction sets the action field.
 func (m *QueueItemMutation) SetAction(i int) {
 	m.action = &i
@@ -3708,6 +3693,63 @@ func (m *QueueItemMutation) AddedAction() (r int, exists bool) {
 func (m *QueueItemMutation) ResetAction() {
 	m.action = nil
 	m.addaction = nil
+}
+
+// SetPosition sets the position field.
+func (m *QueueItemMutation) SetPosition(i int) {
+	m.position = &i
+	m.addposition = nil
+}
+
+// Position returns the position value in the mutation.
+func (m *QueueItemMutation) Position() (r int, exists bool) {
+	v := m.position
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPosition returns the old position value of the QueueItem.
+// If the QueueItem object wasn't provided to the builder, the object is fetched
+// from the database.
+// An error is returned if the mutation operation is not UpdateOne, or database query fails.
+func (m *QueueItemMutation) OldPosition(ctx context.Context) (v int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldPosition is allowed only on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldPosition requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPosition: %w", err)
+	}
+	return oldValue.Position, nil
+}
+
+// AddPosition adds i to position.
+func (m *QueueItemMutation) AddPosition(i int) {
+	if m.addposition != nil {
+		*m.addposition += i
+	} else {
+		m.addposition = &i
+	}
+}
+
+// AddedPosition returns the value that was added to the position field in this mutation.
+func (m *QueueItemMutation) AddedPosition() (r int, exists bool) {
+	v := m.addposition
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetPosition reset all changes of the "position" field.
+func (m *QueueItemMutation) ResetPosition() {
+	m.position = nil
+	m.addposition = nil
 }
 
 // SetOwnerID sets the owner edge to User by id.
@@ -3841,18 +3883,15 @@ func (m *QueueItemMutation) Type() string {
 // this mutation. Note that, in order to get all numeric
 // fields that were in/decremented, call AddedFields().
 func (m *QueueItemMutation) Fields() []string {
-	fields := make([]string, 0, 4)
-	if m.start_at != nil {
-		fields = append(fields, queueitem.FieldStartAt)
-	}
+	fields := make([]string, 0, 3)
 	if m.duration != nil {
 		fields = append(fields, queueitem.FieldDuration)
 	}
-	if m.completion != nil {
-		fields = append(fields, queueitem.FieldCompletion)
-	}
 	if m.action != nil {
 		fields = append(fields, queueitem.FieldAction)
+	}
+	if m.position != nil {
+		fields = append(fields, queueitem.FieldPosition)
 	}
 	return fields
 }
@@ -3862,14 +3901,12 @@ func (m *QueueItemMutation) Fields() []string {
 // not set, or was not define in the schema.
 func (m *QueueItemMutation) Field(name string) (ent.Value, bool) {
 	switch name {
-	case queueitem.FieldStartAt:
-		return m.StartAt()
 	case queueitem.FieldDuration:
 		return m.Duration()
-	case queueitem.FieldCompletion:
-		return m.Completion()
 	case queueitem.FieldAction:
 		return m.Action()
+	case queueitem.FieldPosition:
+		return m.Position()
 	}
 	return nil, false
 }
@@ -3879,14 +3916,12 @@ func (m *QueueItemMutation) Field(name string) (ent.Value, bool) {
 // or the query to the database was failed.
 func (m *QueueItemMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
-	case queueitem.FieldStartAt:
-		return m.OldStartAt(ctx)
 	case queueitem.FieldDuration:
 		return m.OldDuration(ctx)
-	case queueitem.FieldCompletion:
-		return m.OldCompletion(ctx)
 	case queueitem.FieldAction:
 		return m.OldAction(ctx)
+	case queueitem.FieldPosition:
+		return m.OldPosition(ctx)
 	}
 	return nil, fmt.Errorf("unknown QueueItem field %s", name)
 }
@@ -3896,13 +3931,6 @@ func (m *QueueItemMutation) OldField(ctx context.Context, name string) (ent.Valu
 // type mismatch the field type.
 func (m *QueueItemMutation) SetField(name string, value ent.Value) error {
 	switch name {
-	case queueitem.FieldStartAt:
-		v, ok := value.(time.Time)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetStartAt(v)
-		return nil
 	case queueitem.FieldDuration:
 		v, ok := value.(int)
 		if !ok {
@@ -3910,19 +3938,19 @@ func (m *QueueItemMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetDuration(v)
 		return nil
-	case queueitem.FieldCompletion:
-		v, ok := value.(time.Time)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetCompletion(v)
-		return nil
 	case queueitem.FieldAction:
 		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetAction(v)
+		return nil
+	case queueitem.FieldPosition:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPosition(v)
 		return nil
 	}
 	return fmt.Errorf("unknown QueueItem field %s", name)
@@ -3938,6 +3966,9 @@ func (m *QueueItemMutation) AddedFields() []string {
 	if m.addaction != nil {
 		fields = append(fields, queueitem.FieldAction)
 	}
+	if m.addposition != nil {
+		fields = append(fields, queueitem.FieldPosition)
+	}
 	return fields
 }
 
@@ -3950,6 +3981,8 @@ func (m *QueueItemMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedDuration()
 	case queueitem.FieldAction:
 		return m.AddedAction()
+	case queueitem.FieldPosition:
+		return m.AddedPosition()
 	}
 	return nil, false
 }
@@ -3972,6 +4005,13 @@ func (m *QueueItemMutation) AddField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddAction(v)
+		return nil
+	case queueitem.FieldPosition:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddPosition(v)
 		return nil
 	}
 	return fmt.Errorf("unknown QueueItem numeric field %s", name)
@@ -4001,17 +4041,14 @@ func (m *QueueItemMutation) ClearField(name string) error {
 // defined in the schema.
 func (m *QueueItemMutation) ResetField(name string) error {
 	switch name {
-	case queueitem.FieldStartAt:
-		m.ResetStartAt()
-		return nil
 	case queueitem.FieldDuration:
 		m.ResetDuration()
 		return nil
-	case queueitem.FieldCompletion:
-		m.ResetCompletion()
-		return nil
 	case queueitem.FieldAction:
 		m.ResetAction()
+		return nil
+	case queueitem.FieldPosition:
+		m.ResetPosition()
 		return nil
 	}
 	return fmt.Errorf("unknown QueueItem field %s", name)
@@ -4172,6 +4209,7 @@ type UserMutation struct {
 	clearedconstructions bool
 	done                 bool
 	oldValue             func(context.Context) (*User, error)
+	predicates           []predicate.User
 }
 
 var _ ent.Mutation = (*UserMutation)(nil)

@@ -27,6 +27,7 @@ var (
 		{Name: "stone_limit", Type: field.TypeFloat64},
 		{Name: "iron_limit", Type: field.TypeFloat64},
 		{Name: "food_limit", Type: field.TypeFloat64},
+		{Name: "queue_started_at", Type: field.TypeTime},
 		{Name: "queue_ends_at", Type: field.TypeTime},
 		{Name: "construction_speed", Type: field.TypeInt, Default: 1},
 		{Name: "last_updated", Type: field.TypeTime},
@@ -40,7 +41,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:  "cities_users_cities",
-				Columns: []*schema.Column{CitiesColumns[20]},
+				Columns: []*schema.Column{CitiesColumns[21]},
 
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
@@ -101,10 +102,9 @@ var (
 	// QueueItemsColumns holds the columns for the "queue_items" table.
 	QueueItemsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "start_at", Type: field.TypeTime},
 		{Name: "duration", Type: field.TypeInt},
-		{Name: "completion", Type: field.TypeTime},
 		{Name: "action", Type: field.TypeInt},
+		{Name: "position", Type: field.TypeInt},
 		{Name: "city_queue", Type: field.TypeInt, Nullable: true},
 		{Name: "construction_queue", Type: field.TypeInt, Nullable: true},
 		{Name: "user_queue", Type: field.TypeInt, Nullable: true},
@@ -117,21 +117,21 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:  "queue_items_cities_queue",
-				Columns: []*schema.Column{QueueItemsColumns[5]},
+				Columns: []*schema.Column{QueueItemsColumns[4]},
 
 				RefColumns: []*schema.Column{CitiesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "queue_items_constructions_queue",
-				Columns: []*schema.Column{QueueItemsColumns[6]},
+				Columns: []*schema.Column{QueueItemsColumns[5]},
 
 				RefColumns: []*schema.Column{ConstructionsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "queue_items_users_queue",
-				Columns: []*schema.Column{QueueItemsColumns[7]},
+				Columns: []*schema.Column{QueueItemsColumns[6]},
 
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,

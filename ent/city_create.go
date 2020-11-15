@@ -247,6 +247,20 @@ func (cc *CityCreate) SetNillableFoodLimit(f *float64) *CityCreate {
 	return cc
 }
 
+// SetQueueStartedAt sets the queue_started_at field.
+func (cc *CityCreate) SetQueueStartedAt(t time.Time) *CityCreate {
+	cc.mutation.SetQueueStartedAt(t)
+	return cc
+}
+
+// SetNillableQueueStartedAt sets the queue_started_at field if the given value is not nil.
+func (cc *CityCreate) SetNillableQueueStartedAt(t *time.Time) *CityCreate {
+	if t != nil {
+		cc.SetQueueStartedAt(*t)
+	}
+	return cc
+}
+
 // SetQueueEndsAt sets the queue_ends_at field.
 func (cc *CityCreate) SetQueueEndsAt(t time.Time) *CityCreate {
 	cc.mutation.SetQueueEndsAt(t)
@@ -454,6 +468,10 @@ func (cc *CityCreate) defaults() {
 		v := city.DefaultFoodLimit
 		cc.mutation.SetFoodLimit(v)
 	}
+	if _, ok := cc.mutation.QueueStartedAt(); !ok {
+		v := city.DefaultQueueStartedAt()
+		cc.mutation.SetQueueStartedAt(v)
+	}
 	if _, ok := cc.mutation.QueueEndsAt(); !ok {
 		v := city.DefaultQueueEndsAt()
 		cc.mutation.SetQueueEndsAt(v)
@@ -522,6 +540,9 @@ func (cc *CityCreate) check() error {
 	}
 	if _, ok := cc.mutation.FoodLimit(); !ok {
 		return &ValidationError{Name: "food_limit", err: errors.New("ent: missing required field \"food_limit\"")}
+	}
+	if _, ok := cc.mutation.QueueStartedAt(); !ok {
+		return &ValidationError{Name: "queue_started_at", err: errors.New("ent: missing required field \"queue_started_at\"")}
 	}
 	if _, ok := cc.mutation.QueueEndsAt(); !ok {
 		return &ValidationError{Name: "queue_ends_at", err: errors.New("ent: missing required field \"queue_ends_at\"")}
@@ -686,6 +707,14 @@ func (cc *CityCreate) createSpec() (*City, *sqlgraph.CreateSpec) {
 			Column: city.FieldFoodLimit,
 		})
 		_node.FoodLimit = value
+	}
+	if value, ok := cc.mutation.QueueStartedAt(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: city.FieldQueueStartedAt,
+		})
+		_node.QueueStartedAt = value
 	}
 	if value, ok := cc.mutation.QueueEndsAt(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{

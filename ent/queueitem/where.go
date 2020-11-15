@@ -3,8 +3,6 @@
 package queueitem
 
 import (
-	"time"
-
 	"github.com/facebook/ent/dialect/sql"
 	"github.com/facebook/ent/dialect/sql/sqlgraph"
 	"github.com/joaopedrosgs/loucore/ent/predicate"
@@ -93,24 +91,10 @@ func IDLTE(id int) predicate.QueueItem {
 	})
 }
 
-// StartAt applies equality check predicate on the "start_at" field. It's identical to StartAtEQ.
-func StartAt(v time.Time) predicate.QueueItem {
-	return predicate.QueueItem(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldStartAt), v))
-	})
-}
-
 // Duration applies equality check predicate on the "duration" field. It's identical to DurationEQ.
 func Duration(v int) predicate.QueueItem {
 	return predicate.QueueItem(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldDuration), v))
-	})
-}
-
-// Completion applies equality check predicate on the "completion" field. It's identical to CompletionEQ.
-func Completion(v time.Time) predicate.QueueItem {
-	return predicate.QueueItem(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldCompletion), v))
 	})
 }
 
@@ -121,79 +105,10 @@ func Action(v int) predicate.QueueItem {
 	})
 }
 
-// StartAtEQ applies the EQ predicate on the "start_at" field.
-func StartAtEQ(v time.Time) predicate.QueueItem {
+// Position applies equality check predicate on the "position" field. It's identical to PositionEQ.
+func Position(v int) predicate.QueueItem {
 	return predicate.QueueItem(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldStartAt), v))
-	})
-}
-
-// StartAtNEQ applies the NEQ predicate on the "start_at" field.
-func StartAtNEQ(v time.Time) predicate.QueueItem {
-	return predicate.QueueItem(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldStartAt), v))
-	})
-}
-
-// StartAtIn applies the In predicate on the "start_at" field.
-func StartAtIn(vs ...time.Time) predicate.QueueItem {
-	v := make([]interface{}, len(vs))
-	for i := range v {
-		v[i] = vs[i]
-	}
-	return predicate.QueueItem(func(s *sql.Selector) {
-		// if not arguments were provided, append the FALSE constants,
-		// since we can't apply "IN ()". This will make this predicate falsy.
-		if len(v) == 0 {
-			s.Where(sql.False())
-			return
-		}
-		s.Where(sql.In(s.C(FieldStartAt), v...))
-	})
-}
-
-// StartAtNotIn applies the NotIn predicate on the "start_at" field.
-func StartAtNotIn(vs ...time.Time) predicate.QueueItem {
-	v := make([]interface{}, len(vs))
-	for i := range v {
-		v[i] = vs[i]
-	}
-	return predicate.QueueItem(func(s *sql.Selector) {
-		// if not arguments were provided, append the FALSE constants,
-		// since we can't apply "IN ()". This will make this predicate falsy.
-		if len(v) == 0 {
-			s.Where(sql.False())
-			return
-		}
-		s.Where(sql.NotIn(s.C(FieldStartAt), v...))
-	})
-}
-
-// StartAtGT applies the GT predicate on the "start_at" field.
-func StartAtGT(v time.Time) predicate.QueueItem {
-	return predicate.QueueItem(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldStartAt), v))
-	})
-}
-
-// StartAtGTE applies the GTE predicate on the "start_at" field.
-func StartAtGTE(v time.Time) predicate.QueueItem {
-	return predicate.QueueItem(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldStartAt), v))
-	})
-}
-
-// StartAtLT applies the LT predicate on the "start_at" field.
-func StartAtLT(v time.Time) predicate.QueueItem {
-	return predicate.QueueItem(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldStartAt), v))
-	})
-}
-
-// StartAtLTE applies the LTE predicate on the "start_at" field.
-func StartAtLTE(v time.Time) predicate.QueueItem {
-	return predicate.QueueItem(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldStartAt), v))
+		s.Where(sql.EQ(s.C(FieldPosition), v))
 	})
 }
 
@@ -273,82 +188,6 @@ func DurationLTE(v int) predicate.QueueItem {
 	})
 }
 
-// CompletionEQ applies the EQ predicate on the "completion" field.
-func CompletionEQ(v time.Time) predicate.QueueItem {
-	return predicate.QueueItem(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldCompletion), v))
-	})
-}
-
-// CompletionNEQ applies the NEQ predicate on the "completion" field.
-func CompletionNEQ(v time.Time) predicate.QueueItem {
-	return predicate.QueueItem(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldCompletion), v))
-	})
-}
-
-// CompletionIn applies the In predicate on the "completion" field.
-func CompletionIn(vs ...time.Time) predicate.QueueItem {
-	v := make([]interface{}, len(vs))
-	for i := range v {
-		v[i] = vs[i]
-	}
-	return predicate.QueueItem(func(s *sql.Selector) {
-		// if not arguments were provided, append the FALSE constants,
-		// since we can't apply "IN ()". This will make this predicate falsy.
-		if len(v) == 0 {
-			s.Where(sql.False())
-			return
-		}
-		s.Where(sql.In(s.C(FieldCompletion), v...))
-	})
-}
-
-// CompletionNotIn applies the NotIn predicate on the "completion" field.
-func CompletionNotIn(vs ...time.Time) predicate.QueueItem {
-	v := make([]interface{}, len(vs))
-	for i := range v {
-		v[i] = vs[i]
-	}
-	return predicate.QueueItem(func(s *sql.Selector) {
-		// if not arguments were provided, append the FALSE constants,
-		// since we can't apply "IN ()". This will make this predicate falsy.
-		if len(v) == 0 {
-			s.Where(sql.False())
-			return
-		}
-		s.Where(sql.NotIn(s.C(FieldCompletion), v...))
-	})
-}
-
-// CompletionGT applies the GT predicate on the "completion" field.
-func CompletionGT(v time.Time) predicate.QueueItem {
-	return predicate.QueueItem(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldCompletion), v))
-	})
-}
-
-// CompletionGTE applies the GTE predicate on the "completion" field.
-func CompletionGTE(v time.Time) predicate.QueueItem {
-	return predicate.QueueItem(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldCompletion), v))
-	})
-}
-
-// CompletionLT applies the LT predicate on the "completion" field.
-func CompletionLT(v time.Time) predicate.QueueItem {
-	return predicate.QueueItem(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldCompletion), v))
-	})
-}
-
-// CompletionLTE applies the LTE predicate on the "completion" field.
-func CompletionLTE(v time.Time) predicate.QueueItem {
-	return predicate.QueueItem(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldCompletion), v))
-	})
-}
-
 // ActionEQ applies the EQ predicate on the "action" field.
 func ActionEQ(v int) predicate.QueueItem {
 	return predicate.QueueItem(func(s *sql.Selector) {
@@ -422,6 +261,82 @@ func ActionLT(v int) predicate.QueueItem {
 func ActionLTE(v int) predicate.QueueItem {
 	return predicate.QueueItem(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldAction), v))
+	})
+}
+
+// PositionEQ applies the EQ predicate on the "position" field.
+func PositionEQ(v int) predicate.QueueItem {
+	return predicate.QueueItem(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldPosition), v))
+	})
+}
+
+// PositionNEQ applies the NEQ predicate on the "position" field.
+func PositionNEQ(v int) predicate.QueueItem {
+	return predicate.QueueItem(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldPosition), v))
+	})
+}
+
+// PositionIn applies the In predicate on the "position" field.
+func PositionIn(vs ...int) predicate.QueueItem {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.QueueItem(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldPosition), v...))
+	})
+}
+
+// PositionNotIn applies the NotIn predicate on the "position" field.
+func PositionNotIn(vs ...int) predicate.QueueItem {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.QueueItem(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldPosition), v...))
+	})
+}
+
+// PositionGT applies the GT predicate on the "position" field.
+func PositionGT(v int) predicate.QueueItem {
+	return predicate.QueueItem(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldPosition), v))
+	})
+}
+
+// PositionGTE applies the GTE predicate on the "position" field.
+func PositionGTE(v int) predicate.QueueItem {
+	return predicate.QueueItem(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldPosition), v))
+	})
+}
+
+// PositionLT applies the LT predicate on the "position" field.
+func PositionLT(v int) predicate.QueueItem {
+	return predicate.QueueItem(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldPosition), v))
+	})
+}
+
+// PositionLTE applies the LTE predicate on the "position" field.
+func PositionLTE(v int) predicate.QueueItem {
+	return predicate.QueueItem(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldPosition), v))
 	})
 }
 

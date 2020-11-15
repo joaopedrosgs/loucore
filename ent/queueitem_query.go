@@ -160,8 +160,8 @@ func (qiq *QueueItemQuery) FirstID(ctx context.Context) (id int, err error) {
 	return ids[0], nil
 }
 
-// FirstXID is like FirstID, but panics if an error occurs.
-func (qiq *QueueItemQuery) FirstXID(ctx context.Context) int {
+// FirstIDX is like FirstID, but panics if an error occurs.
+func (qiq *QueueItemQuery) FirstIDX(ctx context.Context) int {
 	id, err := qiq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -292,13 +292,19 @@ func (qiq *QueueItemQuery) ExistX(ctx context.Context) bool {
 // Clone returns a duplicate of the query builder, including all associated steps. It can be
 // used to prepare common query builders and use them differently after the clone is made.
 func (qiq *QueueItemQuery) Clone() *QueueItemQuery {
+	if qiq == nil {
+		return nil
+	}
 	return &QueueItemQuery{
-		config:     qiq.config,
-		limit:      qiq.limit,
-		offset:     qiq.offset,
-		order:      append([]OrderFunc{}, qiq.order...),
-		unique:     append([]string{}, qiq.unique...),
-		predicates: append([]predicate.QueueItem{}, qiq.predicates...),
+		config:           qiq.config,
+		limit:            qiq.limit,
+		offset:           qiq.offset,
+		order:            append([]OrderFunc{}, qiq.order...),
+		unique:           append([]string{}, qiq.unique...),
+		predicates:       append([]predicate.QueueItem{}, qiq.predicates...),
+		withOwner:        qiq.withOwner.Clone(),
+		withCity:         qiq.withCity.Clone(),
+		withConstruction: qiq.withConstruction.Clone(),
 		// clone intermediate query.
 		sql:  qiq.sql.Clone(),
 		path: qiq.path,
@@ -344,12 +350,12 @@ func (qiq *QueueItemQuery) WithConstruction(opts ...func(*ConstructionQuery)) *Q
 // Example:
 //
 //	var v []struct {
-//		StartAt time.Time `json:"start_at,omitempty"`
+//		Duration int `json:"duration,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.QueueItem.Query().
-//		GroupBy(queueitem.FieldStartAt).
+//		GroupBy(queueitem.FieldDuration).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 //
@@ -370,11 +376,11 @@ func (qiq *QueueItemQuery) GroupBy(field string, fields ...string) *QueueItemGro
 // Example:
 //
 //	var v []struct {
-//		StartAt time.Time `json:"start_at,omitempty"`
+//		Duration int `json:"duration,omitempty"`
 //	}
 //
 //	client.QueueItem.Query().
-//		Select(queueitem.FieldStartAt).
+//		Select(queueitem.FieldDuration).
 //		Scan(ctx, &v)
 //
 func (qiq *QueueItemQuery) Select(field string, fields ...string) *QueueItemSelect {

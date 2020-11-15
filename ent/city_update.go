@@ -20,14 +20,13 @@ import (
 // CityUpdate is the builder for updating City entities.
 type CityUpdate struct {
 	config
-	hooks      []Hook
-	mutation   *CityMutation
-	predicates []predicate.City
+	hooks    []Hook
+	mutation *CityMutation
 }
 
 // Where adds a new predicate for the builder.
 func (cu *CityUpdate) Where(ps ...predicate.City) *CityUpdate {
-	cu.predicates = append(cu.predicates, ps...)
+	cu.mutation.predicates = append(cu.mutation.predicates, ps...)
 	return cu
 }
 
@@ -360,6 +359,20 @@ func (cu *CityUpdate) AddFoodLimit(f float64) *CityUpdate {
 	return cu
 }
 
+// SetQueueStartedAt sets the queue_started_at field.
+func (cu *CityUpdate) SetQueueStartedAt(t time.Time) *CityUpdate {
+	cu.mutation.SetQueueStartedAt(t)
+	return cu
+}
+
+// SetNillableQueueStartedAt sets the queue_started_at field if the given value is not nil.
+func (cu *CityUpdate) SetNillableQueueStartedAt(t *time.Time) *CityUpdate {
+	if t != nil {
+		cu.SetQueueStartedAt(*t)
+	}
+	return cu
+}
+
 // SetQueueEndsAt sets the queue_ends_at field.
 func (cu *CityUpdate) SetQueueEndsAt(t time.Time) *CityUpdate {
 	cu.mutation.SetQueueEndsAt(t)
@@ -589,7 +602,7 @@ func (cu *CityUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			},
 		},
 	}
-	if ps := cu.predicates; len(ps) > 0 {
+	if ps := cu.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
 				ps[i](selector)
@@ -811,6 +824,13 @@ func (cu *CityUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldFoodLimit,
+		})
+	}
+	if value, ok := cu.mutation.QueueStartedAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: city.FieldQueueStartedAt,
 		})
 	}
 	if value, ok := cu.mutation.QueueEndsAt(); ok {
@@ -1331,6 +1351,20 @@ func (cuo *CityUpdateOne) AddFoodLimit(f float64) *CityUpdateOne {
 	return cuo
 }
 
+// SetQueueStartedAt sets the queue_started_at field.
+func (cuo *CityUpdateOne) SetQueueStartedAt(t time.Time) *CityUpdateOne {
+	cuo.mutation.SetQueueStartedAt(t)
+	return cuo
+}
+
+// SetNillableQueueStartedAt sets the queue_started_at field if the given value is not nil.
+func (cuo *CityUpdateOne) SetNillableQueueStartedAt(t *time.Time) *CityUpdateOne {
+	if t != nil {
+		cuo.SetQueueStartedAt(*t)
+	}
+	return cuo
+}
+
 // SetQueueEndsAt sets the queue_ends_at field.
 func (cuo *CityUpdateOne) SetQueueEndsAt(t time.Time) *CityUpdateOne {
 	cuo.mutation.SetQueueEndsAt(t)
@@ -1780,6 +1814,13 @@ func (cuo *CityUpdateOne) sqlSave(ctx context.Context) (_node *City, err error) 
 			Type:   field.TypeFloat64,
 			Value:  value,
 			Column: city.FieldFoodLimit,
+		})
+	}
+	if value, ok := cuo.mutation.QueueStartedAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: city.FieldQueueStartedAt,
 		})
 	}
 	if value, ok := cuo.mutation.QueueEndsAt(); ok {

@@ -11,8 +11,8 @@ import (
 	"github.com/joaopedrosgs/loucore/ent/user"
 )
 
-// The init function reads all schema descriptors with runtime
-// code (default values, validators or hooks) and stitches it
+// The init function reads all schema descriptors with runtime code
+// (default values, validators, hooks and policies) and stitches it
 // to their package variables.
 func init() {
 	cityFields := schema.City{}.Fields()
@@ -83,16 +83,20 @@ func init() {
 	cityDescFoodLimit := cityFields[15].Descriptor()
 	// city.DefaultFoodLimit holds the default value on creation for the food_limit field.
 	city.DefaultFoodLimit = cityDescFoodLimit.Default.(float64)
+	// cityDescQueueStartedAt is the schema descriptor for queue_started_at field.
+	cityDescQueueStartedAt := cityFields[16].Descriptor()
+	// city.DefaultQueueStartedAt holds the default value on creation for the queue_started_at field.
+	city.DefaultQueueStartedAt = cityDescQueueStartedAt.Default.(func() time.Time)
 	// cityDescQueueEndsAt is the schema descriptor for queue_ends_at field.
-	cityDescQueueEndsAt := cityFields[16].Descriptor()
+	cityDescQueueEndsAt := cityFields[17].Descriptor()
 	// city.DefaultQueueEndsAt holds the default value on creation for the queue_ends_at field.
 	city.DefaultQueueEndsAt = cityDescQueueEndsAt.Default.(func() time.Time)
 	// cityDescConstructionSpeed is the schema descriptor for construction_speed field.
-	cityDescConstructionSpeed := cityFields[17].Descriptor()
+	cityDescConstructionSpeed := cityFields[18].Descriptor()
 	// city.DefaultConstructionSpeed holds the default value on creation for the construction_speed field.
 	city.DefaultConstructionSpeed = cityDescConstructionSpeed.Default.(int)
 	// cityDescLastUpdated is the schema descriptor for last_updated field.
-	cityDescLastUpdated := cityFields[18].Descriptor()
+	cityDescLastUpdated := cityFields[19].Descriptor()
 	// city.DefaultLastUpdated holds the default value on creation for the last_updated field.
 	city.DefaultLastUpdated = cityDescLastUpdated.Default.(func() time.Time)
 	constructionFields := schema.Construction{}.Fields()

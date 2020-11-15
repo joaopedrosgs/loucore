@@ -36,6 +36,7 @@ func (City) Fields() []ent.Field {
 		field.Float("iron_limit").Default(0),
 		field.Float("food_limit").Default(0),
 
+		field.Time("queue_started_at").Default(time.Now),
 		field.Time("queue_ends_at").Default(time.Now),
 		field.Int("construction_speed").Default(1),
 

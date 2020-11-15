@@ -12,88 +12,90 @@ import (
 	"time"
 )
 
-func CreateQueueItem(ownerId, cityId, constructionId, action int) (*ent.QueueItem, error) {
-	c, err := client.City.Query().WithQueue().WithConstructions(func(query *ent.ConstructionQuery) {
-		query.Where(construction.ID(constructionId))
-	}).Where(city.IDEQ(cityId)).First(context.Background())
+func CreateQueueItem(ownerID, cityID, constructionID, action int) (*ent.QueueItem, error) {
+	c, err := client.City.Query().WithQueue(func(query *ent.QueueItemQuery) {
+		query.Order(ent.Asc(queueitem.FieldPosition))
+	}).WithConstructions(func(query *ent.ConstructionQuery) {
+		query.Where(construction.ID(constructionID))
+	}).Where(city.IDEQ(cityID)).First(context.Background())
 
 	if err != nil {
-		return nil, fmt.Errorf("(CreateQueueItem) Failed to find construction: %v", err)
+		return nil, fmt.Errorf("(CreateQueueItem) Failed to find construction: %w", err)
 	}
 	if c.Edges.Constructions[0].Level >= 10 {
 		return nil, errors.New("(CreateQueueItem) Construction already max level!")
 	}
-	if len(c.Edges.Queue)>=10 {
+	if len(c.Edges.Queue) >= 10 {
 		return nil, errors.New("(CreateQueueItem) Queue already full")
+	} else if len(c.Edges.Queue) == 0 {
+		_, _ = c.Update().SetQueueStartedAt(time.Now()).Save(context.Background())
 	}
-
-
-	duration:=10
-	endsAt := c.QueueEndsAt.Add(time.Duration(duration)*time.Second)
-	startsAt:= c.QueueEndsAt
-	c.Update().SetQueueEndsAt(endsAt).Save(context.Background())
+	nextPosition := len(c.Edges.Queue)
+	duration := 10
 
 	return client.QueueItem.
 		Create().
-		SetOwnerID(ownerId).
-		SetCityID(cityId).
-		SetConstructionID(constructionId).
+		SetOwnerID(ownerID).
+		SetCityID(cityID).
+		SetConstructionID(constructionID).
+		SetPosition(nextPosition).
 		SetAction(action).
-		SetStartAt(startsAt).
-		SetCompletion(endsAt).
 		SetDuration(duration).
-
 		Save(context.Background())
-
 }
-func CompleteQueueItem(queueItemId int) error {
-
-	_, err := client.Construction.Update().Where(
-		construction.HasQueueWith(
-			queueitem.IDEQ(queueItemId),
-			queueitem.CompletionLTE(
-				time.Now()))).
-		AddLevel(1).
-		Save(context.Background())
+func CompleteQueueItem(queueItemID int) error {
+	q, err := client.QueueItem.Query().WithCity().WithConstruction().Where(queueitem.ID(queueItemID)).Only(context.Background())
 	if err != nil {
-		return fmt.Errorf("(CompleteQueueItem) Failed to add level: %v", err)
+		return fmt.Errorf("(CompleteQueueItem) Failed to query queue item: %w", err)
 	}
-	return client.QueueItem.DeleteOneID(queueItemId).Exec(context.Background())
-
-}
-
-func GetUserQueue(ownerId int) ([]*ent.QueueItem, error) {
-	return client.QueueItem.
-		Query().Where(queueitem.HasOwnerWith(user.IDEQ(ownerId))).All(context.Background())
-}
-
-func GetCityQueue(cityId int) ([]*ent.QueueItem, error) {
-	return client.QueueItem.
-		Query().Where(queueitem.HasCityWith(city.IDEQ(cityId))).All(context.Background())
-}
-
-func GetStructureQueue(structureId int) ([]*ent.QueueItem, error) {
-	return client.QueueItem.
-		Query().Where(queueitem.HasConstructionWith(construction.IDEQ(structureId))).All(context.Background())
-}
-func UpdateQueue(cityId int) (*ent.City, error) {
-	city, err := client.City.Query().WithQueue(func(query *ent.QueueItemQuery) {
-		query.Order(ent.Asc(queueitem.FieldCompletion)).Limit(10)
-
-	}).Where(city.ID(cityId)).First(context.Background())
+	_, err = q.Edges.Construction.Update().AddLevel(1).Save(context.Background())
 	if err != nil {
-		return nil, fmt.Errorf("(UpdateQueue) Failed to get the city and the queue: %v", err)
+		return fmt.Errorf("(CompleteQueueItem) Failed to add level: %w", err)
 	}
-	lastCompletion := MinTime(city.Edges.Queue[0].StartAt, time.Now())
-	for _, qi := range city.Edges.Queue {
-		startTime := lastCompletion
-		_, err :=qi.Update().SetStartAt(startTime).Save(context.Background())
-		if err != nil {
-			return nil, fmt.Errorf("(UpdateQueue) Failed to set startsAt: %v", err)
+	_, err = q.Edges.City.Update().SetQueueStartedAt(time.Now()).Save(context.Background())
+	return err
+}
+
+func GetUserQueue(ownerID int) ([]*ent.QueueItem, error) {
+	return client.QueueItem.
+		Query().Where(queueitem.HasOwnerWith(user.IDEQ(ownerID))).All(context.Background())
+}
+func DeleteQueueItem(queueID int) error {
+	return client.QueueItem.DeleteOneID(queueID).Exec(context.Background())
+}
+
+func GetCityQueue(cityID int) ([]*ent.QueueItem, error) {
+	return client.QueueItem.
+		Query().Where(queueitem.HasCityWith(city.IDEQ(cityID))).All(context.Background())
+}
+
+func GetStructureQueue(structureID int) ([]*ent.QueueItem, error) {
+	return client.QueueItem.
+		Query().Where(queueitem.HasConstructionWith(construction.IDEQ(structureID))).All(context.Background())
+}
+func UpdateQueue(cityID int, until time.Time) error {
+	c, err := client.City.Query().WithQueue(func(query *ent.QueueItemQuery) {
+		query.Order(ent.Asc(queueitem.FieldPosition))
+	}).Where(city.ID(cityID)).First(context.Background())
+	if err != nil {
+		return fmt.Errorf("(UpdateQueue) Failed to get the city and the queue: %w", err)
+	}
+	secondsToUse := int(until.Sub(c.QueueStartedAt).Seconds())
+	for _, qi := range c.Edges.Queue {
+		secondsLeft := secondsToUse - qi.Duration
+
+		if secondsLeft < 0 {
+			break
 		}
-		lastCompletion = lastCompletion.Add(time.Duration(qi.Duration) * time.Second)
+		err := CompleteQueueItem(qi.ID)
+		fmt.Println("a")
+		if err != nil {
+			return fmt.Errorf("(UpdateQueue) Failed to CompleteQueueItem: %w", err)
+		}
+		secondsToUse = secondsLeft
 	}
-	return city.Update().SetQueueEndsAt(lastCompletion).Save(context.Background())
+	_, err = c.Update().SetQueueStartedAt(time.Now()).Save(context.Background())
+	return err
 }
 func MinTime(t1, t2 time.Time) time.Time {
 	if t1.After(t2) {
