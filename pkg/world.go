@@ -1,4 +1,4 @@
-package loucore
+package pkg
 
 type World struct {
 }

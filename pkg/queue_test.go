@@ -1,4 +1,4 @@
-package loucore
+package pkg
 
 import (
 	"github.com/joaopedrosgs/loucore/ent"

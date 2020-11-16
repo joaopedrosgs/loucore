@@ -1,4 +1,4 @@
-package loucore
+package pkg
 
 import (
 	"github.com/joaopedrosgs/loucore/ent"
@@ -26,7 +26,7 @@ func TestMain(m *testing.M) {
 	if err != nil {
 		log.Fatal("Failed to SetupStorage: " + err.Error())
 	}
-	err = LoadModules("./modules/")
+	err = LoadModules("../modules/")
 	if err != nil {
 		log.Fatal("Failed to LoadModules because: " + err.Error())
 	}

@@ -1,4 +1,4 @@
-package loucore
+package pkg
 
 import (
 	"context"
@@ -102,15 +102,14 @@ func CitiesInRange(x, y, r int) ([]ent.City, error) {
 	return c, err
 }
 func GetCitiesUserByID(userId int) ([]*ent.City, error) {
-
 	return client.City.Query().Where(city.HasOwnerWith(user.IDEQ(userId))).All(context.Background())
 }
-func GetCityById(cityId int) (*ent.City, error) {
 
+func GetCityById(cityId int) (*ent.City, error) {
 	return client.City.Get(context.Background(), cityId)
 }
-func GetCitiesUserWithStructuresByID(userId int) ([]*ent.City, error) {
 
+func GetCitiesUserWithStructuresByID(userId int) ([]*ent.City, error) {
 	return client.City.Query().WithConstructions().WithQueue().Where(city.HasOwnerWith(user.IDEQ(userId))).All(context.Background())
 }
 
@@ -193,6 +192,7 @@ func UpdateCityProduction(cityId int) ([]float64, error) {
 		SetFoodProduction(resources[3]).
 		Exec(context.Background())
 }
+
 func AdvanceInTime(cityId int, until time.Time) error {
 	c, err := client.City.Query().WithQueue(func(query *ent.QueueItemQuery) {
 		query.Order(ent.Asc(queueitem.FieldPosition)).Limit(10)
@@ -222,8 +222,7 @@ func AdvanceInTime(cityId int, until time.Time) error {
 		if err != nil {
 			return err
 		}
-
 	}
-	return nil
 
+	return nil
 }
