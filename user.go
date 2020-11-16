@@ -22,12 +22,9 @@ func CreateAccount(name string, email string, password string) (*ent.User, error
 	if err != nil {
 		return nil, err
 	}
-
 	return client.User.Create().SetPasswordHash(string(passwordHash)).SetEmail(email).SetName(name).Save(context.Background())
-
 }
 
-func DeleteAccount(userId int) error {
-	return client.User.DeleteOneID(userId).Exec(context.Background())
-
+func DeleteAccount(userID int) error {
+	return client.User.DeleteOneID(userID).Exec(context.Background())
 }

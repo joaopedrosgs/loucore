@@ -20,6 +20,7 @@ func TestCalculateProduction(t *testing.T) {
 		{"Production on IRON", args{testEnv.constructions[2].ID}, 0, false},
 		{"Production on WOODCUTTERS_HUT", args{testEnv.constructions[3].ID}, 6.5, false},
 		{"Production on WOOD", args{testEnv.constructions[4].ID}, 0, false},
+		{"TestCalculateProduction should fail because the structure doesn't exists", args{-1}, 0, true},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

@@ -44,6 +44,7 @@ func TestMain(m *testing.M) {
 func CreateTestEnviroment() error {
 	account1, _ := CreateAccount("name", "email@email.com", "password")
 	account2, _ := CreateAccount("name2", "email2@email.com", "password")
+	account3, _ := CreateAccount("to_be_deleted", "to_be_deleted@email.com", "password")
 
 	city1, _ := CreateCityWithOwner(1, 1, account1.ID)
 	city2, _ := CreateCityWithOwner(3, 1, account1.ID)
@@ -103,6 +104,7 @@ func CreateTestEnviroment() error {
 
 	testEnv.accounts = append(testEnv.accounts, account1)
 	testEnv.accounts = append(testEnv.accounts, account2)
+	testEnv.accounts = append(testEnv.accounts, account3)
 
 	testEnv.cities = append(testEnv.cities, city1)
 	testEnv.cities = append(testEnv.cities, city2)

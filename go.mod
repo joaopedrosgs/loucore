@@ -11,4 +11,5 @@ require (
 	github.com/ugorji/go v1.1.4 // indirect
 	github.com/xordataexchange/crypt v0.0.3-0.20170626215501-b2862e3d0a77 // indirect
 	golang.org/x/crypto v0.0.0-20201112155050-0c6587e931a9
+	golang.org/x/tools v0.0.0-20200904185747-39188db58858
 )
