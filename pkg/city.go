@@ -90,7 +90,7 @@ func CreateCityWithOwnerRandom(ownerID int) (*ent.City, error) {
 	return CreateCityWithOwner(x, y, ownerID)
 }
 
-func CitiesInRange(x, y, r int) ([]ent.City, error) {
+func GetCitiesInRange(x, y, r int) ([]ent.City, error) {
 	var c []ent.City
 
 	err := client.City.

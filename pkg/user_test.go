@@ -20,7 +20,7 @@ func TestAuthentication(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if err := Authentication(tt.args.email, tt.args.password); (err != nil) != tt.wantErr {
+			if _, err := Authentication(tt.args.email, tt.args.password); (err != nil) != tt.wantErr {
 				t.Errorf("Authentication() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})

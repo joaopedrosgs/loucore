@@ -7,14 +7,14 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func Authentication(email string, password string) error {
+func Authentication(email string, password string) (*ent.User, error) {
 	u, err := client.User.Query().Where(user.EmailEQ(email)).Only(context.Background())
 	if err != nil {
-		return err
+		return nil, err
 	}
 	err = bcrypt.CompareHashAndPassword([]byte(u.PasswordHash), []byte(password))
 
-	return err
+	return u, err
 }
 
 func CreateAccount(name string, email string, password string) (*ent.User, error) {
